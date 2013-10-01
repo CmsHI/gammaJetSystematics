@@ -16,12 +16,13 @@ void getSysUncert() {
   TFile* f; 
  
   for ( int ifile = 0 ; ifile <= 1 ; ifile++ ) { 
+
     if ( ifile == 0 ) 
-      f = new TFile("resultHistograms.root");
+      f = new TFile("resultHistograms_MC_genIsoPhoton.root");
     else 
-      f = new TFile("resultHistograms_photonEnergy_ScaledBy0.015.root");
+      f = new TFile("resultHistograms_MC_recoIsoPhoton.root");
     
-    for ( int coll = 1 ; coll<=3 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon
+    for ( int coll = 1 ; coll<=4 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon
       TString collName;
       if ( coll == kPP )  collName = "pp";
       else if ( coll == kPA )  collName = "ppb";
@@ -38,36 +39,34 @@ void getSysUncert() {
   }
   cout <<"  1 " << endl;
   // relative uncertainty calculation
-  for ( int coll = 1 ; coll<=3 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon                                                
+  for ( int coll = 1 ; coll<=4 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon                                                
     for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
       dNdJetPt[coll][ipt][2] = (TH1D*)dNdJetPt[coll][ipt][1]->Clone(Form("%s_uncertainty", dNdJetPt[coll][ipt][1]->GetName()));
       dNdJetPt[coll][ipt][2]->Divide( dNdJetPt[coll][ipt][0] );
-      cout << " a1 " << endl;
     }
     meanJetPt[coll][2] = (TH1D*)meanJetPt[coll][1]->Clone(Form("%s_uncertainty", meanJetPt[coll][1]->GetName()) );
     meanJetPt[coll][2]->Divide( meanJetPt[coll][0] );
-    cout << " a2 " << endl;
-    
+     
     cout << " coll = " << coll << endl;
-    cout << " name = " << meanRjg[coll][1] << endl;
+    cout << " name = " << meanRjg[coll][1]->GetName() << endl;
     meanRjg[coll][2] = (TH1D*)meanRjg[coll][1]->Clone(Form("%s_uncertainty", meanRjg[coll][1]->GetName() ) );
-    cout << " collb = " << coll << endl;
     meanRjg[coll][2]->Divide( meanRjg[coll][0] );
-    cout << " a3 " << endl;
     
   }
-  cout <<"  2 " << endl;
   
-  TFile * fSysResults = new TFile("relativeSys_dueTo_energyScalePlus.root","update");
-  for ( int coll = 1 ; coll<=3 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon        
+  //  TFile * fSysResults = new TFile("relativeSys_dueTo_energyScalePlus.root","recreate");
+  //TFile * fSysResults = new TFile("relativeSys_dueTo_energyScaleMinus.root","recreate");
+  TFile * fSysResults = new TFile("relativeSys_dueTo_isolation.root","recreate");
+  for ( int coll = 1 ; coll<=4 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon        
     for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
       dNdJetPt[coll][ipt][2]->Write();
     }
     meanJetPt[coll][2]->Write();
     meanRjg[coll][2]->Write();
   }
-  cout <<"  3 " << endl;
   
   fSysResults->Close();
+
+  
 }
  
