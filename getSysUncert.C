@@ -20,8 +20,8 @@ void getSysUncert() {
     if ( ifile == 0 ) 
       f = new TFile("resultHistograms.root");
     else 
-      f = new TFile("resultHistograms_energySmearedBy10percent.root");
-    
+      f = new TFile("resultHistograms_photonEnergy_ScaledBy0.015.root");
+
     for ( int coll = 1 ; coll<=4 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon
       TString collName;
       if ( coll == kPP )  collName = "pp";
@@ -33,7 +33,7 @@ void getSysUncert() {
       meanRjg[coll][ifile]  =(TH1D*)f->Get(Form("meanRjg_%s", collName.Data()) );
       
       for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) { 
-	dNdJetPt[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdJetPt_%s_ptBin%d", collName.Data(), ipt ) );
+	dNdJetPt[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdJetPt_IaaBin_%s_ptBin%d", collName.Data(), ipt ) );
       }
     }
   }
@@ -53,11 +53,11 @@ void getSysUncert() {
     
   }
   
-  // TFile * fSysResults = new TFile("relativeSys_dueTo_energyScalePlus.root","recreate");
-  // TFile * fSysResults = new TFile("relativeSys_dueTo_energyScaleMinus.root","recreate");
-  
+  TFile * fSysResults = new TFile("relativeSys_dueTo_energyScalePlus.root","recreate");
+  //TFile * fSysResults = new TFile("relativeSys_dueTo_energyScaleMinus.root","recreate");
+  //  TFile * fSysResults = new TFile("relativeSys_dueTo_jetResolution.root","recreate");
+  // TFile * fSysResults = new TFile("relativeSys_dueTo_isolation.root","recreate");
 
-  TFile * fSysResults = new TFile("relativeSys_dueTo_jetResolution.root","recreate");
   
   for ( int coll = 1 ; coll<=4 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon        
     for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
