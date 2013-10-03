@@ -47,6 +47,21 @@ void drawSys_merged() {
   for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
     dNdJetPt[4][ipt] = (TH1D*)f->Get(Form("dNdJetPt_pbpb_centralityBin2_ptBin%d", ipt ));
   }
+  // pPb
+  f =   new TFile("../resultHistograms_jetResCorrection.root");
+  meanJetPt[5]  =(TH1D*)f->Get(Form("meanJetPt_ppb"));
+  meanRjg[5]  =(TH1D*)f->Get(Form("meanRjg_ppb"));
+  for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
+    dNdJetPt[5][ipt] = (TH1D*)f->Get(Form("dNdJetPt_ppb_ptBin%d", ipt ));
+  }
+  
+  f =   new TFile("../resultHistograms_MC_recoIsoPhoton.root");
+  meanJetPt[6]  =(TH1D*)f->Get(Form("meanJetPt_ppb"));
+  meanRjg[6]  =(TH1D*)f->Get(Form("meanRjg_ppb"));
+  for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
+    dNdJetPt[6][ipt] = (TH1D*)f->Get(Form("dNdJetPt_ppb_ptBin%d", ipt ));
+  }  
+  
   
   TFile* fSys = new TFile("../merged/relativeSys_merged.root");
   
@@ -70,9 +85,16 @@ void drawSys_merged() {
   for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
     dNdJetPtSysIaa[4][ipt] = (TH1D*)fSys->Get(Form("dNdJetPt_IaaBin_pbpb_centralityBin2_ptBin%d_uncertainty_merged",  ipt ));
   }
+  meanJetPtSys[5]  =(TH1D*)fSys->Get("meanJetPt_ppb_uncertainty_merged");
+  meanRjgSys[5]  =(TH1D*)fSys->Get(Form("meanRjg_ppb_uncertainty_merged"));
+  for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
+    dNdJetPtSysIaa[5][ipt] = (TH1D*)fSys->Get(Form("dNdJetPt_IaaBin_ppb_ptBin%d_uncertainty_merged",  ipt ));
+  }
+
+
   
   // transplant the uncertainty  
-  for ( int coll = 1 ; coll<=4 ; coll++) {
+  for ( int coll = 1 ; coll<=5 ; coll++) {
     for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
       dNdJetPtSys[coll][ipt] = (TH1D*) dNdJetPt[coll][ipt]->Clone(Form("dNdJetPtSys_coll%d_ipt%d",coll,ipt));
       dNdJetPtSys[coll][ipt]->Reset();
@@ -112,6 +134,7 @@ void drawSys_merged() {
     ly->Draw();
   }
 
+
   c2->cd(1);
   tempR->Draw();
   drawSys(meanRjg[2], meanRjgSys[2], kGreen);
@@ -127,18 +150,54 @@ void drawSys_merged() {
     ly->AddEntry(meanRjg[2],"pp (smeared)","p");
     ly->Draw();
   }
+  c2->SaveAs("pT_depedence_rjg_pp_pbpb.pdf");
 
   
+  TCanvas* c2pa = new TCanvas("c1pa","",500,500);
+  handsomeTH1(meanRjg[1],1);
+  //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)                         
+  //  tempR->Draw();
+  TH1D* tempJ = new TH1D("tempJ",";p_{T}^{#gamma}; <p_{T}^{Jet}>",100,40,130);
+  tempJ->Reset();
+  handsomeTH1(tempJ,0);
+  tempJ->SetAxisRange(0,100,"Y");
+  tempJ->Draw();
+  drawSys(meanJetPt[5], meanJetPtSys[5], kYellow);
+  handsomeTH1(meanJetPt[5],2);
+  handsomeTH1(meanJetPt[6],1);
+  meanJetPt[5]->Draw("same");
+  meanJetPt[6]->Draw("same");
+  if ( 1==1 ) {
+    TLegend *ly = new TLegend(0.4484643,0.3088445,0.9140673,0.50102941,NULL,"brNDC");
+    easyLeg(ly,"5.02TeV pPb");
+    ly->AddEntry(meanJetPt[5],"DATA","p");
+    ly->AddEntry(meanJetPt[6],"PYTHIA+HIJING","p");
+    ly->Draw();
+  }
+  c2pa->SaveAs("pT_dependence_rjg_pA_figure1.pdf");
+
+  TCanvas* c3pa = new TCanvas("c3pa","",500,500);
+  tempR->Draw();
+  drawSys(meanRjg[5], meanRjgSys[5], kYellow);
+  handsomeTH1(meanRjg[5],2);
+  handsomeTH1(meanRjg[6],1);
+  meanRjg[5]->Draw("same");
+  meanRjg[6]->Draw("same");
+  if ( 1==1 ) {
+    TLegend *ly = new TLegend(0.4484643,0.3088445,0.9140673,0.50102941,NULL,"brNDC");
+    easyLeg(ly,"5.02TeV pPb");
+    ly->AddEntry(meanRjg[5],"DATA","p");
+    ly->AddEntry(meanRjg[6],"PYTHIA+HIJING","p");
+    ly->Draw();
+  }  
+  c3pa->SaveAs("pT_dependence_jetPt_pA_figure2.pdf");
+
   TCanvas* c3 = new TCanvas("c3","",1000,500);
   c3->Divide(2,1);
   c3->cd(2);
   handsomeTH1(meanJetPt[1],1);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)                                                       
-  TH1D* tempJ = new TH1D("tempJ",";p_{T}^{#gamma}; <p_T{Jet}>",100,40,130);
-  tempJ->Reset();
-  handsomeTH1(tempJ,0);
-  tempJ->SetAxisRange(0,100,"Y");
-  tempJ->Draw();
+   tempJ->Draw();
   drawSys(meanJetPt[1], meanJetPtSys[1], kGreen);
   drawSys(meanJetPt[3], meanJetPtSys[3]);
   meanJetPt[1]->Draw("same");
@@ -151,7 +210,7 @@ void drawSys_merged() {
     ly->AddEntry(meanJetPt[1],"pp (smeared)","p");
     ly->Draw();
   }
-
+  
   c3->cd(1);
   tempJ->Draw();
   drawSys(meanJetPt[2], meanJetPtSys[2], kGreen);
@@ -167,7 +226,8 @@ void drawSys_merged() {
     ly->AddEntry(meanJetPt[2],"pp (smeared)","p");
     ly->Draw();
   }
-
+  c3->SaveAs("pT_dependence_jetPt_pp_pbpb.pdf");
+  
   TH1D* hTempPt = new TH1D("hTemp",";p_{T}^{#gamma} (GeV);",200,10,300);
   TCanvas* c5 = new TCanvas("c5","",1200,700);
   makeMultiPanelCanvas(c5,nPtBin,2,0.0,0.0,0.2,0.15,0.02);
@@ -220,9 +280,43 @@ void drawSys_merged() {
       drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV, ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823                       
 
     
- }
-    
+  }
+  c5->SaveAs("pT_dependence_jetPt_pp_pbpb_distribution.pdf");
 
+  TCanvas* c5pa = new TCanvas("c5pa","",1200,350);
+  makeMultiPanelCanvas(c5pa,nPtBin,1,0.0,0.0,0.2,0.15,0.02);
+  for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
+    c5pa->cd(ipt);
+    // draw pp                                                                                                                                           
+    hTempPt->SetXTitle("p_{T}^{Jet} (GeV)");
+    hTempPt->SetYTitle("#frac{dN}{dp_{T}} #frac{1}{N}");
+    hTempPt->SetAxisRange(10,150,"X");
+    //        hTempPt->SetAxisRange(0,0.025,"Y");                                                                                                        
+    hTempPt->SetAxisRange(0,0.07,"Y");
+    handsomeTH1(hTempPt,0);
+    hTempPt->DrawCopy();
+
+    drawSys(dNdJetPt[5][ipt], dNdJetPtSys[5][ipt], kYellow);
+    handsomeTH1(dNdJetPt[5][ipt],2);
+    dNdJetPt[6][ipt]->Draw("same");
+    dNdJetPt[5][ipt]->Draw("same");
+    if ( ipt == 1 ) {
+      TLegend *ly = new TLegend(0.4855983,0.5529059,0.9512013,0.7645899,NULL,"brNDC");
+      easyLeg(ly,"5.02TeV pPb");
+      ly->AddEntry(meanJetPt[5],"Data","p");
+      ly->AddEntry(meanJetPt[6],"PYTHIA+HIJING","p");
+      ly->Draw();
+    }
+    double dx1=0.15;
+    if ( ipt == nPtBin )
+      drawText(Form("p_{T}^{#gamma} > %dGeV, ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823                                           
+    else
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV, ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823                       
+    
+    
+  }
+  c5pa->SaveAs("pT_dependence_jetPt_pA_distribution.pdf");
+  
   
   
 }
@@ -297,9 +391,7 @@ void drawSys_merged() {
 
   } 
 
-  c1->SaveAs("Uncertainty_of_dndjetpt_merged.pdf");
-  c2->SaveAs("Uncertainty_of_meanjetpt_merged.pdf");
-  c3->SaveAs("Uncertainty_of_r_merged.pdf");
+
   
 }
  
