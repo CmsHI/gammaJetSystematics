@@ -1,3 +1,10 @@
+///////////////////////////////////////////////////////////////////                                                  
+// getSysUncert.C                                                //                                                 
+// Creator : Yongsun Kim (KU), kingmking@gmail.com               //
+// Function : Compare histograms in two files and returns ratio  // 
+///////////////////////////////////////////////////////////////////                                                  
+///////////////////////////////////////////////////////////////////                                                  
+
 #include "commonUtilitySys.h"
 #include <TRandom3.h>
 #include <Tfile.h>
