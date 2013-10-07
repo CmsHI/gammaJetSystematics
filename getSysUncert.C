@@ -73,7 +73,7 @@ void getSysUncert(
     
   }
   
-  TString outname = fname2.ReplaceAll("resultHistograms", "uncertainty");
+  TString outname = fname2.ReplaceAll("resultHistograms", "relativeSys_dueTo");
   TFile * fSysResults = new TFile(outname,"recreate");
 
   
