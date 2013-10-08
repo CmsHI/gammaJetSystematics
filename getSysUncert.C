@@ -7,7 +7,7 @@
 
 #include "commonUtilitySys.h"
 #include <TRandom3.h>
-#include <Tfile.h>
+#include <TFile.h>
 
 void getSysUncert(   
 		  TString fname1 = "resultHistograms.root", 
@@ -62,9 +62,7 @@ void getSysUncert(
       dNdJetPt[coll][ipt][2] = (TH1D*)dNdJetPt[coll][ipt][1]->Clone(Form("%s_uncertainty", dNdJetPt[coll][ipt][1]->GetName()));
       dNdJetPt[coll][ipt][2]->Divide( dNdJetPt[coll][ipt][0] );
 
-      //    cout << " here 1 " << endl;
       dNdXjg[coll][ipt][2] = (TH1D*)dNdXjg[coll][ipt][1]->Clone(Form("%s_uncertainty", dNdXjg[coll][ipt][1]->GetName()));
-      //    cout << " here 2 " << endl;
       dNdXjg[coll][ipt][2]->Divide( dNdXjg[coll][ipt][0] );
     }
     meanJetPt[coll][2] = (TH1D*)meanJetPt[coll][1]->Clone(Form("%s_uncertainty", meanJetPt[coll][1]->GetName()) );
@@ -73,8 +71,6 @@ void getSysUncert(
     meanXjg[coll][2] = (TH1D*)meanXjg[coll][1]->Clone(Form("%s_uncertainty", meanXjg[coll][1]->GetName()) );
     meanXjg[coll][2]->Divide( meanXjg[coll][0] );
      
-    //  cout << " coll = " << coll << endl;
-    //  cout << " name = " << meanRjg[coll][1]->GetName() << endl;
     meanRjg[coll][2] = (TH1D*)meanRjg[coll][1]->Clone(Form("%s_uncertainty", meanRjg[coll][1]->GetName() ) );
     meanRjg[coll][2]->Divide( meanRjg[coll][0] );
     
