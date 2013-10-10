@@ -1,6 +1,6 @@
 #include "../commonUtilitySys.h"
 #include <TRandom3.h>
-#include <Tfile.h>
+#include <TFile.h>
 
 void drawSys_merged() {
   const int kPPcentral = 1;
