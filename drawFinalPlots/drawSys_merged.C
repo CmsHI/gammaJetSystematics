@@ -3,12 +3,12 @@
 #include <TFile.h>
 
 void drawSys_merged() {
-  const int kPPcentral = 1;
-  const int kPPperipheral =2 ;
-  const int kHIcentral =  3;
-  const int kHIperipheral = 4;
-  const int kPADATA = 5;
-  const int kPAMC = 6;
+  // const int kPPcentral = 1;
+  // const int kPPperipheral =2 ;
+  // const int kHIcentral =  3;
+  // const int kHIperipheral = 4;
+  // const int kPADATA = 5;
+  // const int kPAMC = 6;
   const int nPtBin = 4;  
   double ptBin[nPtBin+1] = {40, 50,60,80,9999};
 
@@ -175,7 +175,7 @@ void drawSys_merged() {
   TCanvas* c2 = new TCanvas("c1","",1000,500);
   c2->Divide(2,1);
   c2->cd(2);
-  handsomeTH1(meanRjg[1],1);
+  handsomeTH1(meanRjg[1],1,1,21);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
   TH1D* tempR = new TH1D("tempR",";p_{T}^{#gamma};R_{j#gamma}",100,40,130);
   tempR->Reset();  
@@ -200,6 +200,7 @@ void drawSys_merged() {
   tempR->Draw();
   drawSys(meanRjg[2], meanRjgSys[2], kGreen);
   drawSys(meanRjg[4], meanRjgSys[4]);
+  meanRjg[2]->SetMarkerStyle(25);
   meanRjg[2]->Draw("same");
   handsomeTH1(meanRjg[4],2 );
   meanRjg[4]->SetMarkerStyle(24);
@@ -256,7 +257,7 @@ void drawSys_merged() {
   TCanvas* c3 = new TCanvas("c3","",1000,500);
   c3->Divide(2,1);
   c3->cd(2);
-  handsomeTH1(meanJetPt[1],1);
+  handsomeTH1(meanJetPt[1],1,1,21);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)                                                       
    tempJ->Draw();
   drawSys(meanJetPt[1], meanJetPtSys[1], kGreen);
@@ -276,6 +277,7 @@ void drawSys_merged() {
   tempJ->Draw();
   drawSys(meanJetPt[2], meanJetPtSys[2], kGreen);
   drawSys(meanJetPt[4], meanJetPtSys[4]);
+  meanJetPt[2]->SetMarkerStyle(25);
   meanJetPt[2]->Draw("same");
   handsomeTH1(meanJetPt[4],2 );
   meanJetPt[4]->SetMarkerStyle(24);
@@ -307,12 +309,13 @@ void drawSys_merged() {
     drawSys(dNdJetPt[3][ipt], dNdJetPtSys[3][ipt], kYellow);
     handsomeTH1(dNdJetPt[3][ipt],2);
     dNdJetPt[1][ipt]->Draw("same");
+    dNdJetPt[1][ipt]->SetMarkerStyle(21);
     dNdJetPt[3][ipt]->Draw("same");
     if ( ipt == 1 ) {
       TLegend *ly = new TLegend(0.4484643,0.6988445,0.9140673,0.9102941,NULL,"brNDC");
       easyLeg(ly,"2.76TeV");
-      ly->AddEntry(meanJetPt[1],"PbPb 0-30%","p");
-      ly->AddEntry(meanJetPt[3],"pp (smeared)","p");
+      ly->AddEntry(meanJetPt[3],"PbPb 0-30%","p");
+      ly->AddEntry(meanJetPt[1],"pp (smeared)","p");
       ly->Draw();
     }
  
@@ -324,6 +327,7 @@ void drawSys_merged() {
     drawSys(dNdJetPt[4][ipt], dNdJetPtSys[4][ipt], kYellow);
     handsomeTH1(dNdJetPt[4][ipt],2);
     dNdJetPt[4][ipt]->SetMarkerStyle(24);
+    dNdJetPt[2][ipt]->SetMarkerStyle(25);
     dNdJetPt[2][ipt]->Draw("same");
     dNdJetPt[4][ipt]->Draw("same");
     if ( ipt==1 ){
@@ -399,12 +403,13 @@ void drawSys_merged() {
     drawSys(dNdXjg[1][ipt], dNdXjgSys[1][ipt], kGreen,3001);
     handsomeTH1(dNdXjg[3][ipt],2);
     dNdXjg[1][ipt]->Draw("same");
+    dNdXjg[1][ipt]->SetMarkerStyle(21);
     dNdXjg[3][ipt]->Draw("same");
     if ( ipt == 1 ) {
       TLegend *ly = new TLegend(0.651273,0.7052521,0.9997611,0.9487395,NULL,"brNDC");
       easyLeg(ly,"2.76TeV");
-      ly->AddEntry(meanJetPt[1],"PbPb 0-30%","p");
-      ly->AddEntry(meanJetPt[3],"pp (smeared)","p");
+      ly->AddEntry(meanJetPt[3],"PbPb 0-30%","p");
+      ly->AddEntry(meanJetPt[1],"pp (smeared)","p");
       ly->Draw();
     }
  
@@ -417,6 +422,7 @@ void drawSys_merged() {
     drawSys(dNdXjg[2][ipt], dNdXjgSys[2][ipt], kGreen,3001);
     handsomeTH1(dNdXjg[4][ipt],2);
     dNdXjg[4][ipt]->SetMarkerStyle(24);
+    dNdXjg[2][ipt]->SetMarkerStyle(25);
     dNdXjg[2][ipt]->Draw("same");
     dNdXjg[4][ipt]->Draw("same");
     if ( ipt==1 ){
@@ -473,7 +479,7 @@ void drawSys_merged() {
   TCanvas* c7 = new TCanvas("c7","",1000,500);
   c7->Divide(2,1);
   c7->cd(2);
-  handsomeTH1(meanXjg[1],1);
+  handsomeTH1(meanXjg[1],1,1,24);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
   TH1D* tempX = new TH1D("tempX",";p_{T}^{#gamma};<X_{j#gamma}>;",100,40,130);
   tempX->Reset();  
@@ -482,6 +488,7 @@ void drawSys_merged() {
   tempX->Draw();
   drawSys(meanXjg[3], meanXjgSys[3]);
   drawSys(meanXjg[1], meanXjgSys[1], kGreen,3001);
+  meanXjg[1]->SetMarkerStyle(21);
   meanXjg[1]->Draw("same");
   handsomeTH1(meanXjg[3],2 );
   meanXjg[3]->Draw("same");
@@ -498,6 +505,7 @@ void drawSys_merged() {
   tempX->Draw();
   drawSys(meanXjg[4], meanXjgSys[4]);
   drawSys(meanXjg[2], meanXjgSys[2], kGreen,3001);
+  meanXjg[2]->SetMarkerStyle(25);
   meanXjg[2]->Draw("same");
   handsomeTH1(meanXjg[4],2 );
   meanXjg[4]->SetMarkerStyle(24);
@@ -548,12 +556,13 @@ void drawSys_merged() {
     drawSys(Iaa[1][ipt], IaaSys[1][ipt], kGreen,3001);
     handsomeTH1(Iaa[3][ipt],2);
     Iaa[1][ipt]->Draw("same");
+    Iaa[1][ipt]->SetMarkerStyle(21);
     Iaa[3][ipt]->Draw("same");
     if ( ipt == 1 ) {
       TLegend *ly = new TLegend(0.4484643,0.6988445,0.9140673,0.9102941,NULL,"brNDC");
       easyLeg(ly,"2.76TeV");
-      ly->AddEntry(meanJetPt[1],"PbPb 0-30%","p");
-      ly->AddEntry(meanJetPt[3],"pp (smeared)","p");
+      ly->AddEntry(meanJetPt[3],"PbPb 0-30%","p");
+      ly->AddEntry(meanJetPt[1],"pp (smeared)","p");
       ly->Draw();
     }
  
@@ -565,6 +574,7 @@ void drawSys_merged() {
     drawSys(Iaa[2][ipt], IaaSys[2][ipt], kGreen,3001);
     handsomeTH1(Iaa[4][ipt],2);
     Iaa[4][ipt]->SetMarkerStyle(24);
+    Iaa[2][ipt]->SetMarkerStyle(25);
     Iaa[2][ipt]->Draw("same");
     Iaa[4][ipt]->Draw("same");
     if ( ipt==1 ){
