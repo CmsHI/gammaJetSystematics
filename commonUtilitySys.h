@@ -123,6 +123,23 @@ void drawSys(TGraph *h, Double_t *sys, Double_t width=5, Int_t theColor= kYellow
 
 
 
+void drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
+{
+   for (Int_t i=1;i<=h->GetNbinsX();i++)
+      {
+         Double_t val = h->GetBinContent(i);
+         Double_t err =  TMath::Abs( val * sys->GetBinContent(i));
+	 if (err == 0  ) continue;
+	 TBox *b = new TBox(h->GetBinLowEdge(i),val-err,h->GetBinLowEdge(i+1),val+err);
+         b->SetLineColor(theColor);
+         b->SetFillColor(theColor);
+         if ( fillStyle > -1 ) b->SetFillStyle(fillStyle);
+         if ( lineStyle > -1 ) b->SetLineStyle(lineStyle);
+
+         b->Draw();
+      }
+}
+
 void drawSysAbs(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
 {
    for (Int_t i=1;i<=h->GetNbinsX();i++)
