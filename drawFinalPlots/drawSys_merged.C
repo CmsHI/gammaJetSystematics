@@ -2,6 +2,21 @@
 #include <TRandom3.h>
 #include <TFile.h>
 
+TH1D* mergeSys( TH1D* h1, TH1D* h2) {
+  
+  TH1D* hres = (TH1D*)h1->Clone(Form("%s_merged",h1->GetName()) );
+  hres->Reset();
+  Int_t nBins = h1->GetNbinsX();
+  for ( Int_t j=1; j<=nBins ;j++)
+    {
+      float y1 =  h1->GetBinContent(j);
+      float y2 =  h2->GetBinContent(j);
+      hres->SetBinContent(j,  sqrt(  y1*y1 + y2*y2) );
+      hres->SetBinError(j,  0.00001);
+    }
+  return hres;
+}
+
 void drawSys_merged() {
   const int kPPcentral = 1;
   const int kPPperipheral =2 ;
@@ -89,7 +104,7 @@ void drawSys_merged() {
   }  
   
   
-  TFile* fSys = new TFile("../merged/relativeSys_merged.root");
+  TFile* fSys = new TFile("relativeSys_merged.root");
   
   meanJetPtSys[1]  =(TH1D*)fSys->Get("meanJetPt_pp_uncertainty_merged");
   meanRjgSys[1]  =(TH1D*)fSys->Get(Form("meanRjg_pp_uncertainty_merged"));
@@ -214,7 +229,7 @@ void drawSys_merged() {
   c2->SaveAs("pT_depedence_rjg_pp_pbpb.pdf");
 
   
-  TCanvas* c2pa = new TCanvas("c1pa","",500,500);
+  TCanvas* c2pa = new TCanvas("c2pa","",500,500);
   handsomeTH1(meanRjg[1],1);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)                         
   //  tempR->Draw();
@@ -235,7 +250,7 @@ void drawSys_merged() {
     ly->AddEntry(meanJetPt[6],"PYTHIA+HIJING","p");
     ly->Draw();
   }
-  c2pa->SaveAs("pT_dependence_rjg_pA_figure1.pdf");
+  c2pa->SaveAs("pT_dependence_jetPt_pA_figure1.pdf");
 
   TCanvas* c3pa = new TCanvas("c3pa","",500,500);
   tempR->Draw();
@@ -251,7 +266,7 @@ void drawSys_merged() {
     ly->AddEntry(meanRjg[6],"PYTHIA+HIJING","p");
     ly->Draw();
   }  
-  c3pa->SaveAs("pT_dependence_jetPt_pA_figure2.pdf");
+  c3pa->SaveAs("pT_dependence_rjg_pA_figure2.pdf");
 
   TCanvas* c3 = new TCanvas("c3","",1000,500);
   c3->Divide(2,1);
@@ -311,8 +326,8 @@ void drawSys_merged() {
     if ( ipt == 1 ) {
       TLegend *ly = new TLegend(0.4484643,0.6988445,0.9140673,0.9102941,NULL,"brNDC");
       easyLeg(ly,"2.76TeV");
-      ly->AddEntry(meanJetPt[1],"PbPb 0-30%","p");
-      ly->AddEntry(meanJetPt[3],"pp (smeared)","p");
+      ly->AddEntry(meanJetPt[3],"PbPb 0-30%","p");
+      ly->AddEntry(meanJetPt[1],"pp (smeared)","p");
       ly->Draw();
     }
  
@@ -336,9 +351,9 @@ void drawSys_merged() {
 
     double dx1=0.15;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV, ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823                                           
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823                                           
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV, ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823                       
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823                       
 
     
   }
@@ -370,9 +385,9 @@ void drawSys_merged() {
     }
     double dx1=0.15;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV, ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823                                           
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823                                           
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV, ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823                       
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823                       
     
     
   }
@@ -395,6 +410,8 @@ void drawSys_merged() {
     handsomeTH1(hTempXjg,0);
     hTempXjg->DrawCopy();
     onSun(0,0,2,0);
+    dNdXjg[1][ipt]->Scale(meanRjg[1]->GetBinContent(ipt));
+    dNdXjg[3][ipt]->Scale(meanRjg[3]->GetBinContent(ipt));
     drawSys(dNdXjg[3][ipt], dNdXjgSys[3][ipt], kYellow);
     drawSys(dNdXjg[1][ipt], dNdXjgSys[1][ipt], kGreen,3001);
     handsomeTH1(dNdXjg[3][ipt],2);
@@ -413,6 +430,8 @@ void drawSys_merged() {
     hTempXjg->DrawCopy();
     onSun(0,0,2,0);
 
+    dNdXjg[2][ipt]->Scale(meanRjg[2]->GetBinContent(ipt));
+    dNdXjg[4][ipt]->Scale(meanRjg[4]->GetBinContent(ipt));
     drawSys(dNdXjg[4][ipt], dNdXjgSys[4][ipt], kYellow);
     drawSys(dNdXjg[2][ipt], dNdXjgSys[2][ipt], kGreen,3001);
     handsomeTH1(dNdXjg[4][ipt],2);
@@ -429,9 +448,9 @@ void drawSys_merged() {
 
     double dx1=0.15;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV, ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823                                           
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823                                           
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV, ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823                       
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823                       
     
   }
   c6->SaveAs("pT_dependence_xjg_pp_pbpb_distribution.pdf");
@@ -445,6 +464,8 @@ void drawSys_merged() {
     hTempXjg->DrawCopy();
    onSun(0,0,2,0);
 
+    dNdXjg[5][ipt]->Scale(meanRjg[5]->GetBinContent(ipt));
+    dNdXjg[6][ipt]->Scale(meanRjg[6]->GetBinContent(ipt));
     drawSys(dNdXjg[5][ipt], dNdXjgSys[5][ipt], kYellow);
     handsomeTH1(dNdXjg[5][ipt],2);
     dNdXjg[6][ipt]->Draw("same");
@@ -536,7 +557,7 @@ void drawSys_merged() {
     c8->cd(ipt+nPtBin);
     // draw pp                                                                                                                                           
     hTempPt->SetXTitle("p_{T}^{Jet} (GeV)");
-    hTempPt->SetYTitle("#frac{dN}{dp_{T}} #frac{1}{N}");
+    hTempPt->SetYTitle("Yield^{Jet} #frac{dN}{dp_{T}} #frac{1}{N_{#gamma}}");
     hTempPt->SetAxisRange(10,150,"X");
     //        hTempPt->SetAxisRange(0,0.025,"Y");                                                                                                        
     hTempPt->SetAxisRange(0,0.035,"Y");
@@ -552,8 +573,8 @@ void drawSys_merged() {
     if ( ipt == 1 ) {
       TLegend *ly = new TLegend(0.4484643,0.6988445,0.9140673,0.9102941,NULL,"brNDC");
       easyLeg(ly,"2.76TeV");
-      ly->AddEntry(meanJetPt[1],"PbPb 0-30%","p");
-      ly->AddEntry(meanJetPt[3],"pp (smeared)","p");
+      ly->AddEntry(Iaa[3][ipt],"PbPb 0-30%","p");
+      ly->AddEntry(Iaa[1][ipt],"pp (smeared)","p");
       ly->Draw();
     }
  
@@ -570,19 +591,77 @@ void drawSys_merged() {
     if ( ipt==1 ){
       TLegend *ly = new TLegend(0.4484643,0.5088445,0.9140673,0.75102941,NULL,"brNDC");
       easyLeg(ly,"2.76TeV");
-      ly->AddEntry(meanJetPt[4],"PbPb 30-100%","p");
-      ly->AddEntry(meanJetPt[2],"pp (smeared)","p");
+      ly->AddEntry(Iaa[4][ipt],"PbPb 30-100%","p");
+      ly->AddEntry(Iaa[2][ipt],"pp (smeared)","p");
       ly->Draw();
     }
 
     double dx1=0.15;
-    if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV, ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823                                           
-    else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV, ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823                       
+    drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823                                           
+
 
     
   }
   c8->SaveAs("pT_dependence_iAA_pp_pbpb_distribution.pdf");
+
+
+
+  TH1D* IaaRatio[10][10];
+  TH1D* IaaRatioSys[10][10];
+  TCanvas* c9 = new TCanvas("c9","",1200,350);
+  makeMultiPanelCanvas(c9,nPtBin,1,0.0,0.0,0.2,0.15,0.02);
+  for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
+    c9->cd(ipt);
+
+    hTempPt->SetAxisRange(20,200,"X");
+    hTempPt->SetAxisRange(0,2.5,"Y");
+    hTempPt->SetYTitle("Yield^{JeT} Ratio");
+    handsomeTH1(hTempPt,0);
+    hTempPt->DrawCopy();
+    IaaRatio[3][ipt] = (TH1D*)Iaa[3][ipt]->Clone(Form("%s_ratio",Iaa[3][ipt]->GetName()) );
+    IaaRatio[3][ipt]->Divide(Iaa[1][ipt]);
+    IaaRatioSys[3][ipt] = mergeSys( IaaSys[1][ipt], IaaSys[3][ipt]) ;
+    
+    drawSys(IaaRatio[3][ipt], IaaRatioSys[3][ipt], kYellow);
+    jumSun(20,1,200,1);
+    handsomeTH1(IaaRatio[3][ipt],2);
+    IaaRatio[3][ipt]->Draw("same");
+    double dx1=0.15;
+    drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823                                           
+    drawText(Form("(PbPb)/(pp smeared)  0-30%%", (int)ptBin[ipt-1]), 0.12+dx1+0.05,0.69,1,15);//yeonju 130823                                           
+
+  }
+ 
+  c9->SaveAs("pT_dependence_iAA_ratio1.pdf");
+  
+
+
+  TCanvas* c10 = new TCanvas("c10","",1200,350);
+  makeMultiPanelCanvas(c10,nPtBin,1,0.0,0.0,0.2,0.15,0.02);
+  for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
+    c10->cd(ipt);
+
+    hTempPt->SetAxisRange(20,200,"X");
+    hTempPt->SetAxisRange(0,2.5,"Y");
+    hTempPt->SetYTitle("Yield^{JeT} Ratio");
+    handsomeTH1(hTempPt,0);
+    hTempPt->DrawCopy();
+    IaaRatio[4][ipt] = (TH1D*)Iaa[4][ipt]->Clone(Form("%s_ratio",Iaa[4][ipt]->GetName()) );
+    IaaRatio[4][ipt]->Divide(Iaa[2][ipt]);
+    IaaRatioSys[4][ipt] = mergeSys( IaaSys[2][ipt], IaaSys[4][ipt]) ;
+    
+    drawSys(IaaRatio[4][ipt], IaaRatioSys[4][ipt], kYellow);
+    jumSun(20,1,200,1);
+    handsomeTH1(IaaRatio[4][ipt],2);
+    IaaRatio[4][ipt]->Draw("same");
+    double dx1=0.15;
+    drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823                                           
+    drawText(Form("(PbPb)/(pp smeared)  30-100%%", (int)ptBin[ipt-1]), 0.12+dx1+0.05,0.69,1,15);//yeonju 130823                                           
+
+  }
+ 
+  c10->SaveAs("pT_dependence_iAA_ratio2.pdf");
+  
+  
 
 }
