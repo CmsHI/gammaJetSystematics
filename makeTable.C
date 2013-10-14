@@ -43,13 +43,18 @@ void makeTable(TString rootFile, TString histname)
   //{
   //printf("%s\n",histname.Data());
   histo = (TH1D*)inFile->Get(histname);
-  for(int j = 1; j <= histo->GetNbinsX(); j++)
+  if(!histo)
   {
-    printf("%lf &",TMath::Abs(histo->GetBinContent(j)-1));
+    printf("Missing table: ");
+  } else {
+    for(int j = 1; j <= histo->GetNbinsX(); j++)
+    {
+      printf("%lf &",TMath::Abs(histo->GetBinContent(j)-1));
+    }
   }
   printf("%s",rootFile.Data());
   printf("\\\\ \\hline \n");
-    //}
+  //}
 }
 
 int main(int argc, char *argv[])
