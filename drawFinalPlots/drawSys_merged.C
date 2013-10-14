@@ -104,7 +104,7 @@ void drawSys_merged() {
   }  
   
   
-  TFile* fSys = new TFile("relativeSys_merged.root");
+  TFile* fSys = new TFile("../relativeSys_merged.root");
   
   meanJetPtSys[1]  =(TH1D*)fSys->Get("meanJetPt_pp_uncertainty_merged");
   meanRjgSys[1]  =(TH1D*)fSys->Get(Form("meanRjg_pp_uncertainty_merged"));
