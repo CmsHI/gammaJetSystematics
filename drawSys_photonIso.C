@@ -10,6 +10,7 @@ void drawSys_photonIso() {
   const int nPtBin = 4;  
   
   TH1D* dNdJetPt[4][5][3];  // [collision] [ ptbin]  [Before/After variation]
+  TH1D* dNdXjg[4][5][3];  // [collision] [ ptbin]  [Before/After variation]
   TH1D* meanJetPt[4][3];   // [collision] [Before/After variation]
   TH1D* meanRjg[4][3];
  
@@ -28,6 +29,7 @@ void drawSys_photonIso() {
     meanRjg[coll][2]  =(TH1D*)fSysResults->Get(Form("meanRjg_%s_uncertainty", collName.Data()) );
     for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
       dNdJetPt[coll][ipt][2] = (TH1D*)fSysResults->Get(Form("dNdJetPt_IaaBin_%s_ptBin%d_uncertainty", collName.Data(), ipt ) );
+      dNdXjg[coll][ipt][2] = (TH1D*)fSysResults->Get(Form("dNdXjg_%s_ptBin%d_uncertainty", collName.Data(), ipt ) );
     }
   }
   

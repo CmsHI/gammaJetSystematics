@@ -9,9 +9,18 @@
 #include <TRandom3.h>
 #include <TFile.h>
 
+void calUncert  ( TH1D* h1, TH1D* h0, float scaleFactor) { 
+  h1->Add(h0,-1);
+  h1->Scale(scaleFactor);
+  h1->Add(h0);
+  h1->Divide(h0);
+}
+
 void getSysUncert(   
 		  TString fname1 = "resultHistograms.root", 
-		  TString fname2 = "resultHistograms_jetEnegyScalePlus.root"
+		  TString fname2 = "resultHistograms_jetEnegyScalePlus.root",
+		  float scaleFactor= 1
+		  
 		     )
 {
   cout << "===============================================================================" << endl;
@@ -25,10 +34,12 @@ void getSysUncert(
   const int nPtBin = 4;  
   
   TH1D* dNdJetPt[5][5][3];  // [collision] [ ptbin]  [Before/After variation]
+  TH1D* dNdIaa[5][5][3];  // [collision] [ ptbin]  [Before/After variation]
   TH1D* dNdXjg[5][5][3];  // [collision] [ ptbin]  [Before/After variation]                                                                                 
   TH1D* meanXjg[5][3];   // [collision] [Before/After variation]
   TH1D* meanJetPt[5][3];   // [collision] [Before/After variation]
   TH1D* meanRjg[5][3];
+  
   TFile* f; 
  
   for ( int ifile = 0 ; ifile <= 1 ; ifile++ ) { 
@@ -51,6 +62,7 @@ void getSysUncert(
       
       for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) { 
 	dNdJetPt[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdJetPt_IaaBin_%s_ptBin%d", collName.Data(), ipt ) );
+	if (  coll != kPA ) dNdIaa[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdJetPt_forIaa_%s_ptBin%dAndHigher", collName.Data(), ipt ) );
 	dNdXjg[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdXjg_%s_ptBin%d", collName.Data(), ipt ) );
 	//	cout << Form("dNdXjg_%s_ptBin%d", collName.Data(), ipt )  << endl;
       }
@@ -60,19 +72,26 @@ void getSysUncert(
   for ( int coll = 1 ; coll<=4 ; coll++) {   
     for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
       dNdJetPt[coll][ipt][2] = (TH1D*)dNdJetPt[coll][ipt][1]->Clone(Form("%s_uncertainty", dNdJetPt[coll][ipt][1]->GetName()));
-      dNdJetPt[coll][ipt][2]->Divide( dNdJetPt[coll][ipt][0] );
-
+      calUncert( dNdJetPt[coll][ipt][2], dNdJetPt[coll][ipt][0] , scaleFactor); 
+      
+      if (  coll != kPA )  { // Iaa is only for pp and PbPb
+	dNdIaa[coll][ipt][2] = (TH1D*)dNdIaa[coll][ipt][1]->Clone(Form("%s_uncertainty", dNdIaa[coll][ipt][1]->GetName()));
+	calUncert( dNdIaa[coll][ipt][2], dNdIaa[coll][ipt][0], scaleFactor);
+	
+      }
+      
       dNdXjg[coll][ipt][2] = (TH1D*)dNdXjg[coll][ipt][1]->Clone(Form("%s_uncertainty", dNdXjg[coll][ipt][1]->GetName()));
-      dNdXjg[coll][ipt][2]->Divide( dNdXjg[coll][ipt][0] );
+      calUncert( dNdXjg[coll][ipt][2], dNdXjg[coll][ipt][0], scaleFactor);
+
     }
     meanJetPt[coll][2] = (TH1D*)meanJetPt[coll][1]->Clone(Form("%s_uncertainty", meanJetPt[coll][1]->GetName()) );
-    meanJetPt[coll][2]->Divide( meanJetPt[coll][0] );
+    calUncert( meanJetPt[coll][2], meanJetPt[coll][0], scaleFactor) ;
 
     meanXjg[coll][2] = (TH1D*)meanXjg[coll][1]->Clone(Form("%s_uncertainty", meanXjg[coll][1]->GetName()) );
-    meanXjg[coll][2]->Divide( meanXjg[coll][0] );
-     
+    calUncert( meanXjg[coll][2], meanXjg[coll][0], scaleFactor) ;
+    
     meanRjg[coll][2] = (TH1D*)meanRjg[coll][1]->Clone(Form("%s_uncertainty", meanRjg[coll][1]->GetName() ) );
-    meanRjg[coll][2]->Divide( meanRjg[coll][0] );
+    calUncert( meanRjg[coll][2], meanRjg[coll][0], scaleFactor) ;
     
   }
   
@@ -84,6 +103,8 @@ void getSysUncert(
     for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
       dNdJetPt[coll][ipt][2]->Write();
       dNdXjg[coll][ipt][2]->Write();
+      if (  coll != kPA )
+	dNdIaa[coll][ipt][2]->Write();
     }
     meanJetPt[coll][2]->Write();
     meanXjg[coll][2]->Write();
