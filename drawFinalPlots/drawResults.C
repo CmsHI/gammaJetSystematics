@@ -197,7 +197,7 @@ void drawResults() {
   handsomeTH1(tempR,0);
   tempR->SetAxisRange(0,1.2,"Y");
   tempR->Draw();
-  drawSys(meanRjg[1], meanRjgSys[1], kGreen);
+  drawSys(meanRjg[1], meanRjgSys[1], kGreen,3001);
   drawSys(meanRjg[3], meanRjgSys[3]);
   meanRjg[1]->Draw("same");
   handsomeTH1(meanRjg[3],2 );
@@ -213,7 +213,7 @@ void drawResults() {
 
   c2->cd(1);
   tempR->Draw();
-  drawSys(meanRjg[2], meanRjgSys[2], kGreen);
+  drawSys(meanRjg[2], meanRjgSys[2], kGreen,3001);
   drawSys(meanRjg[4], meanRjgSys[4]);
   meanRjg[2]->SetMarkerStyle(25);
   meanRjg[2]->Draw("same");
@@ -275,7 +275,7 @@ void drawResults() {
   handsomeTH1(meanJetPt[1],1,1,21);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)                                                       
    tempJ->Draw();
-  drawSys(meanJetPt[1], meanJetPtSys[1], kGreen);
+  drawSys(meanJetPt[1], meanJetPtSys[1], kGreen,3001);
   drawSys(meanJetPt[3], meanJetPtSys[3]);
   meanJetPt[1]->Draw("same");
   handsomeTH1(meanJetPt[3],2 );
@@ -290,7 +290,7 @@ void drawResults() {
   
   c3->cd(1);
   tempJ->Draw();
-  drawSys(meanJetPt[2], meanJetPtSys[2], kGreen);
+  drawSys(meanJetPt[2], meanJetPtSys[2], kGreen,3001);
   drawSys(meanJetPt[4], meanJetPtSys[4]);
   meanJetPt[2]->SetMarkerStyle(25);
   meanJetPt[2]->Draw("same");
@@ -320,7 +320,7 @@ void drawResults() {
     handsomeTH1(hTempPt,0);
     hTempPt->DrawCopy();
 
-    drawSys(dNdJetPt[1][ipt], dNdJetPtSys[1][ipt], kGreen);
+    drawSys(dNdJetPt[1][ipt], dNdJetPtSys[1][ipt], kGreen,3001);
     drawSys(dNdJetPt[3][ipt], dNdJetPtSys[3][ipt], kYellow);
     handsomeTH1(dNdJetPt[3][ipt],2);
     dNdJetPt[1][ipt]->Draw("same");
@@ -338,7 +338,7 @@ void drawResults() {
     c5->cd(ipt);
     hTempPt->DrawCopy();
 
-    drawSys(dNdJetPt[2][ipt], dNdJetPtSys[2][ipt], kGreen);
+    drawSys(dNdJetPt[2][ipt], dNdJetPtSys[2][ipt], kGreen,3001);
     drawSys(dNdJetPt[4][ipt], dNdJetPtSys[4][ipt], kYellow);
     handsomeTH1(dNdJetPt[4][ipt],2);
     dNdJetPt[4][ipt]->SetMarkerStyle(24);
@@ -637,9 +637,8 @@ void drawResults() {
     handsomeTH1(IaaRatio[3][ipt],2);
     IaaRatio[3][ipt]->Draw("same");
     double dx1=0.15;
-    drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823                                           
-    drawText(Form("(PbPb)/(pp smeared)  0-30%%", (int)ptBin[ipt-1]), 0.12+dx1+0.05,0.69,1,15);//yeonju 130823                                           
-
+    drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823
+    drawText(Form("(PbPb)/(pp smeared)  0-30%%"), 0.12+dx1+0.05,0.69,1,15);//yeonju 130823
   }
  
   c9->SaveAs("pT_dependence_iAA_ratio1.pdf");
@@ -663,11 +662,11 @@ void drawResults() {
     drawSys(IaaRatio[4][ipt], IaaRatioSys[4][ipt], kYellow);
     jumSun(20,1,200,1);
     handsomeTH1(IaaRatio[4][ipt],2);
+    IaaRatio[4][ipt]->SetMarkerStyle(24);
     IaaRatio[4][ipt]->Draw("same");
     double dx1=0.15;
-    drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823                                           
-    drawText(Form("(PbPb)/(pp smeared)  30-100%%", (int)ptBin[ipt-1]), 0.12+dx1+0.05,0.69,1,15);//yeonju 130823                                           
-
+    drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823
+    drawText(Form("(PbPb)/(pp smeared)  30-100%%"), 0.12+dx1+0.05,0.69,1,15);//yeonju 130823
   }
  
   c10->SaveAs("pT_dependence_iAA_ratio2.pdf");

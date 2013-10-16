@@ -130,7 +130,10 @@ void drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int
          Double_t val = h->GetBinContent(i);
          Double_t err =  TMath::Abs( val * sys->GetBinContent(i));
 	 if (err == 0  ) continue;
-	 TBox *b = new TBox(h->GetBinLowEdge(i),val-err,h->GetBinLowEdge(i+1),val+err);
+	 //TBox *b = new TBox(h->GetBinLowEdge(i),val-err,h->GetBinLowEdge(i+1),val+err);
+	 Double_t binWidth = h->GetBinLowEdge(1) - h->GetBinLowEdge(2);
+	 Double_t point = (h->GetBinLowEdge(i) + h->GetBinLowEdge(i+1))/2.;
+	 TBox *b = new TBox(point-binWidth/2,val-err,point+binWidth/2,val+err);	 
          b->SetLineColor(theColor);
          b->SetFillColor(theColor);
          if ( fillStyle > -1 ) b->SetFillStyle(fillStyle);
