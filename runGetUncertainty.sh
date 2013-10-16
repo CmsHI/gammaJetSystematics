@@ -4,7 +4,8 @@
 #                  float scaleFactor= 1
 
 root -l -b -q 'getSysUncert.C+("resultHistograms.root","resultHistograms_electronContamination.root", 0.25)'
-root -l -b -q 'getSysUncert.C+("resultHistograms_photonEnergyScalePlus.root","resultHistograms_photonEnergyScaleMinus.root")'
+root -l -b -q 'getSysUncert.C+("resultHistograms.root","resultHistograms_photonEnergyScaleMinus.root")'
+root -l -b -q 'getSysUncert.C+("resultHistograms.root","resultHistograms_photonEnergyScalePlus.root")'
 
 root -l -b -q 'getSysUncert.C+("resultHistograms.root","resultHistograms_jetEnegyScalePlus.root")'
 root -l -b -q 'getSysUncert.C+("resultHistograms.root","resultHistograms_jetEnegyScaleMinus.root")'

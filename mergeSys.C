@@ -2,13 +2,13 @@
 #include <TRandom3.h>
 #include <TFile.h>
 
-void squareFromUnityHist(TH1* h=0)
+void squareHist(TH1* h=0)
 {
   Int_t nBins = h->GetNbinsX();
   for ( Int_t j=1; j<=nBins ;j++)
     {
       float yy = h->GetBinContent(j);
-      h->SetBinContent(j, (yy-1.)*(yy-1.) );
+      h->SetBinContent(j, yy*yy);
       h->SetBinError  (j, 0);
     }
 
@@ -46,10 +46,10 @@ void mergeSys() {
   int nFile  = 7;
     for ( int ifile = 1 ; ifile <= nFile ; ifile++ ) { 
 
-    if ( ifile == 1 )       f = new TFile("relativeSys_dueTo_photonEnergyScaleMinus.root");
+    if ( ifile == 1 )       f = new TFile("relativeSys_dueTo_photonEnergyScale.root");
     else if ( ifile == 2 )  f = new TFile("relativeSys_dueTo_isolation.root");
     else if ( ifile == 3 )  f = new TFile("relativeSys_dueTo_jetResCorrection.root");
-    else if ( ifile == 4 )  f = new TFile("relativeSys_dueTo_jetEnegyScaleMinus.root");
+    else if ( ifile == 4 )  f = new TFile("relativeSys_dueTo_jetEnergyScale.root");
     else if ( ifile == 5 )  f = new TFile("relativeSys_dueTo_electronContamination.root");
     else if ( ifile == 6 )  f = new TFile("relativeSys_dueTo_photonPurity.root");
     else if ( ifile == 7 )  f = new TFile("relativeSys_dueTo_jetResolution.root");
@@ -80,7 +80,7 @@ void mergeSys() {
       dNdJetPt[coll][ipt][0] = (TH1D*)dNdJetPt[coll][ipt][1]->Clone(Form("%s_merged",dNdJetPt[coll][ipt][1]->GetName() ) );
       dNdJetPt[coll][ipt][0]->Reset();
       for ( int ifile = 1 ; ifile <= nFile ; ifile++ ) {
-	squareFromUnityHist( dNdJetPt[coll][ipt][ifile] );
+	squareHist( dNdJetPt[coll][ipt][ifile] );
 	dNdJetPt[coll][ipt][0]->Add(dNdJetPt[coll][ipt][ifile]);
       }
       squareRootHist(dNdJetPt[coll][ipt][0]);
@@ -89,7 +89,7 @@ void mergeSys() {
 	dNdIaa[coll][ipt][0] = (TH1D*)dNdIaa[coll][ipt][1]->Clone(Form("%s_merged",dNdIaa[coll][ipt][1]->GetName() ) );
 	dNdIaa[coll][ipt][0]->Reset();
 	for ( int ifile = 1 ; ifile <= nFile ; ifile++ ) {
-	  squareFromUnityHist( dNdIaa[coll][ipt][ifile] );
+	  squareHist( dNdIaa[coll][ipt][ifile] );
 	  dNdIaa[coll][ipt][0]->Add(dNdIaa[coll][ipt][ifile]);
 	}
 	squareRootHist(dNdIaa[coll][ipt][0]);
@@ -100,7 +100,7 @@ void mergeSys() {
       dNdXjg[coll][ipt][0] = (TH1D*)dNdXjg[coll][ipt][1]->Clone(Form("%s_merged",dNdXjg[coll][ipt][1]->GetName() ) );
       dNdXjg[coll][ipt][0]->Reset();
       for ( int ifile = 1 ; ifile <= nFile ; ifile++ ) {
-	squareFromUnityHist( dNdXjg[coll][ipt][ifile] );
+	squareHist( dNdXjg[coll][ipt][ifile] );
 	dNdXjg[coll][ipt][0]->Add(dNdXjg[coll][ipt][ifile]);
       }
       squareRootHist(dNdXjg[coll][ipt][0]);
@@ -111,7 +111,7 @@ void mergeSys() {
     meanJetPt[coll][0] = (TH1D*)meanJetPt[coll][1]->Clone(Form("%s_merged",meanJetPt[coll][1]->GetName() ) );
     meanJetPt[coll][0]->Reset();
     for ( int ifile = 1 ; ifile <= nFile ; ifile++ ) {
-      squareFromUnityHist( meanJetPt[coll][ifile]);
+      squareHist( meanJetPt[coll][ifile]);
       meanJetPt[coll][0]->Add(meanJetPt[coll][ifile]);
     }
     squareRootHist(meanJetPt[coll][0]);
@@ -119,7 +119,7 @@ void mergeSys() {
     meanRjg[coll][0] = (TH1D*)meanRjg[coll][1]->Clone(Form("%s_merged",meanRjg[coll][1]->GetName() ) );
     meanRjg[coll][0]->Reset();
     for ( int ifile = 1 ; ifile <= nFile ; ifile++ ) {
-      squareFromUnityHist( meanRjg[coll][ifile]);
+      squareHist( meanRjg[coll][ifile]);
       meanRjg[coll][0]->Add(meanRjg[coll][ifile]);
     }
     squareRootHist(meanRjg[coll][0]);
@@ -127,7 +127,7 @@ void mergeSys() {
     meanXjg[coll][0] = (TH1D*)meanXjg[coll][1]->Clone(Form("%s_merged",meanXjg[coll][1]->GetName() ) );
     meanXjg[coll][0]->Reset();
     for ( int ifile = 1 ; ifile <= nFile ; ifile++ ) {
-      squareFromUnityHist( meanXjg[coll][ifile]);
+      squareHist( meanXjg[coll][ifile]);
       meanXjg[coll][0]->Add(meanXjg[coll][ifile]);
     }
     squareRootHist(meanXjg[coll][0]);

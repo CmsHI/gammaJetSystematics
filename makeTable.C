@@ -49,7 +49,7 @@ void makeTable(TString rootFile, TString histname)
   } else {
     for(int j = 1; j <= histo->GetNbinsX(); j++)
     {
-      printf("%lf &",TMath::Abs(histo->GetBinContent(j)-1));
+      printf("%lf &",TMath::Abs(histo->GetBinContent(j)));
     }
   }
   printf("%s",rootFile.Data());

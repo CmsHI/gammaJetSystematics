@@ -16,9 +16,18 @@ void calUncert  ( TH1D* h1, TH1D* h0, float scaleFactor) {
   h1->Divide(h0);
 }
 
+void Subtract1(TH1D* h1) {
+  int nBins = h1 -> GetNbinsX();
+  for(int j=1; j<=nBins; j++){
+    float yy = h1 -> GetBinContent(j) - 1; 
+    h1->SetBinContent(j, yy);
+  }
+}
+
+
 void getSysUncert(   
-		  TString fname1 = "resultHistograms.root", 
-		  TString fname2 = "resultHistograms_jetEnegyScalePlus.root",
+		  TString fname1 = "resultHistograms_MC_recoIsoPhoton_Oct11.root",
+		  TString fname2 = "resultHistograms_MC_recoIsoPhoton.root",
 		  float scaleFactor= 1
 		  
 		     )
@@ -94,12 +103,27 @@ void getSysUncert(
     calUncert( meanRjg[coll][2], meanRjg[coll][0], scaleFactor) ;
     
   }
+
+  // Subtract 1 from each bin... So 0 = no uncertainty 
+ 
+  for ( int coll = 1 ; coll<=4 ; coll++) {
+    for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
+      Subtract1(dNdJetPt[coll][ipt][2]);
+      Subtract1(dNdXjg[coll][ipt][2]);
+      if (  coll != kPA )
+	Subtract1(dNdIaa[coll][ipt][2]);
+    }
+    Subtract1(meanJetPt[coll][2]);
+    Subtract1(meanXjg[coll][2]);
+    Subtract1(meanRjg[coll][2]);
+  }
+  
   
   TString outname = fname2.ReplaceAll("resultHistograms", "relativeSys_dueTo");
   TFile * fSysResults = new TFile(outname,"recreate");
-
   
-  for ( int coll = 1 ; coll<=4 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon        
+  
+  for ( int coll = 1 ; coll<=4 ; coll++) {
     for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
       dNdJetPt[coll][ipt][2]->Write();
       dNdXjg[coll][ipt][2]->Write();
