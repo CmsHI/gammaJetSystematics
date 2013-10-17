@@ -16,12 +16,23 @@ meanXjg_ppb_uncertainty \
 meanRjg_ppb_uncertainty \
 "
 
+rootfiles="relativeSys_dueTo_electronContamination.root \
+relativeSys_dueTo_isolation.root \
+relativeSys_dueTo_jetEnergyScale.root \
+relativeSys_dueTo_jetResCorrection.root \
+relativeSys_dueTo_jetResolution.root \
+relativeSys_dueTo_photonEnergyScale.root \
+relativeSys_dueTo_photonPurity.root \
+relativeSys_merged.root \
+"
+
 
 for histname in $histnames
 do
     echo $histname
-    for rootFile in relativeSys_dueTo_*.root
+    for rootFile in $rootfiles
     do
+	[ "$rootFile" == "relativeSys_merged.root" ] && histname="${histname}_merged" && echo "\hline"
 	./makeTable.exe "$rootFile" "$histname"
     done
     echo ""
