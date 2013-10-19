@@ -136,7 +136,7 @@ void drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int
 
 	Double_t binWidth = h->GetBinLowEdge(1) - h->GetBinLowEdge(2);
 	Double_t point = (h->GetBinLowEdge(i) + h->GetBinLowEdge(i+1))/2.;
-	TBox *b = new TBox(point-binWidth/2,val-err,point+binWidth/2,val+err);         
+	TBox *b = new TBox(point-binWidth/3,val-err,point+binWidth/3,val+err);         
 	
 	b->SetLineColor(theColor);
 	b->SetFillColor(theColor);
@@ -223,9 +223,9 @@ void drawErrorBand(TH1* h, Double_t* err, Int_t theColor=kSpring+8)
 
 void drawText(const char *text, Float_t xp, Float_t yp, Int_t textColor=kBlack, Int_t textSize=18){
    TLatex *tex = new TLatex(xp,yp,text);
-   tex->SetTextFont(63);
+   //tex->SetTextFont(42);
    //   if(bold)tex->SetTextFont(43);
-   tex->SetTextSize(textSize);
+   //tex->SetTextSize(textSize);
    tex->SetTextColor(textColor);
    tex->SetLineWidth(1);
    tex->SetNDC();
@@ -466,7 +466,8 @@ void handsomeTH1( TH1 *a=0, Int_t col =1, Float_t size=1, Int_t markerstyle=20)
   a->SetMarkerSize(size);
   a->SetMarkerStyle(markerstyle);
   a->SetLineColor(col);
-  a->GetYaxis()->SetTitleOffset(1.25);
+  //a->GetXaxis()->SetTitleOffset(1.25);
+  //a->GetYaxis()->SetTitleOffset(1.5);
   a->GetXaxis()->CenterTitle();
   a->GetYaxis()->CenterTitle();
 }
@@ -603,8 +604,8 @@ void easyLeg( TLegend *a=0 , TString head="")
 {
   a->SetBorderSize(0);
   a->SetHeader(head);
-  a->SetTextFont(62);
-  //  a->SetTextSize(17);
+  a->SetTextFont(43);
+  a->SetTextSize(15);
   a->SetLineColor(1);
   a->SetLineStyle(1);
   a->SetLineWidth(1);
@@ -763,6 +764,37 @@ void drawCMS4(Float_t px, Float_t py, Float_t nLumi, Int_t textSize=15) {
    
 }
 
+void drawCMSppPbPb(Float_t px, Float_t py)
+{
+  TLatex *cms = new TLatex(px,py,"CMS Preliminary");
+  //cms->SetTextFont(42);
+  //cms->SetTextSize(15);
+  cms->SetNDC();
+  cms->Draw();
+
+  TLatex *pbpb = new TLatex(px + 0.25, py ,
+			    "#sqrt{s_{NN}}=2.76TeV, PbPb 150 #mub^{-1}, pp 5.3 pb^{-1}");
+  //pbpb->SetTextFont(42);
+  //pbpb->SetTextSize(15);
+  pbpb->SetNDC();
+  pbpb->Draw();
+}
+
+void drawCMSpPb(Float_t px, Float_t py)
+{
+  TLatex *cms = new TLatex(px,py,"CMS Preliminary");
+  //cms->SetTextFont(42);
+  //cms->SetTextSize(15);
+  cms->SetNDC();
+  cms->Draw();
+
+  TLatex *pbpb = new TLatex(px + 0.25, py ,
+			    "#sqrt{s_{NN}}=5.02TeV, pPb 30.4 nb^{-1}");
+  //pbpb->SetTextFont(42);
+  //pbpb->SetTextSize(15);
+  pbpb->SetNDC();
+  pbpb->Draw();
+}
 
 
 void getNiceBins( TH1* h=0, Int_t nDiv=4) {
