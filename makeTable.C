@@ -19,7 +19,7 @@ void makeTable(TString rootFile, TString histname)
     {
       Double_t err = TMath::Abs(histo->GetBinContent(j));
       if( err*100. > 0.01 )
-	printf("%2.2lf%c & ", err*100., '%');
+	printf("%2.2lf%c%c & ", err*100.,'\\', '%');
       else
 	printf("- & ");
     }
