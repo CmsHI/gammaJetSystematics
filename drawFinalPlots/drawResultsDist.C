@@ -324,6 +324,26 @@ void drawResultsDist() {
 
 
   // Dphi plots
+  const Int_t nDPHIBINS = 8;
+  const Double_t pi = TMath::Pi();
+  Double_t DPHIBINS[nDPHIBINS+1] = {0, pi/20*5, pi/20*5*2, pi/20*5*3,
+				    pi/20*16, pi/20*17, pi/20*18, pi/20*19,
+				    pi};
+
+  //rebin
+  for(int sample = 1; sample <=6; sample++)
+  {
+    for(int ipt = 1; ipt<=nPtBin; ipt++)
+    {
+      dNdphi[sample][ipt] = (TH1D*)dNdphi[sample][ipt]->Rebin(nDPHIBINS,dNdphi[sample][ipt]->GetName(),DPHIBINS);
+      for(int bin = 1; bin <=3; bin++)
+      {
+	dNdphi[sample][ipt]->SetBinContent(bin, dNdphi[sample][ipt]->GetBinContent(bin)/5.);
+	dNdphi[sample][ipt]->SetBinError(bin, dNdphi[sample][ipt]->GetBinError(bin)/TMath::Sqrt(5.));
+      }
+    }
+  }
+
   TH1D* hTempphi = new TH1D("hTempphi",";p_{T}^{#gamma} (GeV);",200,0,3.141592);
   TCanvas* cDphi = new TCanvas("cDphi","",1200,600);
   cDphi->Divide(nPtBin,2,0.0,0.0);
@@ -335,13 +355,14 @@ void drawResultsDist() {
     // draw pp
     hTempphi->SetXTitle("#Delta#phi");
     hTempphi->SetYTitle("#frac{dN}{d#Delta#phi} #frac{1}{N}");
-    hTempphi->SetAxisRange(0,3.141592,"X");
+    hTempphi->SetAxisRange(0, TMath::Pi(),"X");
     hTempphi->SetAxisRange(0.001,2,"Y");
     handsomeTH1(hTempphi,0);
     hTempphi->GetYaxis()->SetTitleOffset(3);
     hTempphi->GetXaxis()->SetTitleOffset(2);
     hTempphi->DrawCopy();
     handsomeTH1(dNdphi[3][ipt],2);
+
 
     dNdphi[1][ipt]->Scale(1./dNdphi[1][ipt]->Integral());
     dNdphi[3][ipt]->Scale(1./dNdphi[3][ipt]->Integral());
