@@ -32,8 +32,8 @@ void drawResultsDist() {
 
   TH1D* ratioJet[7][5]; //  pbpb/pp of jet pt                                                                                          
   TH1D* ratioJetSys[7][5]; //  pbpb/pp of jet pt                                                                                          
-  const int nRptBin=7;
-  double ratioPtBin[nRptBin+1] = {20,30,40,50,60,70,110,150};
+  const int nRptBin=5;
+  double ratioPtBin[nRptBin+1] = {20,30,40,50,80,150};
 
 
   TH1D* dNdXjg[7][5]; // [collision] [ ptbin]  [Before/After variation]
@@ -202,12 +202,12 @@ void drawResultsDist() {
 
 
   // jet pt distributions                                                                                                                      
-  TCanvas* c5_ratio = new TCanvas("c5_ratio","",1200,350);
-  c5_ratio->Divide(nPtBin, 1, 0.0, 0.0);
+  TCanvas* c5_ratio = new TCanvas("c5_ratio","",1200,600);
+  c5_ratio->Divide(nPtBin, 2, 0.0, 0.0);
   c5_ratio->cd(0);
-  drawCMSppPbPb(0.1,0.935);
+  drawCMSppPbPb(0.1,0.975);
   for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
-    c5_ratio->cd(ipt); 
+    c5_ratio->cd(ipt+nPtBin); 
     hTempPt->SetXTitle("p_{T}^{Jet} (GeV)");
     hTempPt->SetYTitle("PbPb/pp of jet yield");
     hTempPt->SetAxisRange(10,150,"X");
@@ -233,16 +233,14 @@ void drawResultsDist() {
       ly->Draw();
     }
     gPad->RedrawAxis();
-    /*
+
     c5_ratio->cd(ipt);
     hTempPt->DrawCopy();
-
+    
     ratioJet[4][ipt] = (TH1D*)dNdJetPt[4][ipt]->Rebin(nRptBin, Form("%s_ratio",dNdJetPt[4][ipt]->GetName()), ratioPtBin);
     ratioJet[2][ipt] = (TH1D*)dNdJetPt[2][ipt]->Rebin(nRptBin, Form("%s_ratio",dNdJetPt[2][ipt]->GetName()), ratioPtBin);
     ratioJet[4][ipt]->Divide(ratioJet[2][ipt]);
 
-    //  ratioJet[4][ipt] = (TH1D*)dNdJetPt[4][ipt]->Clone(Form("%s_ratio",dNdJetPt[4][ipt]->GetName()) );                                      
-    //    ratioJet[4][ipt]->Divide(dNdJetPt[2][ipt]);                                                                                          
     handsomeTH1(ratioJet[4][ipt],2);
     ratioJet[4][ipt]->SetMarkerStyle(24);
     drawSys(ratioJet[4][ipt], ratioJetSys[4][ipt] );
@@ -250,7 +248,7 @@ void drawResultsDist() {
     jumSun(0,1,150,1);
 
     if ( ipt==1 ){
-      TLegend *ly = new TLegend(0.4484643,0.5088445,0.9140673,0.75102941,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.1833658,0.7018245,0.5500974,0.9867236,NULL,"brNDC");
       easyLeg(ly);
       ly->AddEntry(dNdJetPt[4][ipt],"PbPb 30-100%","p");
       ly->AddEntry(dNdJetPt[2][ipt],"pp (smeared)","p");
@@ -262,9 +260,8 @@ void drawResultsDist() {
       drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823                                    
     else
           drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823                
-    */
   }
-  c5_ratio->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio_central.pdf");
+  c5_ratio->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio.pdf");
 
 
   TCanvas* c5pa = new TCanvas("c5pa","",1200,350);
