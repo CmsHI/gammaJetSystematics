@@ -227,9 +227,9 @@ void drawErrorBand(TH1* h, Double_t* err, Int_t theColor=kSpring+8)
 
 void drawText(const char *text, Float_t xp, Float_t yp, Int_t textColor=kBlack, Int_t textSize=18){
    TLatex *tex = new TLatex(xp,yp,text);
-   //tex->SetTextFont(42);
+   tex->SetTextFont(43);
    //   if(bold)tex->SetTextFont(43);
-   //tex->SetTextSize(textSize);
+   tex->SetTextSize(textSize);
    tex->SetTextColor(textColor);
    tex->SetLineWidth(1);
    tex->SetNDC();
@@ -609,7 +609,7 @@ void easyLeg( TLegend *a=0 , TString head="")
   a->SetBorderSize(0);
   a->SetHeader(head);
   a->SetTextFont(43);
-  a->SetTextSize(15);
+  a->SetTextSize(18);
   a->SetLineColor(1);
   a->SetLineStyle(1);
   a->SetLineWidth(1);
@@ -771,15 +771,15 @@ void drawCMS4(Float_t px, Float_t py, Float_t nLumi, Int_t textSize=15) {
 void drawCMSppPbPb(Float_t px, Float_t py)
 {
   TLatex *cms = new TLatex(px,py,"CMS Preliminary");
-  //cms->SetTextFont(42);
-  //cms->SetTextSize(15);
+  cms->SetTextFont(43);
+  cms->SetTextSize(16);
   cms->SetNDC();
   cms->Draw();
 
   TLatex *pbpb = new TLatex(px + 0.25, py ,
 			    "#sqrt{s_{NN}}=2.76TeV, PbPb 150 #mub^{-1}, pp 5.3 pb^{-1}");
-  //pbpb->SetTextFont(42);
-  //pbpb->SetTextSize(15);
+  pbpb->SetTextFont(43);
+  pbpb->SetTextSize(16);
   pbpb->SetNDC();
   pbpb->Draw();
 }
@@ -787,15 +787,15 @@ void drawCMSppPbPb(Float_t px, Float_t py)
 void drawCMSpPb(Float_t px, Float_t py)
 {
   TLatex *cms = new TLatex(px,py,"CMS Preliminary");
-  //cms->SetTextFont(42);
-  //cms->SetTextSize(15);
+  cms->SetTextFont(43);
+  cms->SetTextSize(16);
   cms->SetNDC();
   cms->Draw();
 
   TLatex *pbpb = new TLatex(px + 0.25, py ,
 			    "#sqrt{s_{NN}}=5.02TeV, pPb 30.4 nb^{-1}");
-  //pbpb->SetTextFont(42);
-  //pbpb->SetTextSize(15);
+  pbpb->SetTextFont(43);
+  pbpb->SetTextSize(16);
   pbpb->SetNDC();
   pbpb->Draw();
 }

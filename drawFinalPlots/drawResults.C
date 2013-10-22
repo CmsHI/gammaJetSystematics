@@ -111,7 +111,10 @@ void drawResults() {
   TH1D* tempR = new TH1D("tempR",";p_{T}^{#gamma};R_{j#gamma}",100,40,130);
   tempR->Reset();
   handsomeTH1(tempR,0);
-  tempR->SetAxisRange(0,1.2,"Y");
+  //tempR->SetAxisRange(0,1.2,"Y");
+  tempR->SetAxisRange(0,1.0,"Y");
+  tempR->SetAxisRange(40,110,"X");
+  tempR->GetYaxis()->SetNdivisions(505);
   tempR->Draw();
   drawSys(meanRjg[1], meanRjgSys[1], kGreen,3001);
   drawSys(meanRjg[3], meanRjgSys[3]);
@@ -156,7 +159,8 @@ void drawResults() {
   TH1D* tempJ = new TH1D("tempJ",";p_{T}^{#gamma}; <p_{T}^{Jet}>",100,40,130);
   tempJ->Reset();
   handsomeTH1(tempJ,0);
-  tempJ->SetAxisRange(0,100,"Y");
+  tempJ->SetAxisRange(40,110,"Y");
+  tempJ->SetAxisRange(40,110,"X");
   tempJ->Draw();
   drawSys(meanJetPt[5], meanJetPtSys[5], kYellow);
   handsomeTH1(meanJetPt[5],2);
@@ -164,7 +168,7 @@ void drawResults() {
   meanJetPt[5]->Draw("same");
   meanJetPt[6]->Draw("same");
   if ( 1==1 ) {
-    TLegend *ly = new TLegend(0.5,0.25,0.85,0.47,NULL,"brNDC");
+    TLegend *ly = new TLegend(0.22,0.65,0.57,0.87,NULL,"brNDC");
     easyLeg(ly);
     ly->AddEntry(meanJetPt[5],"DATA","p");
     ly->AddEntry(meanJetPt[6],"PYTHIA+HIJING","p");
@@ -199,11 +203,11 @@ void drawResults() {
   tempJ->Draw();
   drawSys(meanJetPt[1], meanJetPtSys[1], kGreen,3001);
   drawSys(meanJetPt[3], meanJetPtSys[3]);
-  meanJetPt[1]->Draw("same");
   handsomeTH1(meanJetPt[3],2 );
+  meanJetPt[1]->Draw("same");
   meanJetPt[3]->Draw("same");
   if ( 1==1 ){
-    TLegend *ly = new  TLegend(0.5,0.25,0.85,0.47,NULL,"brNDC");
+    TLegend *ly = new  TLegend(0.22,0.65,0.57,0.87,NULL,"brNDC");
     easyLeg(ly);
     ly->AddEntry(meanJetPt[3],"PbPb 0-30%","p");
     ly->AddEntry(meanJetPt[1],"pp (smeared)","p");
@@ -221,7 +225,7 @@ void drawResults() {
   meanJetPt[4]->SetMarkerStyle(24);
   meanJetPt[4]->Draw("same");
   if ( 1==1 ){
-    TLegend *ly = new  TLegend(0.5,0.25,0.85,0.47,NULL,"brNDC");
+    TLegend *ly = new  TLegend(0.22,0.65,0.57,0.87,NULL,"brNDC");
     easyLeg(ly);
     ly->AddEntry(meanJetPt[4],"PbPb 30-100%","p");
     ly->AddEntry(meanJetPt[2],"pp (smeared)","p");
@@ -241,7 +245,9 @@ void drawResults() {
   TH1D* tempX = new TH1D("tempX",";p_{T}^{#gamma} (GeV);<X_{j#gamma}>;",100,40,130);
   tempX->Reset();
   handsomeTH1(tempX,0);
-  tempX->SetAxisRange(0.6,1.2,"Y");
+  tempX->SetAxisRange(0.6,1.1,"Y");
+  tempX->SetAxisRange(40,110,"X");
+  tempX->GetYaxis()->SetNdivisions(606);
   tempX->Draw();
   drawSys(meanXjg[3], meanXjgSys[3]);
   drawSys(meanXjg[1], meanXjgSys[1], kGreen,3001);

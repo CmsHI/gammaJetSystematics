@@ -20,14 +20,14 @@ void rootlogon()
   //gStyle->SetTextFont(62);
   gStyle->SetTextFont(43);
   //gStyle->SetTextSize(0.02);
-  gStyle->SetTextSize(15);
+  gStyle->SetTextSize(18);
   
   // gStyle->SetLabelFont(42,"XYZ");
   // gStyle->SetTitleFont(42,"XYZ");
   gStyle->SetLabelFont(43,"XYZ");
-  gStyle->SetLabelSize(15,"XYZ");
+  gStyle->SetLabelSize(20,"XYZ");
   gStyle->SetTitleFont(43,"XYZ");
-  gStyle->SetTitleSize(15,"XYZ");
+  gStyle->SetTitleSize(20,"XYZ");
 
   gStyle->SetTitleColor(1,"XYZ");
 
