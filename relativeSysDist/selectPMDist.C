@@ -25,7 +25,7 @@ void selectPMDist(int option =1 ) {
 
     TH1D* dNdJetPt[5][5][10];  // [collision] [ ptbin]  [Before/After variation]
     TH1D* dNdXjg[5][5][10];  // [collision] [ ptbin]  [Before/After variation]
-    TH1D* dNdIaa[5][5][10];  // [collision] [ ptbin]  [Before/After variation]
+    TH1D* dNdphi[5][5][10];  // [collision] [ ptbin]  [Before/After variation]
     TFile* f; 
     
     for ( int ifile = 1 ; ifile <= nfile ; ifile++ ) { 
@@ -48,6 +48,7 @@ void selectPMDist(int option =1 ) {
 	for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) { 
 	  dNdJetPt[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdJetPt_%s_ptBin%d_uncertainty", collName.Data(), ipt ) );
 	  dNdXjg[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdXjg_%s_ptBin%d_uncertainty", collName.Data(), ipt ) );
+	  dNdphi[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdphi_%s_ptBin%d_uncertainty", collName.Data(), ipt ) );
 	}
       }
     }
@@ -64,6 +65,12 @@ void selectPMDist(int option =1 ) {
             dNdXjg[coll][ipt][0]->Reset();
             selectLargeValue(dNdXjg[coll][ipt][1], dNdXjg[coll][ipt][2]);
             dNdXjg[coll][ipt][0]->Add(dNdXjg[coll][ipt][1]);
+
+	    dNdphi[coll][ipt][0] = (TH1D*)dNdphi[coll][ipt][1]->Clone(dNdphi[coll][ipt][1]->GetName() );
+            dNdphi[coll][ipt][0]->Reset();
+            selectLargeValue(dNdphi[coll][ipt][1], dNdphi[coll][ipt][2]);
+            dNdphi[coll][ipt][0]->Add(dNdphi[coll][ipt][1]);
+
         }
     }
     
@@ -77,6 +84,7 @@ void selectPMDist(int option =1 ) {
         for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
             dNdJetPt[coll][ipt][0]->Write();
             dNdXjg[coll][ipt][0]->Write();
+            dNdphi[coll][ipt][0]->Write();
         }
     }
     
