@@ -56,6 +56,11 @@ void smoothSys(TString dirName="nominal") {
 	dNdJetPt[coll][ipt] = (TH1D*)f->Get(Form("dNdJetPt_%s_ptBin%d", collName.Data(), ipt ) );
 	dNdXjg[coll][ipt] = (TH1D*)f->Get(Form("dNdXjg_%s_ptBin%d", collName.Data(), ipt ) );
 	dNdphi[coll][ipt] = (TH1D*)f->Get(Form("dNdphi_%s_ptBin%d", collName.Data(), ipt ) );
+	
+
+	dNdJetPt[coll][ipt]->SetName(Form("dNdJetPt_%s_ptBin%d", collName.Data(), ipt ));
+	dNdXjg[coll][ipt]->SetName(Form("dNdXjg_%s_ptBin%d", collName.Data(), ipt ) );
+	dNdphi[coll][ipt]->SetName(Form("dNdphi_%s_ptBin%d", collName.Data(), ipt ) );
       }
   }
   
@@ -221,7 +226,7 @@ void smoothSys(TString dirName="nominal") {
     for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
       dNdphi[coll][ipt]->Write(); 
       dNdJetPt[coll][ipt]->Write(); 
-      dNdphi[coll][ipt]->Write(); 
+      dNdXjg[coll][ipt]->Write(); 
 
       
     }
