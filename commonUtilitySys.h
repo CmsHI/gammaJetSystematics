@@ -123,7 +123,7 @@ void drawSys(TGraph *h, Double_t *sys, Double_t width=5, Int_t theColor= kYellow
 
 
 
-void drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
+void drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1, Double_t binWidth=-1)
 {
    for (Int_t i=1;i<=h->GetNbinsX();i++)
       {
@@ -134,7 +134,10 @@ void drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int
 	Double_t err =  TMath::Abs( val * sys->GetBinContent(iErr));
 	if (err == 0  ) continue;
 
-	Double_t binWidth = h->GetBinLowEdge(1) - h->GetBinLowEdge(2);
+	if (binWidth <0) {
+	  binWidth = h->GetBinLowEdge(1) - h->GetBinLowEdge(2);
+	}
+	
 	Double_t point = (h->GetBinLowEdge(i) + h->GetBinLowEdge(i+1))/2.;
 	TBox *b = new TBox(point-binWidth/3,val-err,point+binWidth/3,val+err);         
 	
@@ -146,6 +149,7 @@ void drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int
 	b->Draw();
       }
 }
+
 
 void drawSysAbs(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
 {
