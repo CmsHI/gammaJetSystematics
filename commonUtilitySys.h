@@ -784,6 +784,38 @@ void drawCMSppPbPb(Float_t px, Float_t py)
   pbpb->Draw();
 }
 
+void drawCMSppPbPbDist(Float_t px, Float_t py)
+{
+  TLatex *cms = new TLatex(px,py,"CMS Preliminary");
+  cms->SetTextFont(43);
+  cms->SetTextSize(16);
+  cms->SetNDC();
+  cms->Draw();
+
+  TLatex *roots = new TLatex(px, py-0.08,
+			    "#sqrt{s_{NN}}=2.76TeV");
+  roots->SetTextFont(43);
+  roots->SetTextSize(18);
+  roots->SetNDC();
+  roots->Draw();
+
+  TLatex *pbpb = new TLatex(px, py-0.16,
+			    "PbPb 150 #mub^{-1}");
+  pbpb->SetTextFont(43);
+  pbpb->SetTextSize(18);
+  pbpb->SetNDC();
+  pbpb->Draw();
+
+  TLatex *pp = new TLatex(px, py-0.24,
+			    "pp 5.3 pb^{-1}");
+  pp->SetTextFont(43);
+  pp->SetTextSize(18);
+  pp->SetNDC();
+  pp->Draw();
+
+
+}
+
 void drawCMSpPb(Float_t px, Float_t py)
 {
   TLatex *cms = new TLatex(px,py,"CMS Preliminary");
@@ -792,14 +824,29 @@ void drawCMSpPb(Float_t px, Float_t py)
   cms->SetNDC();
   cms->Draw();
 
-  TLatex *pbpb = new TLatex(px + 0.25, py ,
+  TLatex *ppb = new TLatex(px + 0.25, py ,
 			    "#sqrt{s_{NN}}=5.02TeV, pPb 30.4 nb^{-1}");
-  pbpb->SetTextFont(43);
-  pbpb->SetTextSize(16);
-  pbpb->SetNDC();
-  pbpb->Draw();
+  ppb->SetTextFont(43);
+  ppb->SetTextSize(16);
+  ppb->SetNDC();
+  ppb->Draw();
 }
 
+void drawCMSpPbDist(Float_t px, Float_t py)
+{
+  TLatex *cms = new TLatex(px,py,"CMS Preliminary");
+  cms->SetTextFont(43);
+  cms->SetTextSize(16);
+  cms->SetNDC();
+  cms->Draw();
+
+  TLatex *ppb = new TLatex(px, py-0.08,
+			    "#sqrt{s_{NN}}=5.02TeV, pPb 30.4 nb^{-1}");
+  ppb->SetTextFont(43);
+  ppb->SetTextSize(16);
+  ppb->SetNDC();
+  ppb->Draw();
+}
 
 void getNiceBins( TH1* h=0, Int_t nDiv=4) {
    Int_t nBins = h->GetNbinsX();

@@ -144,18 +144,18 @@ void drawResultsDist() {
   // jet pt distributions
   TH1D* hTempPt = new TH1D("hTemp",";p_{T}^{#gamma} (GeV);",200,10,300);
   TCanvas* c5 = new TCanvas("c5","",1200,600);
-  //makeMultiPanelCanvas(c5,nPtBin, 2, 0.0, 0.0, 0.2, 0.15, 0.02);
-  c5->Divide(nPtBin, 2, 0.0, 0.0);
-  c5->cd(0);
-  drawCMSppPbPb(0.1,0.975);
+  makeMultiPanelCanvas(c5,nPtBin, 2, 0.0, 0.0, 0.25, 0.2, 0.02);
+  //c5->Divide(nPtBin, 2, 0.0, 0.0);
+  //c5->cd(0);
+  //drawCMSppPbPb(0.1,0.975);
   for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
     c5->cd(ipt+nPtBin);
     // draw pp
     hTempPt->SetXTitle("p_{T}^{Jet} (GeV)");
     hTempPt->SetYTitle("#frac{dN}{dp_{T}} #frac{1}{N}");
     hTempPt->SetAxisRange(10,150,"X");
-    //        hTempPt->SetAxisRange(0,0.025,"Y");
-    hTempPt->SetAxisRange(0,0.03,"Y");
+    hTempPt->SetAxisRange(0,0.025,"Y");
+    hTempPt->GetYaxis()->SetNdivisions(504);
     handsomeTH1(hTempPt,0);
     hTempPt->GetYaxis()->SetTitleOffset(3);
     hTempPt->GetXaxis()->SetTitleOffset(2);
@@ -175,6 +175,8 @@ void drawResultsDist() {
       ly->Draw();
     }
 
+    if(ipt + nPtBin == 8)
+      drawCMSppPbPbDist(0.1,0.9);
 
     c5->cd(ipt);
     hTempPt->DrawCopy();
@@ -192,14 +194,13 @@ void drawResultsDist() {
       ly->AddEntry(dNdJetPt[4][ipt],"PbPb 30-100%","p");
       ly->AddEntry(dNdJetPt[2][ipt],"pp (smeared)","p");
       ly->Draw();
-      //drawCMSppPbPb(0.1,0.95);
     }
 
-    double dx1=0.15;
+    double dx1=0.18;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.8,1,18);//yeonju 130823
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.8,1,18);//yeonju 130823
 
 
   }
@@ -270,10 +271,10 @@ void drawResultsDist() {
 
 
   TCanvas* c5pa = new TCanvas("c5pa","",1200,350);
-  //makeMultiPanelCanvas(c5pa,nPtBin,1,0.0,0.0,0.2,0.15,0.02);
-  c5pa->Divide(nPtBin,1,0.0,0.0);
-  c5pa->cd(0);
-  drawCMSpPb(0.1,0.95);
+  makeMultiPanelCanvas(c5pa,nPtBin,1,0.0,0.0,0.25,0.2,0.02);
+  //c5pa->Divide(nPtBin,1,0.0,0.0);
+  //c5pa->cd(0);
+  //drawCMSpPb(0.1,0.95);
 
   for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
     c5pa->cd(ipt);
@@ -281,8 +282,7 @@ void drawResultsDist() {
     hTempPt->SetXTitle("p_{T}^{Jet} (GeV)");
     hTempPt->SetYTitle("#frac{dN}{dp_{T}} #frac{1}{N}");
     hTempPt->SetAxisRange(10,150,"X");
-    //        hTempPt->SetAxisRange(0,0.025,"Y");
-    hTempPt->SetAxisRange(0,0.03,"Y");
+    hTempPt->SetAxisRange(0,0.025,"Y");
     handsomeTH1(hTempPt,0);
     hTempPt->GetYaxis()->SetTitleOffset(1.5);
     hTempPt->GetXaxis()->SetTitleOffset(1.25);
@@ -302,9 +302,12 @@ void drawResultsDist() {
     }
     double dx1=0.15;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,18);//yeonju 130823
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,18);//yeonju 130823
+
+    if(ipt == 4)
+      drawCMSpPbDist(0.1,0.7);
 
 
   }
@@ -315,10 +318,10 @@ void drawResultsDist() {
   // XJG plots
   TH1D* hTempXjg = new TH1D("hTempXjg",";p_{T}^{#gamma} (GeV);",200,0,2);
   TCanvas* c6 = new TCanvas("c6","",1200,600);
-  //makeMultiPanelCanvas(c6,nPtBin,2,0.0,0.0,0.2,0.15,0.02);
-  c6->Divide(nPtBin,2,0.0,0.0);
-  c6->cd(0);
-  drawCMSppPbPb(0.1,0.975);
+  makeMultiPanelCanvas(c6,nPtBin,2,0.0,0.0,0.25,0.20,0.02);
+  //c6->Divide(nPtBin,2,0.0,0.0);
+  //c6->cd(0);
+  //drawCMSppPbPb(0.1,0.975);
 
   for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
     c6->cd(ipt+nPtBin);
@@ -329,6 +332,8 @@ void drawResultsDist() {
     //        hTempXjg->SetAxisRange(0,0.025,"Y");
     //hTempXjg->SetAxisRange(-.2,3,"Y");
     hTempXjg->SetAxisRange(0,2,"Y");
+    hTempXjg->GetYaxis()->SetNdivisions(405);
+    hTempXjg->GetXaxis()->SetNdivisions(405);
     handsomeTH1(hTempXjg,0);
     hTempXjg->GetYaxis()->SetTitleOffset(3);
     hTempXjg->GetXaxis()->SetTitleOffset(2);
@@ -343,7 +348,7 @@ void drawResultsDist() {
     dNdXjg[1][ipt]->SetMarkerStyle(21);
     dNdXjg[3][ipt]->Draw("same");
     if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.351273,0.6552521,0.9997611,0.9487395,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.351273,0.6152521,0.9997611,0.9087395,NULL,"brNDC");
       easyLeg(ly);
       ly->AddEntry(dNdXjg[3][ipt],"PbPb 0-30%","p");
       ly->AddEntry(dNdXjg[1][ipt],"pp (smeared)","p");
@@ -351,6 +356,10 @@ void drawResultsDist() {
       //drawCMSppPbPb(0.1,0.95);
     }
 
+    if(ipt + nPtBin == 8)
+      drawCMSppPbPbDist(0.5,0.9);
+
+    gPad->RedrawAxis();
 
     c6->cd(ipt);
     hTempXjg->DrawCopy();
@@ -375,19 +384,20 @@ void drawResultsDist() {
 
     double dx1=0.15;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,18);//yeonju 130823
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823
-
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,18);//yeonju 130823
+    gPad->RedrawAxis();
   }
+ 
   c6->SaveAs("pT_dependence_xjg_pp_pbpb_distribution.pdf");
 
 
   TCanvas* c6pa = new TCanvas("c6pa","",1200,350);
-  //makeMultiPanelCanvas(c6pa,nPtBin,1,0.0,0.0,0.2,0.15,0.02);
-  c6pa->Divide(nPtBin,1,0.0,0.0);
-  c6pa->cd(0);
-  drawCMSpPb(0.1,0.95);
+  makeMultiPanelCanvas(c6pa,nPtBin,1,0.0,0.0,0.25,0.2,0.02);
+  //c6pa->Divide(nPtBin,1,0.0,0.0);
+  //c6pa->cd(0);
+  //drawCMSpPb(0.1,0.95);
 
   for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
     c6pa->cd(ipt);
@@ -413,10 +423,12 @@ void drawResultsDist() {
     }
     double dx1=0.15;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.9,1,15);
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.9,1,18);
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.9,1,15);//yeonju 130823
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.9,1,18);//yeonju 130823
 
+    if(ipt == 4)
+      drawCMSpPbDist(0.1,0.8);
 
   }
   c6pa->SaveAs("pT_dependence_xjg_pA_distribution.pdf");
@@ -446,9 +458,10 @@ void drawResultsDist() {
   
   TH1D* hTempphi = new TH1D("hTempphi",";p_{T}^{#gamma} (GeV);",200,0,3.141592);
   TCanvas* cDphi = new TCanvas("cDphi","",1200,600);
-  cDphi->Divide(nPtBin,2,0.0,0.0);
-  cDphi->cd(0);
-  drawCMSppPbPb(0.1,0.975);
+  makeMultiPanelCanvas(cDphi,nPtBin,2,0.0,0.0,0.25,0.20,0.02);
+  //cDphi->Divide(nPtBin,2,0.0,0.0);
+  //cDphi->cd(0);
+  //drawCMSppPbPb(0.1,0.975);
 
   for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
     cDphi->cd(ipt+nPtBin);
@@ -472,7 +485,7 @@ void drawResultsDist() {
     dNdphi[3][ipt]->Draw("same");
     gPad->SetLogy();
     if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.351273,0.6552521,0.9997611,0.9487395,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.351273,0.6152521,0.9997611,0.9087395,NULL,"brNDC");
       easyLeg(ly);
       ly->AddEntry(dNdphi[3][ipt],"PbPb 0-30%","p");
       ly->AddEntry(dNdphi[1][ipt],"pp (smeared)","p");
@@ -480,6 +493,8 @@ void drawResultsDist() {
       //drawCMSppPbPb(0.1,0.95);
     }
 
+    if(ipt+nPtBin == 8)
+      drawCMSppPbPbDist(0.1,0.9);
 
     cDphi->cd(ipt);
     hTempphi->DrawCopy();
@@ -509,19 +524,19 @@ void drawResultsDist() {
 
     double dx1=0.15;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);//yeonju 130823
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,18);//yeonju 130823
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,18);//yeonju 130823
 
   }
   cDphi->SaveAs("pT_dependence_dphi_pp_pbpb_figure1.pdf");
 
 
   TCanvas* cDphiPa = new TCanvas("cDphiPa","",1200,350);
-  //makeMultiPanelCanvas(cDphiPa,nPtBin,1,0.0,0.0,0.2,0.15,0.02);
-  cDphiPa->Divide(nPtBin,1,0.0,0.0);
-  cDphiPa->cd(0);
-  drawCMSpPb(0.1,0.95);
+  makeMultiPanelCanvas(cDphiPa,nPtBin,1,0.0,0.0,0.25,0.2,0.02);
+  //cDphiPa->Divide(nPtBin,1,0.0,0.0);
+  //cDphiPa->cd(0);
+  //drawCMSpPb(0.1,0.95);
 
   for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
     cDphiPa->cd(ipt);
@@ -547,12 +562,14 @@ void drawResultsDist() {
       ly->Draw();
       //drawCMSpPb(0.1,0.95);
     }
-    double dx1=0.15;
+    double dx1=0.16;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.9,1,15);
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.9,1,18);
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.9,1,15);//yeonju 130823
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.9,1,18);//yeonju 130823
 
+    if(ipt == 4)
+      drawCMSpPbDist(0.1, 0.8);
 
   }
   cDphiPa->SaveAs("pT_dependence_dphi_pA_figure1.pdf");
