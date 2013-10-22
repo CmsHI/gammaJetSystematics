@@ -49,7 +49,7 @@ void mergeSys() {
       else if ( ifile == 4 )  f = new TFile("relativeSys_dueTo_photonPurityVaried.root");
       else if ( ifile == 5 )  f = new TFile("relativeSys_dueTo_noElectronRejection.root");
       else if ( ifile == 6 )  f = new TFile("relativeSys_dueTo_jetEnergyScale.root");
-      else if ( ifile == 7 )  f = new TFile("relativeSys_dueTo_jetEnergySmearing.root");
+      else if ( ifile == 7 )  f = new TFile("relativeSys_dueTo_jetEnergySmeared.root");
     
     for ( int coll = 1 ; coll<=4 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon
       TString collName;
