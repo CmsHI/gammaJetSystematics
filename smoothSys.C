@@ -40,8 +40,8 @@ void smoothSys(TString dirName="nominal") {
   double ptBin[5] = {40, 50,60,80,9999};
   
   TH1D* dNdJetPt[5][10];
-  TH1D* dNdIaa[5][10]; 
   TH1D* dNdXjg[5][10]; 
+  TH1D* dNdphi[5][10]; 
  
   TFile*  f = new TFile(Form("resultHistograms/resultHistograms_%s.root",dirName.Data()));
   
@@ -55,6 +55,7 @@ void smoothSys(TString dirName="nominal") {
       for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) { 
 	dNdJetPt[coll][ipt] = (TH1D*)f->Get(Form("dNdJetPt_%s_ptBin%d", collName.Data(), ipt ) );
 	dNdXjg[coll][ipt] = (TH1D*)f->Get(Form("dNdXjg_%s_ptBin%d", collName.Data(), ipt ) );
+	dNdphi[coll][ipt] = (TH1D*)f->Get(Form("dNdphi_%s_ptBin%d", collName.Data(), ipt ) );
       }
   }
   
@@ -112,7 +113,9 @@ void smoothSys(TString dirName="nominal") {
   }
   
   c1->SaveAs("c1.gif");
+
   // dNdX
+
   TCanvas* c2 = new TCanvas("c2","",1200,1200);
   c2->Divide(nPtBin,4);
   for ( int coll = 1 ; coll<=4 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon                                         
@@ -168,12 +171,57 @@ void smoothSys(TString dirName="nominal") {
     }
   }
   c2->SaveAs("c2.gif");
+
   
+  //  dphi distribution
+  TCanvas* c3 = new TCanvas("c3","",1200,1200);
+  c3->Divide(nPtBin,4);
+  for ( int coll = 1 ; coll<=4 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon                                         
+    for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
+      c3->cd( ipt + nPtBin*(coll-1) );
+      dNdphi[coll][ipt]->SetAxisRange(0,3.141593,"X");
+      dNdphi[coll][ipt]->Scale(1./dNdphi[coll][ipt]->Integral(3,dNdphi[coll][ipt]->GetNbinsX() ) );
+      dNdphi[coll][ipt]->SetAxisRange(0.003,10,"Y");
+      dNdphi[coll][ipt]->Draw();
+      gPad->SetLogy();
+      TF1* f1= new TF1("f1","(TMath::Pi()/20.0)*exp(-(TMath::Pi()-x)/[0])/([0]*(1-exp(-TMath::Pi()/[0]))) + [1]",0,3.141592);
+      f1->SetParameter(0,0.3);
+      f1->SetParameter(0,0.005);
+      
+      float rangeLow(0.5),  rangeHigh(3.2);
+      
+      dNdphi[coll][ipt]->SetStats(0);
+      dNdphi[coll][ipt]->Fit("f1","LL M","",rangeLow,rangeHigh);
+      dNdphi[coll][ipt]->Fit("f1","LL M","",rangeLow,rangeHigh);
+      dNdphi[coll][ipt]->Fit("f1","LL M","",rangeLow,rangeHigh);
+      
+      if ( coll == 1 )  {
+	double dx1=0.15;
+	if ( ipt == nPtBin )
+	  drawText(Form("p_{T}^{#gamma} > %dGeV, ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,15);
+	else
+	  drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV, ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);
+      }
+      
+      if ( ipt == 1 )  {
+	double dx1=0.15;
+	if ( coll == 1 ) 	drawText("pp", 0.2+dx1+0.25,0.75,1,15);
+	else if ( coll == 2 ) 	drawText("PbPb 0-30%", 0.2+dx1+0.25,0.75,1,15);
+	else if ( coll == 3 ) 	drawText("PbPb 30-100%", 0.2+dx1+0.25,0.75,1,15);
+	else if ( coll == 4 ) 	drawText("pPb", 0.2+dx1+0.25,0.75,1,15);
+      }
+      
+    }
+  }
+  c3->SaveAs("c3.gif");
+
+
   TFile*  fout = new TFile(Form("resultHistograms/resultHistograms_%s_functionAdded.root",dirName.Data()), "recreate");
   for ( int coll = 1 ; coll<=4 ; coll++) { 
     for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
-      dNdXjg[coll][ipt]->Write(); 
+      dNdphi[coll][ipt]->Write(); 
       dNdJetPt[coll][ipt]->Write(); 
+      dNdphi[coll][ipt]->Write(); 
 
       
     }
