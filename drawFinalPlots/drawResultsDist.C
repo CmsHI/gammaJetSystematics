@@ -90,25 +90,30 @@ void drawResultsDist() {
   for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
     dNdJetPtSys[1][ipt] = (TH1D*)fSys->Get(Form("dNdJetPt_pp_ptBin%d_uncertainty_merged",  ipt ));
     dNdXjgSys[1][ipt] = (TH1D*)fSys->Get(Form("dNdXjg_pp_ptBin%d_uncertainty_merged",  ipt ));
+    dNdphiSys[1][ipt] = (TH1D*)fSys->Get(Form("dNdphi_pp_ptBin%d_uncertainty_merged",  ipt ));
 
   }
   for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
     dNdJetPtSys[2][ipt] = (TH1D*)dNdJetPtSys[1][ipt]->Clone(Form("%s_2",dNdJetPtSys[1][ipt]->GetName()));
     dNdXjgSys[2][ipt] = (TH1D*)dNdXjgSys[1][ipt]->Clone(Form("%s_2",dNdXjgSys[1][ipt]->GetName()));
+    dNdphiSys[2][ipt] = (TH1D*)dNdphiSys[1][ipt]->Clone(Form("%s_2",dNdphiSys[1][ipt]->GetName()));
 
   }
 
   for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
     dNdJetPtSys[3][ipt] = (TH1D*)fSys->Get(Form("dNdJetPt_pbpb_centralityBin1_ptBin%d_uncertainty_merged",  ipt ));
     dNdXjgSys[3][ipt] = (TH1D*)fSys->Get(Form("dNdXjg_pbpb_centralityBin1_ptBin%d_uncertainty_merged",  ipt ));
+    dNdphiSys[3][ipt] = (TH1D*)fSys->Get(Form("dNdphi_pbpb_centralityBin1_ptBin%d_uncertainty_merged",  ipt ));
   }
   for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
     dNdJetPtSys[4][ipt] = (TH1D*)fSys->Get(Form("dNdJetPt_pbpb_centralityBin2_ptBin%d_uncertainty_merged",  ipt ));
     dNdXjgSys     [4][ipt] = (TH1D*)fSys->Get(Form("dNdXjg_pbpb_centralityBin2_ptBin%d_uncertainty_merged",  ipt ));
+    dNdphiSys     [4][ipt] = (TH1D*)fSys->Get(Form("dNdphi_pbpb_centralityBin2_ptBin%d_uncertainty_merged",  ipt ));
   }
   for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
     dNdJetPtSys[5][ipt] = (TH1D*)fSys->Get(Form("dNdJetPt_ppb_ptBin%d_uncertainty_merged",  ipt ));
     dNdXjgSys     [5][ipt] = (TH1D*)fSys->Get(Form("dNdXjg_ppb_ptBin%d_uncertainty_merged",  ipt ));
+    dNdphiSys     [5][ipt] = (TH1D*)fSys->Get(Form("dNdphi_ppb_ptBin%d_uncertainty_merged",  ipt ));
   }
   
   // Sys for jet ratio 
@@ -438,7 +443,7 @@ void drawResultsDist() {
       }
     }
   }
-
+  
   TH1D* hTempphi = new TH1D("hTempphi",";p_{T}^{#gamma} (GeV);",200,0,3.141592);
   TCanvas* cDphi = new TCanvas("cDphi","",1200,600);
   cDphi->Divide(nPtBin,2,0.0,0.0);
@@ -458,13 +463,14 @@ void drawResultsDist() {
     hTempphi->DrawCopy();
     handsomeTH1(dNdphi[3][ipt],2);
 
-
     dNdphi[1][ipt]->Scale(1./dNdphi[1][ipt]->Integral());
     dNdphi[3][ipt]->Scale(1./dNdphi[3][ipt]->Integral());
-    gPad->SetLogy();
+    drawSys(dNdphi[1][ipt],dNdphiSys[1][ipt],kGreen,3001, -1,0.3);
+    drawSys(dNdphi[3][ipt],dNdphiSys[3][ipt],kYellow, -1, -1,0.3);
     dNdphi[1][ipt]->Draw("same");
     dNdphi[1][ipt]->SetMarkerStyle(21);
     dNdphi[3][ipt]->Draw("same");
+    gPad->SetLogy();
     if ( ipt == 1 ) {
       TLegend *ly = new TLegend(0.351273,0.6552521,0.9997611,0.9487395,NULL,"brNDC");
       easyLeg(ly);
@@ -479,13 +485,17 @@ void drawResultsDist() {
     hTempphi->DrawCopy();
     //onSun(0,0,2,0);
 
-    //    dNdphi[2][ipt]->Scale(dNdphi[2][ipt]->GetBinContent(ipt));
+    // dNdphi[2][ipt]->Scale(dNdphi[2][ipt]->GetBinContent(ipt));
     // dNdphi[4][ipt]->Scale(dNdphi[4][ipt]-->GetBinContent(ipt));
     handsomeTH1(dNdphi[4][ipt],2);
     dNdphi[4][ipt]->SetMarkerStyle(24);
     dNdphi[2][ipt]->SetMarkerStyle(25);
     dNdphi[2][ipt]->Scale(1./dNdphi[2][ipt]->Integral());
     dNdphi[4][ipt]->Scale(1./dNdphi[4][ipt]->Integral());
+
+    drawSys(dNdphi[2][ipt],dNdphiSys[2][ipt],kGreen,3001,-1,0.3);
+    drawSys(dNdphi[4][ipt],dNdphiSys[4][ipt],kYellow,-1,-1,0.3);
+
     dNdphi[2][ipt]->Draw("same");
     dNdphi[4][ipt]->Draw("same");
     gPad->SetLogy();
@@ -504,7 +514,7 @@ void drawResultsDist() {
       drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,15);//yeonju 130823
 
   }
-  cDphi->SaveAs("pT_dependence_dphi_pp_pbpb_distribution.pdf");
+  cDphi->SaveAs("pT_dependence_dphi_pp_pbpb_figure1.pdf");
 
 
   TCanvas* cDphiPa = new TCanvas("cDphiPa","",1200,350);
@@ -523,6 +533,9 @@ void drawResultsDist() {
     handsomeTH1(dNdphi[5][ipt],2);
     dNdphi[6][ipt]->Scale(1./dNdphi[6][ipt]->Integral());
     dNdphi[5][ipt]->Scale(1./dNdphi[5][ipt]->Integral());
+
+    drawSys(dNdphi[5][ipt],dNdphiSys[5][ipt],kYellow,-1, -1,0.3);
+
     dNdphi[6][ipt]->Draw("same");
     dNdphi[5][ipt]->Draw("same");
     gPad->SetLogy();
@@ -542,7 +555,7 @@ void drawResultsDist() {
 
 
   }
-  cDphiPa->SaveAs("pT_dependence_dphi_pA_distribution.pdf");
+  cDphiPa->SaveAs("pT_dependence_dphi_pA_figure1.pdf");
 
 
 

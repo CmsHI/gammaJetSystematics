@@ -37,6 +37,7 @@ void mergeSys() {
   
   TH1D* dNdJetPt[5][5][10];
   TH1D* dNdXjg[5][5][10]; 
+  TH1D* dNdphi[5][5][10]; 
 
   TFile* f; 
  
@@ -61,7 +62,8 @@ void mergeSys() {
       
       for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) { 
 	dNdJetPt[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdJetPt_%s_ptBin%d_uncertainty", collName.Data(), ipt ) );
-	dNdXjg[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdXjg_%s_ptBin%d_uncertainty", collName.Data(), ipt ) );
+	dNdXjg[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdXjg_%s_ptBin%d_uncertainty", collName.Data(), ipt ) );	
+	dNdphi[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdphi_%s_ptBin%d_uncertainty", collName.Data(), ipt ) );
 
       }
     }
@@ -86,6 +88,14 @@ void mergeSys() {
       }
       squareRootHist(dNdXjg[coll][ipt][0]);
 
+      dNdphi[coll][ipt][0] = (TH1D*)dNdphi[coll][ipt][1]->Clone(Form("%s_merged",dNdphi[coll][ipt][1]->GetName() ) );
+      dNdphi[coll][ipt][0]->Reset();
+      for ( int ifile = 1 ; ifile <= nFile ; ifile++ ) {
+	squareHist( dNdphi[coll][ipt][ifile] );
+	dNdphi[coll][ipt][0]->Add(dNdphi[coll][ipt][ifile]);
+      }
+      squareRootHist(dNdphi[coll][ipt][0]);
+
 
     }
   }
@@ -95,6 +105,7 @@ void mergeSys() {
     for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
       dNdJetPt[coll][ipt][0]->Write();
       dNdXjg[coll][ipt][0]->Write();
+      dNdphi[coll][ipt][0]->Write();
     }
   }
   

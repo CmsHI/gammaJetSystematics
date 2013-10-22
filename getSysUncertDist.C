@@ -41,8 +41,10 @@ void getSysUncertDist(
   
   TH1D* dNdJetPt[5][5][3];  // [collision] [ ptbin]  [Before/After variation]
   TH1D* dNdXjg[5][5][3];  // [collision] [ ptbin]  [Before/After variation]                                                                                 
+  TH1D* dNdphi[5][5][3];  // [collision] [ ptbin]  [Before/After variation]                                                                                 
   TF1* fJetPt[5][5][3];  // [collision] [ ptbin]  [Before/After variation]
   TF1* fXjg[5][5][3];  // [collision] [ ptbin]  [Before/After variation]                                                                                 
+  TF1* fphi[5][5][3];  // [collision] [ ptbin]  [Before/After variation]                                                                                 
   TFile* f; 
  
   for ( int ifile = 0 ; ifile <= 1 ; ifile++ ) { 
@@ -62,6 +64,8 @@ void getSysUncertDist(
       for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) { 
 	dNdJetPt[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdJetPt_%s_ptBin%d", collName.Data(), ipt ) );
 	dNdXjg[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdXjg_%s_ptBin%d", collName.Data(), ipt ) );
+	dNdphi[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdphi_%s_ptBin%d", collName.Data(), ipt ) );
+	cout << " dNdXjg[coll][ipt][ifile] = " << dNdJetPt[coll][ipt][ifile]->GetName() << endl;
       }
     }
   }
@@ -73,6 +77,9 @@ void getSysUncertDist(
       
       dNdXjg[coll][ipt][2] = (TH1D*)dNdXjg[coll][ipt][1]->Clone(Form("%s_uncertainty", dNdXjg[coll][ipt][1]->GetName()));
       calUncFromFit(dNdXjg[coll][ipt][2], dNdXjg[coll][ipt][1] , dNdXjg[coll][ipt][0], scaleFactor); 
+
+      dNdphi[coll][ipt][2] = (TH1D*)dNdphi[coll][ipt][1]->Clone(Form("%s_uncertainty", dNdphi[coll][ipt][1]->GetName()));
+      calUncFromFit(dNdphi[coll][ipt][2], dNdphi[coll][ipt][1] , dNdphi[coll][ipt][0], scaleFactor); 
 
 
     }
@@ -111,12 +118,30 @@ void getSysUncertDist(
       jumSun(0,0,2,0);
     }
   }
+
+  TCanvas* c3 = new TCanvas("c3","",1200,1200);
+  c3->Divide(nPtBin,4);
+  TF1* fdNdphi[5][5];
+  for ( int coll = 1 ; coll<=4 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon       
+    for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
+      c3->cd( ipt + nPtBin*(coll-1) );
+
+      dNdphi[coll][ipt][2]->SetAxisRange(0,3.15,"X");
+      dNdphi[coll][ipt][2]->SetAxisRange(-.5,.5,"Y");
+      dNdphi[coll][ipt][2]->GetFunction("f1")->SetLineColor(0);
+      dNdphi[coll][ipt][2]->GetFunction("f1")->SetLineWidth(0);
+      dNdphi[coll][ipt][2]->SetStats(0);
+      dNdphi[coll][ipt][2]->Draw();
+      jumSun(0,0,2,0);
+    }
+  }
   
-  TFile * fSysResults = new TFile(Form("relativeSys/relativeSys_dueTo_%s.root",fname2->Data()),"recreate");
+  TFile * fSysResults = new TFile(Form("relativeSysDist/relativeSys_dueTo_%s.root",fname2.Data()),"recreate");
   for ( int coll = 1 ; coll<=4 ; coll++) {
     for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
       dNdJetPt[coll][ipt][2]->Write();
       dNdXjg[coll][ipt][2]->Write();
+      dNdphi[coll][ipt][2]->Write();
     }
   }
   fSysResults->Close();
