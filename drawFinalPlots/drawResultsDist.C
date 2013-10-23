@@ -298,7 +298,7 @@ void drawResultsDist() {
       ratioJet1[3][ipt]->SetBinError(ibin, ratioJet[3][ipt]->GetBinError(ibin));
     }
 
-    handsomeTH1(ratioJet[3][ipt],2);
+    handsomeTH1(ratioJet1[3][ipt],2);
     drawSys(ratioJet1[3][ipt], ratioJetSys[3][ipt] );
     ratioJet1[3][ipt]->Draw("same");
     jumSun(10,1,150,1);
@@ -325,8 +325,8 @@ void drawResultsDist() {
     }
 
 
-    handsomeTH1(ratioJet[4][ipt],2);
-    ratioJet[4][ipt]->SetMarkerStyle(24);
+    handsomeTH1(ratioJet1[4][ipt],2);
+    ratioJet1[4][ipt]->SetMarkerStyle(24);
     drawSys(ratioJet1[4][ipt], ratioJetSys[4][ipt] );
     ratioJet1[4][ipt]->Draw("same");
     jumSun(10,1,150,1);
