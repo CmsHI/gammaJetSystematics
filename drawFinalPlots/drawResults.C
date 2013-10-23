@@ -47,7 +47,7 @@ void drawResults() {
   meanRjg[2]  =(TH1D*)f->Get(Form("meanRjg_pp"));
 
   // pbpb
-  f =   new TFile("../resultHistograms/resultHistograms_nominal.root");
+  f =   new TFile("../resultHistograms/resultHistograms_nominal_vtxCentWeighted.root");
 
   meanJetPt[7]  =(TH1D*)f->Get(Form("meanJetPt_pp"));
   meanXjg[7]  =(TH1D*)f->Get(Form("meanXjg_pp"));
@@ -66,7 +66,7 @@ void drawResults() {
   meanXjg[5]  =(TH1D*)f->Get(Form("meanXjg_ppb"));
   meanRjg[5]  =(TH1D*)f->Get(Form("meanRjg_ppb"));
 
-  f =   new TFile("../resultHistograms/resultHistograms_MCrecoIso.root"); //pythia+hijing
+  f =   new TFile("../resultHistograms/resultHistograms_MCrecoIso_vtxCentWeighted.root"); //pythia+hijing
   meanJetPt[6]  =(TH1D*)f->Get(Form("meanJetPt_ppb"));
   meanXjg[6]  =(TH1D*)f->Get(Form("meanXjg_ppb"));
   meanRjg[6]  =(TH1D*)f->Get(Form("meanRjg_ppb"));
@@ -150,7 +150,7 @@ void drawResults() {
   tempR->Draw();
   drawSys(meanRjg[5], meanRjgSys[5], kYellow);
   drawSys(meanRjg[7], meanRjgSys[2], kGreen, 3001);
-  handsomeTH1(meanRjg[5],2);
+  handsomeTH1(meanRjg[5],9);
   handsomeTH1(meanRjg[6],1);
   handsomeTH1(meanRjg[7],1,1,24);
   meanRjg[5]->Draw("same");
@@ -227,7 +227,7 @@ void drawResults() {
   tempJ->Draw();
   drawSys(meanJetPt[5], meanJetPtSys[5], kYellow);
   drawSys(meanJetPt[7], meanJetPtSys[1], kGreen,3001);
-  handsomeTH1(meanJetPt[5],2);
+  handsomeTH1(meanJetPt[5],9);
   handsomeTH1(meanJetPt[6],1);
   handsomeTH1(meanJetPt[7],1,1,24);
   meanJetPt[5]->Draw("same");
@@ -335,7 +335,7 @@ void drawResults() {
   tempX->Draw();
   drawSys(meanXjg[5], meanXjgSys[5], kYellow);
   drawSys(meanXjg[7], meanXjgSys[2], kGreen, 3001);
-  handsomeTH1(meanXjg[5],2);
+  handsomeTH1(meanXjg[5],9);
   handsomeTH1(meanXjg[6],1);
   handsomeTH1(meanXjg[7],1,1,24);
   meanXjg[5]->Draw("same");
