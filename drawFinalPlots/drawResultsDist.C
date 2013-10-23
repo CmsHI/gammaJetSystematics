@@ -31,12 +31,25 @@ void drawResultsDist() {
   TH1D* dNdJetPtSys[7][5]; // [collision] [ ptbin]  [Before/After variation]
 
   TH1D* ratioJet[7][5]; //  pbpb/pp of jet pt
+  TH1D* ratioJet1[7][5]; //  pbpb/pp of jet pt
   TH1D* ratioJetSys[7][5]; //  pbpb/pp of jet pt
   const int nRptBin[4] = {4,4,6,5};
-  double ratioPtBin[4][7] = {{20,30,40,50,150},
+  double ratioPtBin[4][7] = {{20,30,40,50,150},         
 			     {20,30,40,50,150},
 			     {20,30,40,50,60,80,150},
 			     {20,30,50,80,100,150}};
+
+  /* mean of each bins are  = {{25,35,45, 63},
+			      {25,35,45, 64},
+			      {25,35,45,55,69,93},
+			      {25,41,65, 93, 123}};  // two 93's are coincidence  
+  */
+  double ratioPtBin1[4][7] = {{20,30,40,50,76},
+			      {20,30,40,50,78},
+			      {20,30,40,50,60,78, 108},
+			      {20,30,52,78, 108, 130}};
+
+
   //double ratioPtBin[nRptBin+1] = {20,30,40,50,80,150};
 
 
@@ -134,7 +147,7 @@ void drawResultsDist() {
   for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
 
     TH1D* h1temp =  (TH1D*)fSysRatio->Get(Form("dNdJetPt_ratio_centralityBin1_ptBin%d_uncertainty_merged",ipt));
-    ratioJetSys[3][ipt] = new TH1D(Form("rebin_cent1_ptBin%d",ipt),"", nRptBin[ipt-1], ratioPtBin[ipt-1]);
+    ratioJetSys[3][ipt] = new TH1D(Form("rebin_cent1_ptBin%d",ipt),"", nRptBin[ipt-1], ratioPtBin1[ipt-1]);
     for ( int i=1 ; i <= ratioJetSys[3][ipt]->GetNbinsX() ; i++){
       float xx = ratioJetSys[3][ipt]->GetBinCenter(i);
       float yVal = h1temp->GetBinContent(   h1temp->FindBin(xx) );
@@ -143,7 +156,7 @@ void drawResultsDist() {
 
     }
     h1temp =  (TH1D*)fSysRatio->Get(Form("dNdJetPt_ratio_centralityBin2_ptBin%d_uncertainty_merged",ipt));
-    ratioJetSys[4][ipt] = new TH1D(Form("rebin_cent2_ptBin%d",ipt),"", nRptBin[ipt-1], ratioPtBin[ipt-1]);
+    ratioJetSys[4][ipt] = new TH1D(Form("rebin_cent2_ptBin%d",ipt),"", nRptBin[ipt-1], ratioPtBin1[ipt-1]);
     for ( int i=1 ; i <= ratioJetSys[4][ipt]->GetNbinsX() ; i++){
       float xx = ratioJetSys[4][ipt]->GetBinCenter(i);
       float yVal = h1temp->GetBinContent(   h1temp->FindBin(xx) );
@@ -277,11 +290,17 @@ void drawResultsDist() {
 
     ratioJet[3][ipt] = (TH1D*)dNdJetPt[3][ipt]->Rebin(nRptBin[ipt-1], Form("%s_ratio",dNdJetPt[3][ipt]->GetName()), ratioPtBin[ipt-1]);
     ratioJet[1][ipt] = (TH1D*)dNdJetPt[1][ipt]->Rebin(nRptBin[ipt-1], Form("%s_ratio",dNdJetPt[1][ipt]->GetName()), ratioPtBin[ipt-1]);
+    
     ratioJet[3][ipt]->Divide(ratioJet[1][ipt]);
+    ratioJet1[3][ipt] = new TH1D(Form("%s_ratio1",dNdJetPt[3][ipt]->GetName()),"",nRptBin[ipt-1],ratioPtBin1[ipt-1]);
+    for ( int ibin =1 ; ibin<=nRptBin[ipt-1] ; ibin++)  {
+      ratioJet1[3][ipt]->SetBinContent(ibin, ratioJet[3][ipt]->GetBinContent(ibin));
+      ratioJet1[3][ipt]->SetBinError(ibin, ratioJet[3][ipt]->GetBinError(ibin));
+    }
 
     handsomeTH1(ratioJet[3][ipt],2);
-    drawSys(ratioJet[3][ipt], ratioJetSys[3][ipt] );
-    ratioJet[3][ipt]->Draw("same");
+    drawSys(ratioJet1[3][ipt], ratioJetSys[3][ipt] );
+    ratioJet1[3][ipt]->Draw("same");
     jumSun(10,1,150,1);
     if ( ipt == 1 ) {
       TLegend *ly = new TLegend(0.2533658,0.7018245,0.5500974,0.9867236,NULL,"brNDC");
@@ -299,10 +318,17 @@ void drawResultsDist() {
     ratioJet[2][ipt] = (TH1D*)dNdJetPt[2][ipt]->Rebin(nRptBin[ipt-1], Form("%s_ratio",dNdJetPt[2][ipt]->GetName()), ratioPtBin[ipt-1]);
     ratioJet[4][ipt]->Divide(ratioJet[2][ipt]);
 
+    ratioJet1[4][ipt] = new TH1D(Form("%s_ratio1",dNdJetPt[4][ipt]->GetName()),"",nRptBin[ipt-1],ratioPtBin1[ipt-1]);
+    for ( int ibin =1 ; ibin<=nRptBin[ipt-1] ; ibin++)  {
+      ratioJet1[4][ipt]->SetBinContent(ibin, ratioJet[4][ipt]->GetBinContent(ibin));
+      ratioJet1[4][ipt]->SetBinError(ibin, ratioJet[4][ipt]->GetBinError(ibin));
+    }
+
+
     handsomeTH1(ratioJet[4][ipt],2);
     ratioJet[4][ipt]->SetMarkerStyle(24);
-    drawSys(ratioJet[4][ipt], ratioJetSys[4][ipt] );
-    ratioJet[4][ipt]->Draw("same");
+    drawSys(ratioJet1[4][ipt], ratioJetSys[4][ipt] );
+    ratioJet1[4][ipt]->Draw("same");
     jumSun(10,1,150,1);
 
     if ( ipt==1 ){
