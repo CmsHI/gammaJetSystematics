@@ -27,24 +27,14 @@ void drawResults() {
   const int nPtBin = 4;
   double ptBin[nPtBin+1] = {40, 50,60,80,9999};
 
-  TH1D* dNdJetPt[7][5]; // [collision] [ ptbin]  [Before/After variation]
-  TH1D* dNdJetPtSys[7][5]; // [collision] [ ptbin]  [Before/After variation]
-  TH1D* dNdJetPtSysIaa[7][5]; // [collision] [ ptbin]  [Before/After variation]
+  TH1D* meanJetPt[8];   // [collision] [Before/After variation]
+  TH1D* meanJetPtSys[8];   // [collision] [Before/After variation]
 
-  TH1D* dNdXjg[7][5]; // [collision] [ ptbin]  [Before/After variation]
-  TH1D* dNdXjgSys[7][5]; // [collision] [ ptbin]  [Before/After variation]
+  TH1D* meanXjg[8];   // [collision] [Before/After variation]
+  TH1D* meanXjgSys[8];   // [collision] [Before/After variation]
 
-  TH1D* Iaa[7][5]; // [collision] [ ptbin]  [Before/After variation]
-  TH1D* IaaSys[7][5]; // [collision] [ ptbin]  [Before/After variation]
-
-  TH1D* meanJetPt[7];   // [collision] [Before/After variation]
-  TH1D* meanJetPtSys[7];   // [collision] [Before/After variation]
-
-  TH1D* meanXjg[7];   // [collision] [Before/After variation]
-  TH1D* meanXjgSys[7];   // [collision] [Before/After variation]
-
-  TH1D* meanRjg[7];
-  TH1D* meanRjgSys[7];
+  TH1D* meanRjg[8];
+  TH1D* meanRjgSys[8];
 
   TFile * f = new TFile("../resultHistograms/resultHistograms_ppSmeared10030.root");
   meanJetPt[1]  =(TH1D*)f->Get(Form("meanJetPt_pp"));
@@ -58,6 +48,11 @@ void drawResults() {
 
   // pbpb
   f =   new TFile("../resultHistograms/resultHistograms_nominal.root");
+
+  meanJetPt[7]  =(TH1D*)f->Get(Form("meanJetPt_pp"));
+  meanXjg[7]  =(TH1D*)f->Get(Form("meanXjg_pp"));
+  meanRjg[7]  =(TH1D*)f->Get(Form("meanRjg_pp"));
+
   meanJetPt[3]  =(TH1D*)f->Get(Form("meanJetPt_pbpb_centralityBin1"));
   meanXjg[3]  =(TH1D*)f->Get(Form("meanXjg_pbpb_centralityBin1"));
   meanRjg[3]  =(TH1D*)f->Get(Form("meanRjg_pbpb_centralityBin1"));
@@ -71,7 +66,7 @@ void drawResults() {
   meanXjg[5]  =(TH1D*)f->Get(Form("meanXjg_ppb"));
   meanRjg[5]  =(TH1D*)f->Get(Form("meanRjg_ppb"));
 
-  f =   new TFile("../resultHistograms/resultHistograms_MCrecoIso.root");
+  f =   new TFile("../resultHistograms/resultHistograms_MCrecoIso.root"); //pythia+hijing
   meanJetPt[6]  =(TH1D*)f->Get(Form("meanJetPt_ppb"));
   meanXjg[6]  =(TH1D*)f->Get(Form("meanXjg_ppb"));
   meanRjg[6]  =(TH1D*)f->Get(Form("meanRjg_ppb"));
@@ -103,9 +98,10 @@ void drawResults() {
 
 
   // RJG!!
-  TCanvas* c2 = new TCanvas("c1","",1000,500);
-  c2->Divide(2,1);
-  c2->cd(2);
+  TCanvas* c2 = new TCanvas("c1","",1300,500);
+  //c2->Divide(3,1);
+  makeMultiPanelCanvas(c2,3,1,0.0,0.0, 0.15, 0.15, 0.025);
+  c2->cd(3);
   handsomeTH1(meanRjg[1],1,1,21);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
   TH1D* tempR = new TH1D("tempR",";p_{T}^{#gamma};R_{j#gamma}",100,40,130);
@@ -129,10 +125,10 @@ void drawResults() {
     ly->AddEntry(meanRjg[1],"pp (smeared)","p");
     ly->Draw();
   }
-  drawCMSppPbPb(0.1,0.95);
+  drawCMSppPbPbDist(0.2,0.9);
 
 
-  c2->cd(1);
+  c2->cd(2);
   tempR->Draw();
   drawSys(meanRjg[2], meanRjgSys[2], kGreen,3001);
   drawSys(meanRjg[4], meanRjgSys[4]);
@@ -148,11 +144,78 @@ void drawResults() {
     ly->AddEntry(meanRjg[2],"pp (smeared)","p");
     ly->Draw();
   }
-  drawCMSppPbPb(0.1,0.95);
+  drawCMSppPbPbDist(0.2,0.9);
+
+  c2->cd(1);
+  tempR->Draw();
+  drawSys(meanRjg[5], meanRjgSys[5], kYellow);
+  drawSys(meanRjg[7], meanRjgSys[2], kGreen, 3001);
+  handsomeTH1(meanRjg[5],2);
+  handsomeTH1(meanRjg[6],1);
+  handsomeTH1(meanRjg[7],1,1,24);
+  meanRjg[5]->Draw("same");
+  meanRjg[6]->Draw("same");
+  meanRjg[7]->Draw("same");
+  if ( 1==1 ) {
+    TLegend *ly = new TLegend(0.5,0.25,0.85,0.47,NULL,"brNDC");
+    easyLeg(ly);
+    ly->AddEntry(meanRjg[5],"pPb DATA","p");
+    ly->AddEntry(meanRjg[6],"PYTHIA+HIJING","p");
+    ly->AddEntry(meanRjg[7],"pp DATA","p");
+    ly->Draw();
+  }
+  drawCMSpPbDist(0.2,0.9);
+  
   c2->SaveAs("pT_dependence_rjg_pp_pbpb.pdf");
 
 
-  TCanvas* c2pa = new TCanvas("c2pa","",500,500);
+  // TCanvas* c2pa = new TCanvas("c2pa","",500,500);
+  // handsomeTH1(meanRjg[1],1);
+  // //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
+  // //  tempR->Draw();
+  // TH1D* tempJ = new TH1D("tempJ",";p_{T}^{#gamma}; <p_{T}^{Jet}>",100,40,130);
+  // tempJ->Reset();
+  // handsomeTH1(tempJ,0);
+  // tempJ->SetAxisRange(40,110,"Y");
+  // tempJ->SetAxisRange(40,110,"X");
+  // tempJ->Draw();
+  // drawSys(meanJetPt[5], meanJetPtSys[5], kYellow);
+  // handsomeTH1(meanJetPt[5],2);
+  // handsomeTH1(meanJetPt[6],1);
+  // meanJetPt[5]->Draw("same");
+  // meanJetPt[6]->Draw("same");
+  // if ( 1==1 ) {
+  //   TLegend *ly = new TLegend(0.22,0.65,0.57,0.87,NULL,"brNDC");
+  //   easyLeg(ly);
+  //   ly->AddEntry(meanJetPt[5],"DATA","p");
+  //   ly->AddEntry(meanJetPt[6],"PYTHIA+HIJING","p");
+  //   ly->Draw();
+  // }
+  // drawCMSpPb(0.1,0.95);
+  // c2pa->SaveAs("pT_dependence_jetPt_pA.pdf");
+
+  // TCanvas* c3pa = new TCanvas("c3pa","",500,500);
+  // tempR->Draw();
+  // drawSys(meanRjg[5], meanRjgSys[5], kYellow);
+  // handsomeTH1(meanRjg[5],2);
+  // handsomeTH1(meanRjg[6],1);
+  // meanRjg[5]->Draw("same");
+  // meanRjg[6]->Draw("same");
+  // if ( 1==1 ) {
+  //   TLegend *ly = new TLegend(0.5,0.25,0.85,0.47,NULL,"brNDC");
+  //   easyLeg(ly);
+  //   ly->AddEntry(meanRjg[5],"DATA","p");
+  //   ly->AddEntry(meanRjg[6],"PYTHIA+HIJING","p");
+  //   ly->Draw();
+  // }
+  // drawCMSpPb(0.1,0.95);
+  // c3pa->SaveAs("pT_dependence_rjg_pA.pdf");
+
+  // ppPbPb meanJetPt
+  TCanvas* c3 = new TCanvas("c3","",1300,500);
+  //c3->Divide(2,1);
+  makeMultiPanelCanvas(c3,3,1,0.0,0.0, 0.15, 0.15, 0.025);
+  c3->cd(1);
   handsomeTH1(meanRjg[1],1);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
   //  tempR->Draw();
@@ -163,59 +226,43 @@ void drawResults() {
   tempJ->SetAxisRange(40,110,"X");
   tempJ->Draw();
   drawSys(meanJetPt[5], meanJetPtSys[5], kYellow);
+  drawSys(meanJetPt[7], meanJetPtSys[1], kGreen,3001);
   handsomeTH1(meanJetPt[5],2);
   handsomeTH1(meanJetPt[6],1);
+  handsomeTH1(meanJetPt[7],1,1,24);
   meanJetPt[5]->Draw("same");
   meanJetPt[6]->Draw("same");
+  meanJetPt[7]->Draw("same");
   if ( 1==1 ) {
-    TLegend *ly = new TLegend(0.22,0.65,0.57,0.87,NULL,"brNDC");
+    TLegend *ly = new TLegend(0.58,0.22,0.93,0.44,NULL,"brNDC");
     easyLeg(ly);
-    ly->AddEntry(meanJetPt[5],"DATA","p");
+    ly->AddEntry(meanJetPt[5],"pPb DATA","p");
     ly->AddEntry(meanJetPt[6],"PYTHIA+HIJING","p");
+    ly->AddEntry(meanJetPt[7],"pp DATA","p");
     ly->Draw();
   }
-  drawCMSpPb(0.1,0.95);
-  c2pa->SaveAs("pT_dependence_jetPt_pA.pdf");
+  drawCMSpPbDist(0.2,0.9);
 
-  TCanvas* c3pa = new TCanvas("c3pa","",500,500);
-  tempR->Draw();
-  drawSys(meanRjg[5], meanRjgSys[5], kYellow);
-  handsomeTH1(meanRjg[5],2);
-  handsomeTH1(meanRjg[6],1);
-  meanRjg[5]->Draw("same");
-  meanRjg[6]->Draw("same");
-  if ( 1==1 ) {
-    TLegend *ly = new TLegend(0.5,0.25,0.85,0.47,NULL,"brNDC");
-    easyLeg(ly);
-    ly->AddEntry(meanRjg[5],"DATA","p");
-    ly->AddEntry(meanRjg[6],"PYTHIA+HIJING","p");
-    ly->Draw();
-  }
-  drawCMSpPb(0.1,0.95);
-  c3pa->SaveAs("pT_dependence_rjg_pA.pdf");
-
-  // ppPbPb meanJetPt
-  TCanvas* c3 = new TCanvas("c3","",1000,500);
-  c3->Divide(2,1);
-  c3->cd(2);
+  
+  c3->cd(3);
   handsomeTH1(meanJetPt[1],1,1,21);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
   tempJ->Draw();
-  drawSys(meanJetPt[1], meanJetPtSys[1], kGreen,3001);
   drawSys(meanJetPt[3], meanJetPtSys[3]);
+  drawSys(meanJetPt[1], meanJetPtSys[1], kGreen,3001);
   handsomeTH1(meanJetPt[3],2 );
   meanJetPt[1]->Draw("same");
   meanJetPt[3]->Draw("same");
   if ( 1==1 ){
-    TLegend *ly = new  TLegend(0.22,0.65,0.57,0.87,NULL,"brNDC");
+    TLegend *ly = new  TLegend(0.58,0.22,0.93,0.44,NULL,"brNDC");
     easyLeg(ly);
     ly->AddEntry(meanJetPt[3],"PbPb 0-30%","p");
     ly->AddEntry(meanJetPt[1],"pp (smeared)","p");
     ly->Draw();
   }
-  drawCMSppPbPb(0.1,0.95);
+  drawCMSppPbPbDist(0.2,0.9);
 
-  c3->cd(1);
+  c3->cd(2);
   tempJ->Draw();
   drawSys(meanJetPt[2], meanJetPtSys[2], kGreen,3001);
   drawSys(meanJetPt[4], meanJetPtSys[4]);
@@ -225,21 +272,22 @@ void drawResults() {
   meanJetPt[4]->SetMarkerStyle(24);
   meanJetPt[4]->Draw("same");
   if ( 1==1 ){
-    TLegend *ly = new  TLegend(0.22,0.65,0.57,0.87,NULL,"brNDC");
+    TLegend *ly = new  TLegend(0.58,0.22,0.93,0.44,NULL,"brNDC");
     easyLeg(ly);
     ly->AddEntry(meanJetPt[4],"PbPb 30-100%","p");
     ly->AddEntry(meanJetPt[2],"pp (smeared)","p");
     ly->Draw();
   }
-  drawCMSppPbPb(0.1,0.95);
+  drawCMSppPbPbDist(0.2,0.9);
   c3->SaveAs("pT_dependence_jetPt_pp_pbpb.pdf");
 
 
 
   // mean xjg
-  TCanvas* c7 = new TCanvas("c7","",1000,500);
-  c7->Divide(2,1);
-  c7->cd(2);
+  TCanvas* c7 = new TCanvas("c7","",1300,500);
+  //c7->Divide(2,1);
+  makeMultiPanelCanvas(c7,3,1,0.0,0.0, 0.15, 0.15, 0.025);
+  c7->cd(3);
   handsomeTH1(meanXjg[1],1,1,24);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
   TH1D* tempX = new TH1D("tempX",";p_{T}^{#gamma} (GeV);<X_{j#gamma}>;",100,40,130);
@@ -256,16 +304,16 @@ void drawResults() {
   handsomeTH1(meanXjg[3],2 );
   meanXjg[3]->Draw("same");
   if ( 1==1 ){
-    TLegend *ly = new TLegend(0.4769913,0.6383604,0.8325803,0.8502248,NULL,"brNDC");
+    TLegend *ly = new TLegend(0.6069913,0.6383604,0.8325803,0.8502248,NULL,"brNDC");
     easyLeg(ly);
     ly->AddEntry(meanXjg[3],"PbPb 0-30%","p");
     ly->AddEntry(meanXjg[1],"pp (smeared)","p");
     ly->Draw();
   }
-  drawCMSppPbPb(0.1,0.95);
+  drawCMSppPbPbDist(0.3,0.9);
 
 
-  c7->cd(1);
+  c7->cd(2);
   tempX->Draw();
   drawSys(meanXjg[4], meanXjgSys[4]);
   drawSys(meanXjg[2], meanXjgSys[2], kGreen,3001);
@@ -275,32 +323,53 @@ void drawResults() {
   meanXjg[4]->SetMarkerStyle(24);
   meanXjg[4]->Draw("same");
   if ( 1==1 ){
-    TLegend *ly = new TLegend(0.4769913,0.6383604,0.8325803,0.8502248,NULL,"brNDC");
+    TLegend *ly = new TLegend(0.6069913,0.6383604,0.8325803,0.8502248,NULL,"brNDC");
     easyLeg(ly);
     ly->AddEntry(meanXjg[4],"PbPb 30-100%","p");
     ly->AddEntry(meanXjg[2],"pp (smeared)","p");
     ly->Draw();
   }
-  drawCMSppPbPb(0.1,0.95);
+  drawCMSppPbPbDist(0.3,0.9);
+
+  c7->cd(1);
+  tempX->Draw();
+  drawSys(meanXjg[5], meanXjgSys[5], kYellow);
+  drawSys(meanXjg[7], meanXjgSys[2], kGreen, 3001);
+  handsomeTH1(meanXjg[5],2);
+  handsomeTH1(meanXjg[6],1);
+  handsomeTH1(meanXjg[7],1,1,24);
+  meanXjg[5]->Draw("same");
+  meanXjg[6]->Draw("same");
+  meanXjg[7]->Draw("same");
+  if ( 1==1 ) {
+    TLegend *ly = new TLegend(0.6084643,0.6088445,0.9140673,0.80102941,NULL,"brNDC");
+    easyLeg(ly);
+    ly->AddEntry(meanXjg[5],"pPb DATA","p");
+    ly->AddEntry(meanXjg[6],"PYTHIA+HIJING","p");
+    ly->AddEntry(meanXjg[7],"pp DATA","p");    
+    ly->Draw();
+  }
+  drawCMSpPbDist(0.3,0.90);
+  
   c7->SaveAs("pT_dependence_meanXjg_pp_pbpb.pdf");
 
 
-  TCanvas* c7pa = new TCanvas("c7pa","",500,500);
-  tempX->Draw();
-  drawSys(meanXjg[5], meanXjgSys[5], kYellow);
-  handsomeTH1(meanXjg[5],2);
-  handsomeTH1(meanXjg[6],1);
-  meanXjg[5]->Draw("same");
-  meanXjg[6]->Draw("same");
-  if ( 1==1 ) {
-    TLegend *ly = new TLegend(0.4484643,0.6088445,0.9140673,0.80102941,NULL,"brNDC");
-    easyLeg(ly);
-    ly->AddEntry(meanXjg[5],"DATA","p");
-    ly->AddEntry(meanXjg[6],"PYTHIA+HIJING","p");
-    ly->Draw();
-  }
-  drawCMSpPb(0.1,0.95);
-  c7pa->SaveAs("pT_dependence_meanXjg_pA.pdf");
+  // TCanvas* c7pa = new TCanvas("c7pa","",500,500);
+  // tempX->Draw();
+  // drawSys(meanXjg[5], meanXjgSys[5], kYellow);
+  // handsomeTH1(meanXjg[5],2);
+  // handsomeTH1(meanXjg[6],1);
+  // meanXjg[5]->Draw("same");
+  // meanXjg[6]->Draw("same");
+  // if ( 1==1 ) {
+  //   TLegend *ly = new TLegend(0.4484643,0.6088445,0.9140673,0.80102941,NULL,"brNDC");
+  //   easyLeg(ly);
+  //   ly->AddEntry(meanXjg[5],"DATA","p");
+  //   ly->AddEntry(meanXjg[6],"PYTHIA+HIJING","p");
+  //   ly->Draw();
+  // }
+  // drawCMSpPb(0.1,0.95);
+  // c7pa->SaveAs("pT_dependence_meanXjg_pA.pdf");
 
 
 
