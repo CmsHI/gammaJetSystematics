@@ -62,7 +62,7 @@ void drawResultsDist() {
   }
 
   // pbpb
-  f =   new TFile("../resultHistograms/resultHistograms_nominal.root");
+  f =   new TFile("../resultHistograms/resultHistograms_nominal_vtxCentWeighted.root");
   for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
     dNdJetPt[3][ipt] = (TH1D*)f->Get(Form("dNdJetPt_pbpb_centralityBin1_ptBin%d", ipt ));
     dNdXjg[3][ipt] = (TH1D*)f->Get(Form("dNdXjg_pbpb_centralityBin1_ptBin%d", ipt ));
@@ -74,7 +74,7 @@ void drawResultsDist() {
     dNdphi[4][ipt] = (TH1D*)f->Get(Form("dNdphi_pbpb_centralityBin2_ptBin%d", ipt ));
   }
   // pPb
-  f =   new TFile("../resultHistograms/resultHistograms_nominal.root");
+  f =   new TFile("../resultHistograms/resultHistograms_nominal_vtxCentWeighted.root");
   for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
     dNdJetPt[5][ipt] = (TH1D*)f->Get(Form("dNdJetPt_ppb_ptBin%d", ipt ));
     dNdXjg[5][ipt] = (TH1D*)f->Get(Form("dNdXjg_ppb_ptBin%d", ipt ));
@@ -82,7 +82,7 @@ void drawResultsDist() {
     }
 
   //pp unsmeared
-  f =   new TFile("../resultHistograms/resultHistograms_nominal.root");
+  f =   new TFile("../resultHistograms/resultHistograms_nominal_vtxCentWeighted.root");
   for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
     dNdJetPt[7][ipt] = (TH1D*)f->Get(Form("dNdJetPt_pp_ptBin%d", ipt ));
     dNdXjg[7][ipt] = (TH1D*)f->Get(Form("dNdXjg_pp_ptBin%d", ipt ));
@@ -90,7 +90,7 @@ void drawResultsDist() {
     }
 
 
-  f =   new TFile("../resultHistograms/resultHistograms_MCrecoIso.root");
+  f =   new TFile("../resultHistograms/resultHistograms_MCrecoIso_vtxCentWeighted.root");
   for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
     dNdJetPt[6][ipt] = (TH1D*)f->Get(Form("dNdJetPt_ppb_ptBin%d", ipt ));
     dNdXjg[6][ipt] = (TH1D*)f->Get(Form("dNdXjg_ppb_ptBin%d", ipt ));
