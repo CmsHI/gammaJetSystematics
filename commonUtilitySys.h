@@ -16,9 +16,11 @@
 #include <TDatime.h>
 #include <iostream>
 #include <TMath.h>
+#include <TColor.h>
 
 using namespace std;
 
+Int_t newYellow = 90;
 
 struct kinem {
   Double_t pt;
@@ -85,7 +87,7 @@ void AddBinError( TH1* h=0, Int_t binNumber=0 , Float_t val=0){
   h->SetBinError(binNumber,newVal);
 }
 
-void drawSys(TH1 *h,Double_t *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
+void drawSys(TH1 *h,Double_t *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
 {
    for (Int_t i=1;i<=h->GetNbinsX();i++)
       {
@@ -102,7 +104,7 @@ void drawSys(TH1 *h,Double_t *sys, Int_t theColor= kYellow, Int_t fillStyle = -1
       }
 }
 
-void drawSys(TGraph *h, Double_t *sys, Double_t width=5, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
+void drawSys(TGraph *h, Double_t *sys, Double_t width=5, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
 {
   for (Int_t i=0;i<h->GetN();i++)
     {
@@ -123,7 +125,7 @@ void drawSys(TGraph *h, Double_t *sys, Double_t width=5, Int_t theColor= kYellow
 
 
 
-void drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1, Double_t binWidth=-1)
+void drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1, Double_t binWidth=-1)
 {
    for (Int_t i=1;i<=h->GetNbinsX();i++)
       {
@@ -151,7 +153,7 @@ void drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int
 }
 
 
-void drawSysAbs(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
+void drawSysAbs(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
 {
    for (Int_t i=1;i<=h->GetNbinsX();i++)
       {

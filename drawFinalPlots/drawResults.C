@@ -1,6 +1,7 @@
 #include "../commonUtilitySys.h"
 #include <TRandom3.h>
 #include <TFile.h>
+#include <TColor.h>
 
 TH1D* mergeSys( TH1D* h1, TH1D* h2) {
 
@@ -95,15 +96,13 @@ void drawResults() {
   meanRjgSys[5]  =(TH1D*)fSys->Get(Form("meanRjg_ppb_uncertainty_merged"));
 
 
-
-
   // RJG!!
   TCanvas* c2 = new TCanvas("c1","",1300,500);
   //c2->Divide(3,1);
   makeMultiPanelCanvas(c2,3,1,0.0,0.0, 0.15, 0.15, 0.025);
   c2->cd(3);
   handsomeTH1(meanRjg[1],1,1,21);
-  //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
+  //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
   TH1D* tempR = new TH1D("tempR",";p_{T}^{#gamma};R_{j#gamma}",100,40,130);
   tempR->Reset();
   handsomeTH1(tempR,0);
@@ -148,7 +147,7 @@ void drawResults() {
 
   c2->cd(1);
   tempR->Draw();
-  drawSys(meanRjg[5], meanRjgSys[5], kYellow);
+  drawSys(meanRjg[5], meanRjgSys[5], newYellow);
   drawSys(meanRjg[7], meanRjgSys[2], kGreen, 3001);
   handsomeTH1(meanRjg[5],9);
   handsomeTH1(meanRjg[6],1);
@@ -167,11 +166,12 @@ void drawResults() {
   drawCMSpPbDist(0.2,0.9);
   
   c2->SaveAs("pT_dependence_rjg_pp_pbpb.pdf");
+  c2->SaveAs("pT_dependence_rjg_pp_pbpb.png");
 
 
   // TCanvas* c2pa = new TCanvas("c2pa","",500,500);
   // handsomeTH1(meanRjg[1],1);
-  // //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
+  // //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
   // //  tempR->Draw();
   // TH1D* tempJ = new TH1D("tempJ",";p_{T}^{#gamma}; <p_{T}^{Jet}>",100,40,130);
   // tempJ->Reset();
@@ -179,7 +179,7 @@ void drawResults() {
   // tempJ->SetAxisRange(40,110,"Y");
   // tempJ->SetAxisRange(40,110,"X");
   // tempJ->Draw();
-  // drawSys(meanJetPt[5], meanJetPtSys[5], kYellow);
+  // drawSys(meanJetPt[5], meanJetPtSys[5], newYellow);
   // handsomeTH1(meanJetPt[5],2);
   // handsomeTH1(meanJetPt[6],1);
   // meanJetPt[5]->Draw("same");
@@ -196,7 +196,7 @@ void drawResults() {
 
   // TCanvas* c3pa = new TCanvas("c3pa","",500,500);
   // tempR->Draw();
-  // drawSys(meanRjg[5], meanRjgSys[5], kYellow);
+  // drawSys(meanRjg[5], meanRjgSys[5], newYellow);
   // handsomeTH1(meanRjg[5],2);
   // handsomeTH1(meanRjg[6],1);
   // meanRjg[5]->Draw("same");
@@ -217,7 +217,7 @@ void drawResults() {
   makeMultiPanelCanvas(c3,3,1,0.0,0.0, 0.15, 0.15, 0.025);
   c3->cd(1);
   handsomeTH1(meanRjg[1],1);
-  //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
+  //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
   //  tempR->Draw();
   TH1D* tempJ = new TH1D("tempJ",";p_{T}^{#gamma}; <p_{T}^{Jet}>",100,40,130);
   tempJ->Reset();
@@ -225,7 +225,7 @@ void drawResults() {
   tempJ->SetAxisRange(40,110,"Y");
   tempJ->SetAxisRange(40,110,"X");
   tempJ->Draw();
-  drawSys(meanJetPt[5], meanJetPtSys[5], kYellow);
+  drawSys(meanJetPt[5], meanJetPtSys[5], newYellow);
   drawSys(meanJetPt[7], meanJetPtSys[1], kGreen,3001);
   handsomeTH1(meanJetPt[5],9);
   handsomeTH1(meanJetPt[6],1);
@@ -246,7 +246,7 @@ void drawResults() {
   
   c3->cd(3);
   handsomeTH1(meanJetPt[1],1,1,21);
-  //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
+  //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
   tempJ->Draw();
   drawSys(meanJetPt[3], meanJetPtSys[3]);
   drawSys(meanJetPt[1], meanJetPtSys[1], kGreen,3001);
@@ -280,7 +280,7 @@ void drawResults() {
   }
   drawCMSppPbPbDist(0.2,0.9);
   c3->SaveAs("pT_dependence_jetPt_pp_pbpb.pdf");
-
+  c3->SaveAs("pT_dependence_jetPt_pp_pbpb.png");
 
 
   // mean xjg
@@ -289,7 +289,7 @@ void drawResults() {
   makeMultiPanelCanvas(c7,3,1,0.0,0.0, 0.15, 0.15, 0.025);
   c7->cd(3);
   handsomeTH1(meanXjg[1],1,1,24);
-  //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= kYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
+  //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
   TH1D* tempX = new TH1D("tempX",";p_{T}^{#gamma} (GeV);<X_{j#gamma}>;",100,40,130);
   tempX->Reset();
   handsomeTH1(tempX,0);
@@ -333,7 +333,7 @@ void drawResults() {
 
   c7->cd(1);
   tempX->Draw();
-  drawSys(meanXjg[5], meanXjgSys[5], kYellow);
+  drawSys(meanXjg[5], meanXjgSys[5], newYellow);
   drawSys(meanXjg[7], meanXjgSys[2], kGreen, 3001);
   handsomeTH1(meanXjg[5],9);
   handsomeTH1(meanXjg[6],1);
@@ -352,11 +352,11 @@ void drawResults() {
   drawCMSpPbDist(0.3,0.90);
   
   c7->SaveAs("pT_dependence_meanXjg_pp_pbpb.pdf");
-
+  c7->SaveAs("pT_dependence_meanXjg_pp_pbpb.png");
 
   // TCanvas* c7pa = new TCanvas("c7pa","",500,500);
   // tempX->Draw();
-  // drawSys(meanXjg[5], meanXjgSys[5], kYellow);
+  // drawSys(meanXjg[5], meanXjgSys[5], newYellow);
   // handsomeTH1(meanXjg[5],2);
   // handsomeTH1(meanXjg[6],1);
   // meanXjg[5]->Draw("same");
@@ -389,7 +389,7 @@ void drawResults() {
   //   IaaRatio[4][ipt]->Divide(Iaa[2][ipt]);
   //   IaaRatioSys[4][ipt] = mergeSys( IaaSys[2][ipt], IaaSys[4][ipt]) ;
 
-  //   drawSys(IaaRatio[4][ipt], IaaRatioSys[4][ipt], kYellow);
+  //   drawSys(IaaRatio[4][ipt], IaaRatioSys[4][ipt], newYellow);
   //   jumSun(20,1,200,1);
   //   handsomeTH1(IaaRatio[4][ipt],2);
   //   IaaRatio[4][ipt]->SetMarkerStyle(24);
