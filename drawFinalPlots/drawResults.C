@@ -103,7 +103,7 @@ void drawResults() {
   c2->cd(3);
   handsomeTH1(meanRjg[1],1,1,21);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
-  TH1D* tempR = new TH1D("tempR",";p_{T}^{#gamma};R_{j#gamma}",100,40,130);
+  TH1D* tempR = new TH1D("tempR",";p_{T}^{#gamma};R_{J#gamma}",100,40,130);
   tempR->Reset();
   handsomeTH1(tempR,0);
   //tempR->SetAxisRange(0,1.2,"Y");
@@ -290,7 +290,7 @@ void drawResults() {
   c7->cd(3);
   handsomeTH1(meanXjg[1],1,1,24);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
-  TH1D* tempX = new TH1D("tempX",";p_{T}^{#gamma} (GeV);<X_{j#gamma}>;",100,40,130);
+  TH1D* tempX = new TH1D("tempX",";p_{T}^{#gamma} (GeV);<X_{J#gamma}>;",100,40,130);
   tempX->Reset();
   handsomeTH1(tempX,0);
   tempX->SetAxisRange(0.6,1.1,"Y");
