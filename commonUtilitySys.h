@@ -140,8 +140,8 @@ void drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, I
 	  binWidth = h->GetBinLowEdge(1) - h->GetBinLowEdge(2);
 	}
 	
-	Double_t point = (h->GetBinLowEdge(i) + h->GetBinLowEdge(i+1))/2.;
-	TBox *b = new TBox(point-binWidth/3,val-err,point+binWidth/3,val+err);         
+	//Double_t point = (h->GetBinLowEdge(i) + h->GetBinLowEdge(i+1))/2.;
+	TBox *b = new TBox(xx-binWidth/3,val-err,xx+binWidth/3,val+err);         
 	
 	b->SetLineColor(theColor);
 	b->SetFillColor(theColor);
