@@ -236,7 +236,7 @@ void drawResultsDist() {
 
     double dx1=0.15;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.25,0.9,1,18);
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
     else if ( ipt == 1)
       drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
     else
@@ -368,7 +368,7 @@ void drawResultsDist() {
 
     double dx1=0.18;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.25,0.9,1,18);
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
     else if ( ipt == 1)
       drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
     else
@@ -470,7 +470,7 @@ void drawResultsDist() {
 
     double dx1=0.15;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.25,0.9,1,18);
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
     else if ( ipt == 1)
       drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
     else
@@ -594,7 +594,7 @@ void drawResultsDist() {
     }
     double dx1=0.16;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.25,0.9,1,18);
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
     else if ( ipt == 1)
       drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
     else
