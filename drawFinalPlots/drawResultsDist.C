@@ -179,7 +179,7 @@ void drawResultsDist() {
     hTempPt->SetXTitle("p_{T}^{Jet} (GeV)");
     hTempPt->SetYTitle("PbPb/pp of jet yield");
     hTempPt->SetAxisRange(10,150,"X");
-    hTempPt->SetAxisRange(0,2.9,"Y");
+    hTempPt->SetAxisRange(0.001,2.9,"Y");
     handsomeTH1(hTempPt,0);
     hTempPt->GetYaxis()->SetTitleOffset(2.5);
     hTempPt->GetXaxis()->SetTitleOffset(2);
