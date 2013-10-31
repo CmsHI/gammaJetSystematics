@@ -350,7 +350,7 @@ void drawResultsDist() {
 
     drawSys(dNdJetPt[5][ipt], dNdJetPtSys[5][ipt], newYellow);
     drawSys(dNdJetPt[7][ipt], dNdJetPtSys[2][ipt], kGreen,3001);
-    handsomeTH1(dNdJetPt[5][ipt],9,1,21);
+    handsomeTH1(dNdJetPt[5][ipt],9,1,34);
     handsomeTH1(dNdJetPt[7][ipt],1,1);
     dNdJetPt[6][ipt]->SetMarkerStyle(25);
 
@@ -453,7 +453,7 @@ void drawResultsDist() {
     //  dNdXjg[6][ipt]->Scale(meanRjg[6]->GetBinContent(ipt));
     drawSys(dNdXjg[5][ipt], dNdXjgSys[5][ipt], newYellow);
     drawSys(dNdXjg[7][ipt], dNdXjgSys[2][ipt], kGreen, 3001);
-    handsomeTH1(dNdXjg[5][ipt],9,1,21);
+    handsomeTH1(dNdXjg[5][ipt],9,1,34);
     handsomeTH1(dNdXjg[7][ipt],1,1);
  
     dNdXjg[6][ipt]->SetMarkerStyle(25);
@@ -576,7 +576,7 @@ void drawResultsDist() {
     cDphi->cd(ipt);
     hTempphi->DrawCopy();
 
-    handsomeTH1(dNdphi[5][ipt],9,1,21);
+    handsomeTH1(dNdphi[5][ipt],9,1,34);
     handsomeTH1(dNdphi[7][ipt],1,1,20);
     dNdphi[6][ipt]->Scale(1./dNdphi[6][ipt]->Integral());
     dNdphi[5][ipt]->Scale(1./dNdphi[5][ipt]->Integral());

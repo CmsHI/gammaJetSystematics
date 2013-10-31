@@ -137,7 +137,7 @@ void drawResults(bool drawSinglePanels = false) {
   if(!drawSinglePanels)
     drawCMSppPbPbDist(0.04,0.9);
   else
-    drawCMSppPbPbDist(0.14,0.9);
+    drawCMSppPbPbDist(0.2,0.9);
 
 
   c2->cd(2);
@@ -159,7 +159,7 @@ void drawResults(bool drawSinglePanels = false) {
   if(!drawSinglePanels)
     drawCMSppPbPbDist(0.04,0.9);
   else
-    drawCMSppPbPbDist(0.14,0.9);
+    drawCMSppPbPbDist(0.2,0.9);
 
   c2->cd(1);
   tempR->SetAxisRange(40,109.99,"X");
@@ -167,7 +167,7 @@ void drawResults(bool drawSinglePanels = false) {
   tempR->SetAxisRange(40.01,109.99,"X");
   drawSys(meanRjg[5], meanRjgSys[5], newYellow);
   drawSys(meanRjg[7], meanRjgSys[2], kGreen, 3001);
-  handsomeTH1(meanRjg[5],9,1,21);
+  handsomeTH1(meanRjg[5],9,1,34);
   handsomeTH1(meanRjg[6],1,1,25);
   handsomeTH1(meanRjg[7],1,1);
   meanRjg[5]->Draw("same");
@@ -206,7 +206,7 @@ void drawResults(bool drawSinglePanels = false) {
   tempJ->SetAxisRange(40.01,109.99,"X");
   drawSys(meanJetPt[5], meanJetPtSys[5], newYellow);
   drawSys(meanJetPt[7], meanJetPtSys[1], kGreen,3001);
-  handsomeTH1(meanJetPt[5],9,1,21);
+  handsomeTH1(meanJetPt[5],9,1,34);
   handsomeTH1(meanJetPt[6],1,1,25);
   handsomeTH1(meanJetPt[7],1,1);
   meanJetPt[5]->Draw("same");
@@ -291,14 +291,17 @@ void drawResults(bool drawSinglePanels = false) {
   meanXjg[1]->Draw("same");
   handsomeTH1(meanXjg[3],2 );
   meanXjg[3]->Draw("same");
+  Float_t xpos = 0.022;
+  if(drawSinglePanels)
+    xpos = 0.15;
   if ( 1==1 ){
-    TLegend *ly = new TLegend(0.02194766,0.1861745,0.3278901,0.3788434,NULL,"brNDC");
+    TLegend *ly = new TLegend(xpos,0.1861745,0.578901,0.3788434,NULL,"brNDC");
     easyLeg(ly);
     ly->AddEntry(meanXjg[3],"PbPb 0-30%","p");
     ly->AddEntry(meanXjg[1],"pp (smeared)","p");
     ly->Draw();
   }
-  drawCMSppPbPbDist(0.3,0.9);
+  drawCMSppPbPbDist(0.6,0.9);
 
 
   c7->cd(2);
@@ -311,13 +314,13 @@ void drawResults(bool drawSinglePanels = false) {
   //  meanXjg[4]->SetMarkerStyle(24);
   meanXjg[4]->Draw("same");
   if ( 1==1 ){
-    TLegend *ly = new TLegend(0.02194766,0.1861745,0.3278901,0.3788434,NULL,"brNDC");
+    TLegend *ly = new TLegend(xpos,0.1861745,0.578901,0.3788434,NULL,"brNDC");
     easyLeg(ly);
     ly->AddEntry(meanXjg[4],"PbPb 30-100%","p");
     ly->AddEntry(meanXjg[2],"pp (smeared)","p");
     ly->Draw();
   }
-  drawCMSppPbPbDist(0.3,0.9);
+  drawCMSppPbPbDist(0.6,0.9);
 
   c7->cd(1);
   tempX->SetAxisRange(40.0,109.99,"X");
@@ -325,7 +328,7 @@ void drawResults(bool drawSinglePanels = false) {
   tempX->SetAxisRange(40.01,109.99,"X");
   drawSys(meanXjg[5], meanXjgSys[5], newYellow);
   drawSys(meanXjg[7], meanXjgSys[2], kGreen, 3001);
-  handsomeTH1(meanXjg[5],9,1,21);
+  handsomeTH1(meanXjg[5],9,1,34);
   handsomeTH1(meanXjg[6],1,1,25);
   handsomeTH1(meanXjg[7],1,1);
   meanXjg[5]->Draw("same");
@@ -339,7 +342,7 @@ void drawResults(bool drawSinglePanels = false) {
     ly->AddEntry(meanXjg[7],"pp DATA (2.76TeV)","p");    
     ly->Draw();
   }
-  drawCMSpPbDist(0.3,0.90);
+  drawCMSpPbDist(0.65,0.90);
   
   c7->SaveAs("pT_dependence_meanXjg_pp_pbpb.pdf");
   c7->SaveAs("pT_dependence_meanXjg_pp_pbpb.png");
