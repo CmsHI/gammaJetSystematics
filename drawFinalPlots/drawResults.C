@@ -134,7 +134,10 @@ void drawResults(bool drawSinglePanels = false) {
     ly->AddEntry(meanRjg[1],"pp (smeared)","p");
     ly->Draw();
   }
-  drawCMSppPbPbDist(0.2,0.9);
+  if(!drawSinglePanels)
+    drawCMSppPbPbDist(0.1,0.9);
+  else
+    drawCMSppPbPbDist(0.2,0.9);
 
 
   c2->cd(2);
@@ -153,7 +156,10 @@ void drawResults(bool drawSinglePanels = false) {
     ly->AddEntry(meanRjg[2],"pp (smeared)","p");
     ly->Draw();
   }
-  drawCMSppPbPbDist(0.2,0.9);
+  if(!drawSinglePanels)
+    drawCMSppPbPbDist(0.1,0.9);
+  else
+    drawCMSppPbPbDist(0.2,0.9);
 
   c2->cd(1);
   tempR->Draw();

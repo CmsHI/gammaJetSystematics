@@ -236,9 +236,12 @@ void drawResultsDist() {
 
     double dx1=0.15;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.85,1,18);//yeonju 130823
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.25,0.9,1,18);
+    else if ( ipt == 1)
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
     else
-          drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.85,1,18);//yeonju 130823
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
+
   }
   c5_ratio->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio.pdf");
   c5_ratio->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio.png");
@@ -365,11 +368,11 @@ void drawResultsDist() {
 
     double dx1=0.18;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.8,1,18);//yeonju 130823
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.25,0.9,1,18);
+    else if ( ipt == 1)
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.8,1,18);//yeonju 130823
-
-
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
 
   }
   c5->SaveAs("pT_dependence_jetPt_pp_pbpb_distribution.pdf");
@@ -384,16 +387,21 @@ void drawResultsDist() {
   for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
     c6->cd(ipt+2*nPtBin);
     // draw pp
-    hTempXjg->SetXTitle("x_{j#gamma}");
+    hTempXjg->SetXTitle("x_{J#gamma}");
     hTempXjg->SetYTitle("#frac{1}{N_{#gamma}} #frac{dN_{J#gamma}}{dx}");
-    hTempXjg->SetAxisRange(0,2,"X");
     hTempXjg->SetAxisRange(0,2,"Y");
+    if(ipt == 1)
+      hTempXjg->SetAxisRange(0,2,"X");
+    else
+      hTempXjg->SetAxisRange(0.05,2,"X");
     hTempXjg->GetYaxis()->SetNdivisions(405);
     hTempXjg->GetXaxis()->SetNdivisions(405);
     handsomeTH1(hTempXjg,0);
     hTempXjg->GetYaxis()->SetTitleOffset(3);
     hTempXjg->GetXaxis()->SetTitleOffset(3);
     hTempXjg->DrawCopy();
+
+    
     //    dNdXjg[1][ipt]->Scale(meanRjg[1]->GetBinContent(ipt));
     //  dNdXjg[3][ipt]->Scale(meanRjg[3]->GetBinContent(ipt));
     drawSys(dNdXjg[3][ipt], dNdXjgSys[3][ipt], newYellow);
@@ -411,7 +419,7 @@ void drawResultsDist() {
     }
 
     if(ipt + nPtBin == 8)
-      drawCMSppPbPbDist(0.5,0.9);
+      drawCMSppPbPbDist(0.4,0.9);
 
     gPad->RedrawAxis();
 
@@ -434,9 +442,9 @@ void drawResultsDist() {
       ly->Draw();
     }
     if(ipt + nPtBin == 8)
-      drawCMSppPbPbDist(0.5,0.9);
+      drawCMSppPbPbDist(0.4,0.9);
 
-
+    gPad->RedrawAxis();
     c6->cd(ipt);
     hTempXjg->DrawCopy();
     //    dNdXjg[5][ipt]->Scale(meanRjg[5]->GetBinContent(ipt));
@@ -458,13 +466,16 @@ void drawResultsDist() {
     }
 
     if(ipt == 4)
-      drawCMSpPbDist(0.1,0.8);
+      drawCMSpPbDist(0.4,0.8);
 
     double dx1=0.15;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.9,1,18);//yeonju 130823
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.25,0.9,1,18);
+    else if ( ipt == 1)
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.9,1,18);//yeonju 130823
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
+
     gPad->RedrawAxis();
   }
 
@@ -500,8 +511,11 @@ void drawResultsDist() {
     // draw pp
     hTempphi->SetXTitle("#Delta#phi");
     hTempphi->SetYTitle("#frac{1}{N_{J#gamma}} #frac{dN_{J#gamma}}{d#Delta#phi}");
-    hTempphi->SetAxisRange(0, TMath::Pi(),"X");
-    hTempphi->SetAxisRange(0.001,2,"Y");
+    if(ipt == 1)
+      hTempphi->SetAxisRange(0, TMath::Pi(),"X");
+    else
+      hTempphi->SetAxisRange(0.1, TMath::Pi(),"X");
+    hTempphi->SetAxisRange(0.0011,2,"Y");
     handsomeTH1(hTempphi,0);
     hTempphi->GetYaxis()->SetTitleOffset(4.5);
     hTempphi->GetXaxis()->SetTitleOffset(3);
@@ -517,7 +531,7 @@ void drawResultsDist() {
     dNdphi[3][ipt]->Draw("same");
     gPad->SetLogy();
     if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.351273,0.6152521,0.9997611,0.9087395,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.35,0.7,1,0.95,NULL,"brNDC");
       easyLeg(ly);
       ly->AddEntry(dNdphi[3][ipt],"PbPb 0-30%","p");
       ly->AddEntry(dNdphi[1][ipt],"pp (smeared)","p");
@@ -544,7 +558,7 @@ void drawResultsDist() {
     dNdphi[4][ipt]->Draw("same");
     gPad->SetLogy();
     if ( ipt==1 ){
-      TLegend *ly = new TLegend(0.351273,0.6552521,0.9997611,0.9487395,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.35,0.7,1,0.95,NULL,"brNDC");
       easyLeg(ly);
       ly->AddEntry(dNdphi[4][ipt],"PbPb 30-100%","p");
       ly->AddEntry(dNdphi[2][ipt],"pp (smeared)","p");
@@ -580,9 +594,11 @@ void drawResultsDist() {
     }
     double dx1=0.16;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.12+dx1+0.25,0.9,1,18);
+      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.25,0.9,1,18);
+    else if ( ipt == 1)
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.12+dx1,0.9,1,18);//yeonju 130823
+      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
 
     if(ipt == 4)
       drawCMSpPbDist(0.1, 0.8);

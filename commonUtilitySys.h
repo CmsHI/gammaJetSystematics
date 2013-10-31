@@ -611,7 +611,7 @@ void easyLeg( TLegend *a=0 , TString head="")
   a->SetBorderSize(0);
   a->SetHeader(head);
   a->SetTextFont(43);
-  a->SetTextSize(18);
+  a->SetTextSize(20);
   a->SetLineColor(1);
   a->SetLineStyle(1);
   a->SetLineWidth(1);
@@ -790,28 +790,28 @@ void drawCMSppPbPbDist(Float_t px, Float_t py)
 {
   TLatex *cms = new TLatex(px,py,"CMS Preliminary");
   cms->SetTextFont(43);
-  cms->SetTextSize(16);
+  cms->SetTextSize(20);
   cms->SetNDC();
   cms->Draw();
 
-  TLatex *roots = new TLatex(px, py-0.08,
+  TLatex *roots = new TLatex(px, py-0.09,
 			    "#sqrt{s_{NN}}=2.76TeV");
   roots->SetTextFont(43);
-  roots->SetTextSize(18);
+  roots->SetTextSize(20);
   roots->SetNDC();
   roots->Draw();
 
-  TLatex *pbpb = new TLatex(px, py-0.16,
+  TLatex *pbpb = new TLatex(px, py-0.18,
 			    "PbPb 150 #mub^{-1}");
   pbpb->SetTextFont(43);
-  pbpb->SetTextSize(18);
+  pbpb->SetTextSize(20);
   pbpb->SetNDC();
   pbpb->Draw();
 
-  TLatex *pp = new TLatex(px, py-0.24,
+  TLatex *pp = new TLatex(px, py-0.27,
 			    "pp 5.3 pb^{-1}");
   pp->SetTextFont(43);
-  pp->SetTextSize(18);
+  pp->SetTextSize(20);
   pp->SetNDC();
   pp->Draw();
 
@@ -838,21 +838,21 @@ void drawCMSpPbDist(Float_t px, Float_t py)
 {
   TLatex *cms = new TLatex(px,py,"CMS Preliminary");
   cms->SetTextFont(43);
-  cms->SetTextSize(16);
+  cms->SetTextSize(20);
   cms->SetNDC();
   cms->Draw();
 
-  TLatex *ppb = new TLatex(px, py-0.08,
+  TLatex *ppb = new TLatex(px, py-0.09,
 			    "#sqrt{s_{NN}}=5.02TeV");
   ppb->SetTextFont(43);
-  ppb->SetTextSize(16);
+  ppb->SetTextSize(20);
   ppb->SetNDC();
   ppb->Draw();
 
-  TLatex *ppb2 = new TLatex(px, py-0.16,
+  TLatex *ppb2 = new TLatex(px, py-0.18,
 			    "pPb 30.4 nb^{-1}");
   ppb2->SetTextFont(43);
-  ppb2->SetTextSize(16);
+  ppb2->SetTextSize(20);
   ppb2->SetNDC();
   ppb2->Draw();
 }
