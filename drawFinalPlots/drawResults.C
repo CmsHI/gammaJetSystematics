@@ -113,12 +113,12 @@ void drawResults(bool drawSinglePanels = false) {
   c2->cd(3);
   handsomeTH1(meanRjg[1],1,1,21);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
-  TH1D* tempR = new TH1D("tempR",";p_{T}^{#gamma};R_{J#gamma}",100,40,130);
+  TH1D* tempR = new TH1D("tempR",";p_{T}^{#gamma};R_{J#gamma}",100000,40,130);
   tempR->Reset();
   handsomeTH1(tempR,0);
   //tempR->SetAxisRange(0,1.2,"Y");
   tempR->SetAxisRange(0,1.0,"Y");
-  tempR->SetAxisRange(40,110,"X");
+  tempR->SetAxisRange(40.01,109.99,"X");
   tempR->GetYaxis()->SetNdivisions(505);
   tempR->Draw();
   drawSys(meanRjg[1], meanRjgSys[1], kGreen,3001);
@@ -162,7 +162,9 @@ void drawResults(bool drawSinglePanels = false) {
     drawCMSppPbPbDist(0.2,0.9);
 
   c2->cd(1);
-  tempR->Draw();
+  tempR->SetAxisRange(40,109.99,"X");
+  tempR->DrawCopy();
+  tempR->SetAxisRange(40.01,109.99,"X");
   drawSys(meanRjg[5], meanRjgSys[5], newYellow);
   drawSys(meanRjg[7], meanRjgSys[2], kGreen, 3001);
   handsomeTH1(meanRjg[5],9);
@@ -195,12 +197,13 @@ void drawResults(bool drawSinglePanels = false) {
   handsomeTH1(meanRjg[1],1);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
   //  tempR->Draw();
-  TH1D* tempJ = new TH1D("tempJ",";p_{T}^{#gamma}; <p_{T}^{Jet}>",100,40,130);
+  TH1D* tempJ = new TH1D("tempJ",";p_{T}^{#gamma}; <p_{T}^{Jet}>",10000,40,130);
   tempJ->Reset();
   handsomeTH1(tempJ,0);
-  tempJ->SetAxisRange(40,110,"Y");
-  tempJ->SetAxisRange(40,110,"X");
-  tempJ->Draw();
+  tempJ->SetAxisRange(40.01,109.99,"Y");
+  tempJ->SetAxisRange(40.,109.99,"X");
+  tempJ->DrawCopy();
+  tempJ->SetAxisRange(40.01,109.99,"X");
   drawSys(meanJetPt[5], meanJetPtSys[5], newYellow);
   drawSys(meanJetPt[7], meanJetPtSys[1], kGreen,3001);
   handsomeTH1(meanJetPt[5],9);
@@ -275,11 +278,11 @@ void drawResults(bool drawSinglePanels = false) {
   c7->cd(3);
   handsomeTH1(meanXjg[1],1,1,24);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
-  TH1D* tempX = new TH1D("tempX",";p_{T}^{#gamma} (GeV);<X_{J#gamma}>;",100,40,130);
+  TH1D* tempX = new TH1D("tempX",";p_{T}^{#gamma} (GeV);<X_{J#gamma}>;",10000,40,130);
   tempX->Reset();
   handsomeTH1(tempX,0);
   tempX->SetAxisRange(0.6,1.1,"Y");
-  tempX->SetAxisRange(40,110,"X");
+  tempX->SetAxisRange(40.01,109.99,"X");
   tempX->GetYaxis()->SetNdivisions(606);
   tempX->Draw();
   drawSys(meanXjg[3], meanXjgSys[3]);
@@ -317,7 +320,9 @@ void drawResults(bool drawSinglePanels = false) {
   drawCMSppPbPbDist(0.3,0.9);
 
   c7->cd(1);
-  tempX->Draw();
+  tempX->SetAxisRange(40.0,109.99,"X");
+  tempX->DrawCopy();
+  tempX->SetAxisRange(40.01,109.99,"X");
   drawSys(meanXjg[5], meanXjgSys[5], newYellow);
   drawSys(meanXjg[7], meanXjgSys[2], kGreen, 3001);
   handsomeTH1(meanXjg[5],9);
