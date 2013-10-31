@@ -135,9 +135,9 @@ void drawResults(bool drawSinglePanels = false) {
     ly->Draw();
   }
   if(!drawSinglePanels)
-    drawCMSppPbPbDist(0.1,0.9);
+    drawCMSppPbPbDist(0.04,0.9);
   else
-    drawCMSppPbPbDist(0.2,0.9);
+    drawCMSppPbPbDist(0.14,0.9);
 
 
   c2->cd(2);
@@ -157,9 +157,9 @@ void drawResults(bool drawSinglePanels = false) {
     ly->Draw();
   }
   if(!drawSinglePanels)
-    drawCMSppPbPbDist(0.1,0.9);
+    drawCMSppPbPbDist(0.04,0.9);
   else
-    drawCMSppPbPbDist(0.2,0.9);
+    drawCMSppPbPbDist(0.14,0.9);
 
   c2->cd(1);
   tempR->SetAxisRange(40,109.99,"X");
