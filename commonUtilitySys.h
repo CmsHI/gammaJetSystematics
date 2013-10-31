@@ -843,11 +843,18 @@ void drawCMSpPbDist(Float_t px, Float_t py)
   cms->Draw();
 
   TLatex *ppb = new TLatex(px, py-0.08,
-			    "#sqrt{s_{NN}}=5.02TeV, pPb 30.4 nb^{-1}");
+			    "#sqrt{s_{NN}}=5.02TeV");
   ppb->SetTextFont(43);
   ppb->SetTextSize(16);
   ppb->SetNDC();
   ppb->Draw();
+
+  TLatex *ppb2 = new TLatex(px, py-0.16,
+			    "pPb 30.4 nb^{-1}");
+  ppb2->SetTextFont(43);
+  ppb2->SetTextSize(16);
+  ppb2->SetNDC();
+  ppb2->Draw();
 }
 
 void getNiceBins( TH1* h=0, Int_t nDiv=4) {

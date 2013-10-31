@@ -18,15 +18,15 @@ TH1D* mergeSys( TH1D* h1, TH1D* h2) {
   return hres;
 }
 
-void drawResults() {
+void drawResults(bool drawSinglePanels = false) {
   // const int kPPcentral = 1;
   // const int kPPperipheral =2 ;
   // const int kHIcentral =  3;
   // const int kHIperipheral = 4;
   // const int kPADATA = 5;
   // const int kPAMC = 6;
-  const int nPtBin = 4;
-  double ptBin[nPtBin+1] = {40, 50,60,80,9999};
+  //const int nPtBin = 4;
+  // double ptBin[nPtBin+1] = {40, 50,60,80,9999};
 
   TH1D* meanJetPt[8];   // [collision] [Before/After variation]
   TH1D* meanJetPtSys[8];   // [collision] [Before/After variation]
@@ -97,9 +97,19 @@ void drawResults() {
 
 
   // RJG!!
-  TCanvas* c2 = new TCanvas("c1","",1300,500);
+  TCanvas* c2; 
   //c2->Divide(3,1);
-  makeMultiPanelCanvas(c2,3,1,0.0,0.0, 0.15, 0.15, 0.025);
+  if( !drawSinglePanels)
+  {
+    c2 = new TCanvas("c1","",1300,500);
+    makeMultiPanelCanvas(c2,3,1,0.0,0.0, 0.15, 0.15, 0.025);
+  }
+  else
+  {
+    c2 = new TCanvas("c1","",1450,500);
+    c2->Divide(3,1);
+    //makeMultiPanelCanvas(c2,3,1,0.2,0.2, 0.15, 0.15, 0.025);
+  }
   c2->cd(3);
   handsomeTH1(meanRjg[1],1,1,21);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
@@ -168,53 +178,13 @@ void drawResults() {
   c2->SaveAs("pT_dependence_rjg_pp_pbpb.pdf");
   c2->SaveAs("pT_dependence_rjg_pp_pbpb.png");
 
-
-  // TCanvas* c2pa = new TCanvas("c2pa","",500,500);
-  // handsomeTH1(meanRjg[1],1);
-  // //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
-  // //  tempR->Draw();
-  // TH1D* tempJ = new TH1D("tempJ",";p_{T}^{#gamma}; <p_{T}^{Jet}>",100,40,130);
-  // tempJ->Reset();
-  // handsomeTH1(tempJ,0);
-  // tempJ->SetAxisRange(40,110,"Y");
-  // tempJ->SetAxisRange(40,110,"X");
-  // tempJ->Draw();
-  // drawSys(meanJetPt[5], meanJetPtSys[5], newYellow);
-  // handsomeTH1(meanJetPt[5],2);
-  // handsomeTH1(meanJetPt[6],1);
-  // meanJetPt[5]->Draw("same");
-  // meanJetPt[6]->Draw("same");
-  // if ( 1==1 ) {
-  //   TLegend *ly = new TLegend(0.22,0.65,0.57,0.87,NULL,"brNDC");
-  //   easyLeg(ly);
-  //   ly->AddEntry(meanJetPt[5],"DATA","p");
-  //   ly->AddEntry(meanJetPt[6],"PYTHIA+HIJING","p");
-  //   ly->Draw();
-  // }
-  // drawCMSpPb(0.1,0.95);
-  // c2pa->SaveAs("pT_dependence_jetPt_pA.pdf");
-
-  // TCanvas* c3pa = new TCanvas("c3pa","",500,500);
-  // tempR->Draw();
-  // drawSys(meanRjg[5], meanRjgSys[5], newYellow);
-  // handsomeTH1(meanRjg[5],2);
-  // handsomeTH1(meanRjg[6],1);
-  // meanRjg[5]->Draw("same");
-  // meanRjg[6]->Draw("same");
-  // if ( 1==1 ) {
-  //   TLegend *ly = new TLegend(0.5,0.25,0.85,0.47,NULL,"brNDC");
-  //   easyLeg(ly);
-  //   ly->AddEntry(meanRjg[5],"DATA","p");
-  //   ly->AddEntry(meanRjg[6],"PYTHIA+HIJING","p");
-  //   ly->Draw();
-  // }
-  // drawCMSpPb(0.1,0.95);
-  // c3pa->SaveAs("pT_dependence_rjg_pA.pdf");
-
   // ppPbPb meanJetPt
   TCanvas* c3 = new TCanvas("c3","",1300,500);
-  //c3->Divide(2,1);
-  makeMultiPanelCanvas(c3,3,1,0.0,0.0, 0.15, 0.15, 0.025);
+  if(!drawSinglePanels)
+    makeMultiPanelCanvas(c3,3,1,0.0,0.0, 0.15, 0.15, 0.025);
+  else
+    c3->Divide(3,1);
+    //makeMultiPanelCanvas(c3,3,1,0.2,0.2, 0.15, 0.15, 0.025);
   c3->cd(1);
   handsomeTH1(meanRjg[1],1);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
@@ -260,7 +230,7 @@ void drawResults() {
     ly->AddEntry(meanJetPt[1],"pp (smeared)","p");
     ly->Draw();
   }
-  drawCMSppPbPbDist(0.2,0.9);
+  drawCMSppPbPbDist(0.1,0.9);
 
   c3->cd(2);
   tempJ->Draw();
@@ -278,15 +248,24 @@ void drawResults() {
     ly->AddEntry(meanJetPt[2],"pp (smeared)","p");
     ly->Draw();
   }
-  drawCMSppPbPbDist(0.2,0.9);
+  drawCMSppPbPbDist(0.1,0.9);
   c3->SaveAs("pT_dependence_jetPt_pp_pbpb.pdf");
   c3->SaveAs("pT_dependence_jetPt_pp_pbpb.png");
 
 
   // mean xjg
-  TCanvas* c7 = new TCanvas("c7","",1300,500);
-  //c7->Divide(2,1);
-  makeMultiPanelCanvas(c7,3,1,0.0,0.0, 0.15, 0.15, 0.025);
+  TCanvas* c7; 
+  if(!drawSinglePanels)
+  {
+    c7 = new TCanvas("c7","",1300,500);
+    makeMultiPanelCanvas(c7,3,1,0.0,0.0, 0.15, 0.15, 0.025);
+  }
+  else
+  {
+    c7 = new TCanvas("c7","",1450,500);
+    c7->Divide(3,1);
+    //makeMultiPanelCanvas(c7,3,1,0.2,0.2, 0.15, 0.15, 0.025);
+  }
   c7->cd(3);
   handsomeTH1(meanXjg[1],1,1,24);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
@@ -353,27 +332,6 @@ void drawResults() {
   
   c7->SaveAs("pT_dependence_meanXjg_pp_pbpb.pdf");
   c7->SaveAs("pT_dependence_meanXjg_pp_pbpb.png");
-
-  // TCanvas* c7pa = new TCanvas("c7pa","",500,500);
-  // tempX->Draw();
-  // drawSys(meanXjg[5], meanXjgSys[5], newYellow);
-  // handsomeTH1(meanXjg[5],2);
-  // handsomeTH1(meanXjg[6],1);
-  // meanXjg[5]->Draw("same");
-  // meanXjg[6]->Draw("same");
-  // if ( 1==1 ) {
-  //   TLegend *ly = new TLegend(0.4484643,0.6088445,0.9140673,0.80102941,NULL,"brNDC");
-  //   easyLeg(ly);
-  //   ly->AddEntry(meanXjg[5],"DATA","p");
-  //   ly->AddEntry(meanXjg[6],"PYTHIA+HIJING","p");
-  //   ly->Draw();
-  // }
-  // drawCMSpPb(0.1,0.95);
-  // c7pa->SaveAs("pT_dependence_meanXjg_pA.pdf");
-
-
-
-
 
   // TCanvas* c10 = new TCanvas("c10","",1200,350);
   // makeMultiPanelCanvas(c10,nPtBin,1,0.0,0.0,0.2,0.15,0.02);

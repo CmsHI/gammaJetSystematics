@@ -63,10 +63,11 @@ void rootlogon()
   gStyle->SetPadLeftMargin(0.15);
   //gStyle->SetPadLeftMargin(0.3);
   gStyle->SetPadBottomMargin(0.15);
-  //gStyle->SetPadTopMargin(0.05);
-  gStyle->SetPadTopMargin(0.10);
+  gStyle->SetPadTopMargin(0.05);
+  //gStyle->SetPadTopMargin(0.10);
   //gStyle->SetPadRightMargin(0.12);
-  gStyle->SetPadRightMargin(0.05);
+  //gStyle->SetPadRightMargin(0.05);
+  gStyle->SetPadRightMargin(0.01);
 
   gStyle->SetLegendBorderSize(0);
   gStyle->SetLegendFillColor(0);
