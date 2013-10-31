@@ -309,7 +309,7 @@ void drawResultsDist() {
     drawSys(dNdJetPt[3][ipt], dNdJetPtSys[3][ipt], newYellow,-1,10);
     handsomeTH1(dNdJetPt[3][ipt],2);
     dNdJetPt[1][ipt]->Draw("same");
-    dNdJetPt[1][ipt]->SetMarkerStyle(21);
+    //    dNdJetPt[1][ipt]->SetMarkerStyle(21);
     dNdJetPt[3][ipt]->Draw("same");
     if ( ipt == 1 ) {
       TLegend *ly = new TLegend(0.4484643,0.6988445,0.9140673,0.9102941,NULL,"brNDC");
@@ -329,8 +329,8 @@ void drawResultsDist() {
     drawSys(dNdJetPt[2][ipt], dNdJetPtSys[2][ipt], kGreen,3001,10);
     drawSys(dNdJetPt[4][ipt], dNdJetPtSys[4][ipt], newYellow,-1,10);
     handsomeTH1(dNdJetPt[4][ipt],2);
-    dNdJetPt[4][ipt]->SetMarkerStyle(24);
-    dNdJetPt[2][ipt]->SetMarkerStyle(25);
+    //    dNdJetPt[4][ipt]->SetMarkerStyle(24);
+    //   dNdJetPt[2][ipt]->SetMarkerStyle(25);
     dNdJetPt[2][ipt]->Draw("same");
     dNdJetPt[4][ipt]->Draw("same");
 
@@ -350,17 +350,19 @@ void drawResultsDist() {
 
     drawSys(dNdJetPt[5][ipt], dNdJetPtSys[5][ipt], newYellow);
     drawSys(dNdJetPt[7][ipt], dNdJetPtSys[2][ipt], kGreen,3001);
-    handsomeTH1(dNdJetPt[5][ipt],9);
-    handsomeTH1(dNdJetPt[7][ipt],1,1,24);
+    handsomeTH1(dNdJetPt[5][ipt],9,1,21);
+    handsomeTH1(dNdJetPt[7][ipt],1,1);
+    dNdJetPt[6][ipt]->SetMarkerStyle(25);
+
     dNdJetPt[6][ipt]->Draw("same");
     dNdJetPt[5][ipt]->Draw("same");
     dNdJetPt[7][ipt]->Draw("same");
     if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.4855983,0.5529059,0.9512013,0.7645899,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.4313699,0.5060255,0.8982322,0.8677549,NULL,"brNDC");
       easyLeg(ly);
       ly->AddEntry(dNdJetPt[5][ipt],"pPb Data","p");
       ly->AddEntry(dNdJetPt[6][ipt],"PYTHIA+HIJING","p");
-      ly->AddEntry(dNdJetPt[7][ipt],"pp Data","p");
+      ly->AddEntry(dNdJetPt[7][ipt],"pp Data (2.76TeV)","p");
       ly->Draw();
     }
     if(ipt == 4)
@@ -408,7 +410,7 @@ void drawResultsDist() {
     drawSys(dNdXjg[1][ipt], dNdXjgSys[1][ipt], kGreen,3001);
     handsomeTH1(dNdXjg[3][ipt],2);
     dNdXjg[1][ipt]->Draw("same");
-    dNdXjg[1][ipt]->SetMarkerStyle(21);
+    //    dNdXjg[1][ipt]->SetMarkerStyle(21);
     dNdXjg[3][ipt]->Draw("same");
     if ( ipt == 1 ) {
       TLegend *ly = new TLegend(0.351273,0.6152521,0.9997611,0.9087395,NULL,"brNDC");
@@ -430,8 +432,8 @@ void drawResultsDist() {
     drawSys(dNdXjg[4][ipt], dNdXjgSys[4][ipt], newYellow);
     drawSys(dNdXjg[2][ipt], dNdXjgSys[2][ipt], kGreen,3001);
     handsomeTH1(dNdXjg[4][ipt],2);
-    dNdXjg[4][ipt]->SetMarkerStyle(24);
-    dNdXjg[2][ipt]->SetMarkerStyle(25);
+    //    dNdXjg[4][ipt]->SetMarkerStyle(24);
+    //   dNdXjg[2][ipt]->SetMarkerStyle(25);
     dNdXjg[2][ipt]->Draw("same");
     dNdXjg[4][ipt]->Draw("same");
     if ( ipt==1 ){
@@ -451,17 +453,19 @@ void drawResultsDist() {
     //  dNdXjg[6][ipt]->Scale(meanRjg[6]->GetBinContent(ipt));
     drawSys(dNdXjg[5][ipt], dNdXjgSys[5][ipt], newYellow);
     drawSys(dNdXjg[7][ipt], dNdXjgSys[2][ipt], kGreen, 3001);
-    handsomeTH1(dNdXjg[5][ipt],9);
-    handsomeTH1(dNdXjg[7][ipt],1,1,24);
-    dNdXjg[6][ipt]->Draw("same");
+    handsomeTH1(dNdXjg[5][ipt],9,1,21);
+    handsomeTH1(dNdXjg[7][ipt],1,1);
+ 
+    dNdXjg[6][ipt]->SetMarkerStyle(25);
+   dNdXjg[6][ipt]->Draw("same");
     dNdXjg[5][ipt]->Draw("same");
     dNdXjg[7][ipt]->Draw("same");
     if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.351273,0.6552521,0.9997611,0.9487395,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.351273,0.6052521,0.9997611,0.9087395,NULL,"brNDC");
       easyLeg(ly);
       ly->AddEntry(dNdXjg[5][ipt],"pPb Data","p");
       ly->AddEntry(dNdXjg[6][ipt],"PYTHIA+HIJING","p");
-      ly->AddEntry(dNdXjg[7][ipt],"pp Data","p");
+      ly->AddEntry(dNdXjg[7][ipt],"pp Data (2.76TeV)","p");
       ly->Draw();
     }
 
@@ -527,11 +531,11 @@ void drawResultsDist() {
     drawSys(dNdphi[1][ipt],dNdphiSys[1][ipt],kGreen,3001, -1,0.3);
     drawSys(dNdphi[3][ipt],dNdphiSys[3][ipt],newYellow, -1, -1,0.3);
     dNdphi[1][ipt]->Draw("same");
-    dNdphi[1][ipt]->SetMarkerStyle(21);
+    //    dNdphi[1][ipt]->SetMarkerStyle(21);
     dNdphi[3][ipt]->Draw("same");
     gPad->SetLogy();
     if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.35,0.7,1,0.95,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.25,0.7556865,.9,0.99,NULL,"brNDC");
       easyLeg(ly);
       ly->AddEntry(dNdphi[3][ipt],"PbPb 0-30%","p");
       ly->AddEntry(dNdphi[1][ipt],"pp (smeared)","p");
@@ -546,8 +550,9 @@ void drawResultsDist() {
     // dNdphi[2][ipt]->Scale(dNdphi[2][ipt]->GetBinContent(ipt));
     // dNdphi[4][ipt]->Scale(dNdphi[4][ipt]-->GetBinContent(ipt));
     handsomeTH1(dNdphi[4][ipt],2);
-    dNdphi[4][ipt]->SetMarkerStyle(24);
-    dNdphi[2][ipt]->SetMarkerStyle(25);
+    //    dNdphi[4][ipt]->SetMarkerStyle(24);
+    //   dNdphi[2][ipt]->SetMarkerStyle(25);
+    //    dNdphi[2][ipt]->SetMarkerStyle(21);
     dNdphi[2][ipt]->Scale(1./dNdphi[2][ipt]->Integral());
     dNdphi[4][ipt]->Scale(1./dNdphi[4][ipt]->Integral());
 
@@ -558,7 +563,7 @@ void drawResultsDist() {
     dNdphi[4][ipt]->Draw("same");
     gPad->SetLogy();
     if ( ipt==1 ){
-      TLegend *ly = new TLegend(0.35,0.7,1,0.95,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.25,0.7,0.9,0.95,NULL,"brNDC");
       easyLeg(ly);
       ly->AddEntry(dNdphi[4][ipt],"PbPb 30-100%","p");
       ly->AddEntry(dNdphi[2][ipt],"pp (smeared)","p");
@@ -571,8 +576,8 @@ void drawResultsDist() {
     cDphi->cd(ipt);
     hTempphi->DrawCopy();
 
-    handsomeTH1(dNdphi[5][ipt],9);
-    handsomeTH1(dNdphi[7][ipt],1,1,24);
+    handsomeTH1(dNdphi[5][ipt],9,1,21);
+    handsomeTH1(dNdphi[7][ipt],1,1,20);
     dNdphi[6][ipt]->Scale(1./dNdphi[6][ipt]->Integral());
     dNdphi[5][ipt]->Scale(1./dNdphi[5][ipt]->Integral());
     dNdphi[7][ipt]->Scale(1./dNdphi[7][ipt]->Integral());
@@ -580,16 +585,18 @@ void drawResultsDist() {
     drawSys(dNdphi[5][ipt],dNdphiSys[5][ipt],newYellow,-1, -1,0.3);
     drawSys(dNdphi[7][ipt],dNdphiSys[2][ipt],kGreen,3001, -1,0.3);
 
+    dNdphi[6][ipt]->SetMarkerStyle(25);
+
     dNdphi[6][ipt]->Draw("same");
     dNdphi[5][ipt]->Draw("same");
     dNdphi[7][ipt]->Draw("same");
     gPad->SetLogy();
     if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.351273,0.6552521,0.9997611,0.9487395,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.251273,0.6552521,0.8997611,0.9487395,NULL,"brNDC");
       easyLeg(ly);
       ly->AddEntry(dNdphi[5][ipt],"pPb Data","p");
       ly->AddEntry(dNdphi[6][ipt],"PYTHIA+HIJING","p");
-      ly->AddEntry(dNdphi[7][ipt],"pp Data","p");
+      ly->AddEntry(dNdphi[7][ipt],"pp Data (2.76TeV)","p");
       ly->Draw();
     }
     double dx1=0.16;
