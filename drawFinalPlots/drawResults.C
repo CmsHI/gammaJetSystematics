@@ -113,7 +113,7 @@ void drawResults(bool drawSinglePanels = false) {
   c2->cd(3);
   handsomeTH1(meanRjg[1],1,1,21);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
-  TH1D* tempR = new TH1D("tempR",";p_{T}^{#gamma};R_{J#gamma}",100000,40,130);
+  TH1D* tempR = new TH1D("tempR",";p_{T}^{#gamma} (GeV);R_{J#gamma}",100000,40,130);
   tempR->Reset();
   handsomeTH1(tempR,0);
   //tempR->SetAxisRange(0,1.2,"Y");
@@ -123,15 +123,22 @@ void drawResults(bool drawSinglePanels = false) {
   tempR->Draw();
   drawSys(meanRjg[1], meanRjgSys[1], kGreen,3001);
   drawSys(meanRjg[3], meanRjgSys[3]);
-  meanRjg[1]->Draw("same");
-  handsomeTH1(meanRjg[3],2 );
-  meanRjg[3]->Draw("same");
+  handsomeTH1(meanRjg[1],1,1,21);
+  meanRjg[1]->DrawCopy("same");
+  handsomeTH1(meanRjg[3],2,1,20);
+  meanRjg[3]->DrawCopy("same");
+  meanRjg[1]->SetFillStyle(3001);
+  meanRjg[1]->SetFillColor(kGreen);
+  meanRjg[3]->SetFillColor(90);
+  meanRjg[3]->SetFillStyle(1001);
+  meanRjg[1]->SetLineColor(0);
+  meanRjg[3]->SetLineColor(0);
   if ( 1==1 ){
-    TLegend *ly = new  TLegend(0.5,0.25,0.85,0.47,NULL,"brNDC");
+    TLegend *ly = new  TLegend(0.4,0.2,0.75,0.4,NULL,"brNDC");
     //easyLeg(ly,"2.76TeV");
     easyLeg(ly);
-    ly->AddEntry(meanRjg[3],"PbPb 0-30%","p");
-    ly->AddEntry(meanRjg[1],"pp (smeared)","p");
+    ly->AddEntry(meanRjg[3],"PbPb 0-30%","fp");
+    ly->AddEntry(meanRjg[1],"Smeared pp reference","fp");
     ly->Draw();
   }
   if(!drawSinglePanels)
@@ -145,15 +152,22 @@ void drawResults(bool drawSinglePanels = false) {
   drawSys(meanRjg[2], meanRjgSys[2], kGreen,3001);
   drawSys(meanRjg[4], meanRjgSys[4]);
   //  meanRjg[2]->SetMarkerStyle(25);
-  meanRjg[2]->Draw("same");
-  handsomeTH1(meanRjg[4],2 );
+  handsomeTH1(meanRjg[2],1,1,25);
+  meanRjg[2]->DrawCopy("same");
+  handsomeTH1(meanRjg[4],2,1,24);
   //  meanRjg[4]->SetMarkerStyle(24);
-  meanRjg[4]->Draw("same");
+  meanRjg[4]->DrawCopy("same");
+  meanRjg[2]->SetFillStyle(3001);
+  meanRjg[2]->SetFillColor(kGreen);
+  meanRjg[4]->SetFillColor(90);
+  meanRjg[4]->SetFillStyle(1001);
+  meanRjg[2]->SetLineColor(0);
+  meanRjg[4]->SetLineColor(0);
   if ( 1==1 ){
-    TLegend *ly = new  TLegend(0.5,0.25,0.85,0.47,NULL,"brNDC");
+    TLegend *ly = new  TLegend(0.4,0.2,0.75,0.4,NULL,"brNDC");
     easyLeg(ly);
-    ly->AddEntry(meanRjg[4],"PbPb 30-100%","p");
-    ly->AddEntry(meanRjg[2],"pp (smeared)","p");
+    ly->AddEntry(meanRjg[4],"PbPb 30-100%","fp");
+    ly->AddEntry(meanRjg[2],"Smeared pp reference","fp");
     ly->Draw();
   }
   if(!drawSinglePanels)
@@ -170,21 +184,28 @@ void drawResults(bool drawSinglePanels = false) {
   handsomeTH1(meanRjg[5],9,1,34);
   handsomeTH1(meanRjg[6],1,1,25);
   handsomeTH1(meanRjg[7],1,1);
-  meanRjg[5]->Draw("same");
-  meanRjg[6]->Draw("same");
-  meanRjg[7]->Draw("same");
+  meanRjg[5]->DrawCopy("same");
+  meanRjg[6]->DrawCopy("same");
+  meanRjg[7]->DrawCopy("same");
+  meanRjg[7]->SetFillStyle(3001);
+  meanRjg[7]->SetFillColor(kGreen);
+  meanRjg[5]->SetFillColor(90);
+  meanRjg[5]->SetFillStyle(1001);
+  meanRjg[7]->SetLineColor(0);
+  meanRjg[5]->SetLineColor(0);
+
   if ( 1==1 ) {
     TLegend *ly = new TLegend(0.5,0.25,0.85,0.47,NULL,"brNDC");
     easyLeg(ly);
-    ly->AddEntry(meanRjg[5],"pPb DATA","p");
+    ly->AddEntry(meanRjg[5],"pPb DATA","fp");
     ly->AddEntry(meanRjg[6],"PYTHIA+HIJING","p");
-    ly->AddEntry(meanRjg[7],"pp DATA (2.76TeV)","p");
+    ly->AddEntry(meanRjg[7],"pp DATA (2.76TeV)","fp");
     ly->Draw();
   }
   drawCMSpPbDist(0.2,0.9);
   
   c2->SaveAs("pT_dependence_rjg_pp_pbpb.pdf");
-  c2->SaveAs("pT_dependence_rjg_pp_pbpb.png");
+  //c2->SaveAs("pT_dependence_rjg_pp_pbpb.png");
 
   // ppPbPb meanJetPt
   TCanvas* c3 = new TCanvas("c3","",1300,500);
@@ -209,9 +230,9 @@ void drawResults(bool drawSinglePanels = false) {
   handsomeTH1(meanJetPt[5],9,1,34);
   handsomeTH1(meanJetPt[6],1,1,25);
   handsomeTH1(meanJetPt[7],1,1);
-  meanJetPt[5]->Draw("same");
-  meanJetPt[6]->Draw("same");
-  meanJetPt[7]->Draw("same");
+  meanJetPt[5]->DrawCopy("same");
+  meanJetPt[6]->DrawCopy("same");
+  meanJetPt[7]->DrawCopy("same");
   if ( 1==1 ) {
     TLegend *ly = new TLegend(0.53,0.18,0.88,0.4,NULL,"brNDC");
     easyLeg(ly);
@@ -259,7 +280,7 @@ void drawResults(bool drawSinglePanels = false) {
   }
   drawCMSppPbPbDist(0.1,0.9);
   c3->SaveAs("pT_dependence_jetPt_pp_pbpb.pdf");
-  c3->SaveAs("pT_dependence_jetPt_pp_pbpb.png");
+  //c3->SaveAs("pT_dependence_jetPt_pp_pbpb.png");
 
 
   // mean xjg
@@ -288,17 +309,25 @@ void drawResults(bool drawSinglePanels = false) {
   drawSys(meanXjg[3], meanXjgSys[3]);
   drawSys(meanXjg[1], meanXjgSys[1], kGreen,3001);
   //  meanXjg[1]->SetMarkerStyle(21);
-  meanXjg[1]->Draw("same");
-  handsomeTH1(meanXjg[3],2 );
-  meanXjg[3]->Draw("same");
+  handsomeTH1(meanXjg[1],1,1,21);
+  meanXjg[1]->DrawCopy("same");
+  handsomeTH1(meanXjg[3],2,1,20);
+  meanXjg[3]->DrawCopy("same");
+  meanXjg[1]->SetFillStyle(3001);
+  meanXjg[1]->SetFillColor(kGreen);
+  meanXjg[3]->SetFillColor(90);
+  meanXjg[3]->SetFillStyle(1001);
+  meanXjg[1]->SetLineColor(0);
+  meanXjg[3]->SetLineColor(0);
+
   Float_t xpos = 0.022;
   if(drawSinglePanels)
     xpos = 0.15;
   if ( 1==1 ){
     TLegend *ly = new TLegend(xpos,0.1861745,0.578901,0.3788434,NULL,"brNDC");
     easyLeg(ly);
-    ly->AddEntry(meanXjg[3],"PbPb 0-30%","p");
-    ly->AddEntry(meanXjg[1],"pp (smeared)","p");
+    ly->AddEntry(meanXjg[3],"PbPb 0-30%","fp");
+    ly->AddEntry(meanXjg[1],"Smeared pp reference","fp");
     ly->Draw();
   }
   drawCMSppPbPbDist(0.6,0.9);
@@ -309,15 +338,23 @@ void drawResults(bool drawSinglePanels = false) {
   drawSys(meanXjg[4], meanXjgSys[4]);
   drawSys(meanXjg[2], meanXjgSys[2], kGreen,3001);
   //  meanXjg[2]->SetMarkerStyle(25);
-  meanXjg[2]->Draw("same");
-  handsomeTH1(meanXjg[4],2 );
+  handsomeTH1(meanXjg[2],1,1,25);
+  meanXjg[2]->DrawCopy("same");
+  handsomeTH1(meanXjg[4],2,1,24 );
   //  meanXjg[4]->SetMarkerStyle(24);
-  meanXjg[4]->Draw("same");
+  meanXjg[4]->DrawCopy("same");
+  meanXjg[2]->SetFillStyle(3001);
+  meanXjg[2]->SetFillColor(kGreen);
+  meanXjg[4]->SetFillColor(90);
+  meanXjg[4]->SetFillStyle(1001);
+  meanXjg[2]->SetLineColor(0);
+  meanXjg[4]->SetLineColor(0);
+
   if ( 1==1 ){
     TLegend *ly = new TLegend(xpos,0.1861745,0.578901,0.3788434,NULL,"brNDC");
     easyLeg(ly);
-    ly->AddEntry(meanXjg[4],"PbPb 30-100%","p");
-    ly->AddEntry(meanXjg[2],"pp (smeared)","p");
+    ly->AddEntry(meanXjg[4],"PbPb 30-100%","fp");
+    ly->AddEntry(meanXjg[2],"Smeared pp reference","fp");
     ly->Draw();
   }
   drawCMSppPbPbDist(0.6,0.9);
@@ -331,15 +368,22 @@ void drawResults(bool drawSinglePanels = false) {
   handsomeTH1(meanXjg[5],9,1,34);
   handsomeTH1(meanXjg[6],1,1,25);
   handsomeTH1(meanXjg[7],1,1);
-  meanXjg[5]->Draw("same");
-  meanXjg[6]->Draw("same");
-  meanXjg[7]->Draw("same");
+  meanXjg[5]->DrawCopy("same");
+  meanXjg[6]->DrawCopy("same");
+  meanXjg[7]->DrawCopy("same");
+  meanXjg[7]->SetFillStyle(3001);
+  meanXjg[7]->SetFillColor(kGreen);
+  meanXjg[5]->SetFillColor(90);
+  meanXjg[5]->SetFillStyle(1001);
+  meanXjg[7]->SetLineColor(0);
+  meanXjg[5]->SetLineColor(0);
+
   if ( 1==1 ) {
     TLegend *ly = new TLegend(0.1722123,0.1861,0.4788343,0.3788,NULL,"brNDC");
     easyLeg(ly);
-    ly->AddEntry(meanXjg[5],"pPb DATA","p");
+    ly->AddEntry(meanXjg[5],"pPb DATA","fp");
     ly->AddEntry(meanXjg[6],"PYTHIA+HIJING","p");
-    ly->AddEntry(meanXjg[7],"pp DATA (2.76TeV)","p");    
+    ly->AddEntry(meanXjg[7],"pp DATA (2.76TeV)","fp");    
     ly->Draw();
   }
   drawCMSpPbDist(0.65,0.90);
