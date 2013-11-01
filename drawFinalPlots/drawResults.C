@@ -113,7 +113,7 @@ void drawResults(bool drawSinglePanels = false) {
   c2->cd(3);
   handsomeTH1(meanRjg[1],1,1,21);
   //  drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, Int_t lineStyle = -1)
-  TH1D* tempR = new TH1D("tempR",";p_{T}^{#gamma} (GeV);R_{J#gamma}",100000,40,130);
+  TH1D* tempR = new TH1D("tempR",";p_{T}^{#gamma} (GeV);R_{J#gamma}",1000,40,130);
   tempR->Reset();
   handsomeTH1(tempR,0);
   //tempR->SetAxisRange(0,1.2,"Y");
