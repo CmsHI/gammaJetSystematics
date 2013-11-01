@@ -30,14 +30,36 @@ void drawResultsDist() {
   TH1D* dNdJetPt[8][5]; // [collision] [ ptbin]  [Before/After variation]
   TH1D* dNdJetPtSys[7][5]; // [collision] [ ptbin]  [Before/After variation]
 
+
   TH1D* ratioJet[7][5]; //  pbpb/pp of jet pt
   TH1D* ratioJet1[7][5]; //  pbpb/pp of jet pt
   TH1D* ratioJetSys[7][5]; //  pbpb/pp of jet pt
+
+  TH1D* dNdJetPt40GeV[7]; 
+  TH1D* dNdJetPtSys40GeV[7];
+  TH1D* ratioJet40GeV[7]; 
+  TH1D* ratioJet40GeV1[7];
+  TH1D* ratioJetSys40GeV[7];
+
+
+
+
   const int nRptBin[4] = {4,4,6,5};
   double ratioPtBin[4][7] = {{20,30,40,50,150},         
 			     {20,30,40,50,150},
 			     {20,30,40,50,60,80,150},
 			     {20,30,50,80,100,150}};
+
+  const int nRptBin40GeV = 7;
+  double ratioPtBin40GeV[8] = {20,30,40,50,60,80,100,150};
+  double ratioPtBin40GeV1[8] = {20,30,40,50,60,78,108, 138};
+  //  double ratioPtBin40GeV1 = 25, 35,45,55,65,79, 99, 135  : Weigted mean pt
+  
+  /*
+  const int nRptBin40GeV = 13;
+  double ratioPtBin40GeV[14] = {20,30,40,50,60,70,80,90,100,110,120,130,140,150};
+  double ratioPtBin40GeV1[14] = {20,30,40,50,60,70,80,90,100,110,120,130,140,150};
+  */
 
   /* mean of each bins are  = {{25,35,45, 63},
 			      {25,35,45, 64},
@@ -47,7 +69,8 @@ void drawResultsDist() {
   double ratioPtBin1[4][7] = {{20,30,40,50,76},
 			      {20,30,40,50,78},
 			      {20,30,40,50,60,78, 108},
-			      {20,30,52,78, 108, 130}};
+			      {20,30,52,78, 108, 138}};
+			     
 
 
   //double ratioPtBin[nRptBin+1] = {20,30,40,50,80,150};
@@ -177,7 +200,8 @@ void drawResultsDist() {
   for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
     c5_ratio->cd(ipt+nPtBin);
     hTempPt->SetXTitle("p_{T}^{Jet} (GeV)");
-    hTempPt->SetYTitle("PbPb/pp of jet yield");
+    hTempPt->SetYTitle("Jet I_{AA}");
+    //    hTempPt->SetYTitle("PbPb/pp of jet yield");
     hTempPt->SetAxisRange(10,150,"X");
     hTempPt->SetAxisRange(0.001,2.9,"Y");
     handsomeTH1(hTempPt,0);
@@ -245,6 +269,116 @@ void drawResultsDist() {
   }
   c5_ratio->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio.pdf");
   c5_ratio->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio.png");
+
+
+  
+  TCanvas* c5_iaa40 = new TCanvas("c5_iaa40","",500,800);
+  makeMultiPanelCanvas(c5_iaa40,1, 2, 0.0, 0.0, 0.15, 0.2, 0.02);
+  c5_iaa40->cd(1);
+  hTempPt->SetXTitle("p_{T}^{Jet} (GeV)");
+  hTempPt->SetYTitle("Jet I_{AA}");
+  hTempPt->SetAxisRange(10,150,"X");
+  hTempPt->SetAxisRange(0.001,2.9,"Y");
+  handsomeTH1(hTempPt,0);
+  hTempPt->GetYaxis()->SetTitleOffset(2.5);
+  hTempPt->GetXaxis()->SetTitleOffset(2);
+  hTempPt->DrawCopy();
+  
+  // Integration :
+  dNdJetPt40GeV[1] = (TH1D*)dNdJetPt[1][1]->Clone("dNdJetPt_pp_centBin1_40GeVCut");
+  dNdJetPt40GeV[1]->Reset();
+  dNdJetPt40GeV[1]->Add(dNdJetPt[1][1], 3895);
+  dNdJetPt40GeV[1]->Add(dNdJetPt[1][2], 1633);
+  dNdJetPt40GeV[1]->Add(dNdJetPt[1][3], 1006);
+  dNdJetPt40GeV[1]->Add(dNdJetPt[1][4], 429);
+  dNdJetPt40GeV[1]->Scale( 1./ ( 3895+1633+1006+429));
+
+  dNdJetPt40GeV[2] = (TH1D*)dNdJetPt[2][1]->Clone("dNdJetPt_pp_centBin2_40GeVCut");
+  dNdJetPt40GeV[2]->Reset();
+  dNdJetPt40GeV[2]->Add(dNdJetPt[2][1], 3895);
+  dNdJetPt40GeV[2]->Add(dNdJetPt[2][2], 1633);
+  dNdJetPt40GeV[2]->Add(dNdJetPt[2][3], 1006);
+  dNdJetPt40GeV[2]->Add(dNdJetPt[2][4], 429);
+  dNdJetPt40GeV[2]->Scale( 1./ ( 3895+1633+1006+429));
+
+
+  dNdJetPt40GeV[3] = (TH1D*)dNdJetPt[3][1]->Clone("dNdJetPt_pbpb_centBin1_40GeVCut");
+  dNdJetPt40GeV[3]->Reset();
+  dNdJetPt40GeV[3]->Add(dNdJetPt[3][1], 4319);
+  dNdJetPt40GeV[3]->Add(dNdJetPt[3][2], 1799);
+  dNdJetPt40GeV[3]->Add(dNdJetPt[3][3], 1154);
+  dNdJetPt40GeV[3]->Add(dNdJetPt[3][4], 547);
+  dNdJetPt40GeV[3]->Scale( 1./ ( 4319+1799+1154+547));
+
+  dNdJetPt40GeV[4] = (TH1D*)dNdJetPt[4][1]->Clone("dNdJetPt_pbpb_centBin1_40GeVCut");
+  dNdJetPt40GeV[4]->Reset();
+  dNdJetPt40GeV[4]->Add(dNdJetPt[4][1], 1208);
+  dNdJetPt40GeV[4]->Add(dNdJetPt[4][2], 493);
+  dNdJetPt40GeV[4]->Add(dNdJetPt[4][3], 297);
+  dNdJetPt40GeV[4]->Add(dNdJetPt[4][4], 114);
+  dNdJetPt40GeV[4]->Scale( 1./ ( 1208+493+297+114));
+  
+  
+  TFile* fSys40 = new TFile("../relativeSysDist/relativeSys_merged_for_jetPt_Ratio_40GeVCut.root");
+  ratioJetSys40GeV[3] = (TH1D*)fSys40->Get("dNdJetPt_ratio_centralityBin1_ptBin1_uncertainty_merged");
+  ratioJetSys40GeV[4] = (TH1D*)fSys40->Get("dNdJetPt_ratio_centralityBin2_ptBin1_uncertainty_merged");
+
+  //here
+  ratioJet40GeV[1]= (TH1D*)dNdJetPt40GeV[1]->Rebin(nRptBin40GeV, Form("%s_ratio",dNdJetPt40GeV[1]->GetName()), ratioPtBin40GeV);
+  ratioJet40GeV[2]= (TH1D*)dNdJetPt40GeV[2]->Rebin(nRptBin40GeV, Form("%s_ratio",dNdJetPt40GeV[2]->GetName()), ratioPtBin40GeV);
+  ratioJet40GeV[3]= (TH1D*)dNdJetPt40GeV[3]->Rebin(nRptBin40GeV, Form("%s_ratio",dNdJetPt40GeV[3]->GetName()), ratioPtBin40GeV);
+  ratioJet40GeV[4]= (TH1D*)dNdJetPt40GeV[4]->Rebin(nRptBin40GeV, Form("%s_ratio",dNdJetPt40GeV[4]->GetName()), ratioPtBin40GeV);
+
+  ratioJet40GeV[3]->Divide(ratioJet40GeV[1]);
+  ratioJet40GeV[4]->Divide(ratioJet40GeV[2]);
+  
+  ratioJet40GeV1[3] = new TH1D(Form("%s_ratio1",ratioJet40GeV[3]->GetName()),"",nRptBin40GeV,ratioPtBin40GeV1);
+  ratioJet40GeV1[4] = new TH1D(Form("%s_ratio1",ratioJet40GeV[4]->GetName()),"",nRptBin40GeV,ratioPtBin40GeV1);
+
+
+  for ( int ibin =1 ; ibin<=nRptBin40GeV ; ibin++)  {
+      ratioJet40GeV1[3]->SetBinContent(ibin, ratioJet40GeV[3]->GetBinContent(ibin));
+      ratioJet40GeV1[3]->SetBinError(ibin, ratioJet40GeV[3]->GetBinError(ibin));
+      ratioJet40GeV1[4]->SetBinContent(ibin, ratioJet40GeV[4]->GetBinContent(ibin));
+      ratioJet40GeV1[4]->SetBinError(ibin, ratioJet40GeV[4]->GetBinError(ibin));
+    }
+
+    handsomeTH1(ratioJet40GeV1[3],2);
+    handsomeTH1(ratioJet40GeV1[4],2);
+    ratioJet40GeV1[4]->SetMarkerStyle(24);
+    drawSys(ratioJet40GeV1[4], ratioJetSys40GeV[4] );
+    ratioJet40GeV1[4]->Draw("same");
+    jumSun(10,1,150,1);
+    if ( 1==1) {
+      TLegend *ly = new TLegend(0.2533658,0.7018245,0.5500974,0.9867236,NULL,"brNDC");
+      easyLeg(ly);
+      ly->AddEntry(ratioJet40GeV1[3],"30-100%","p");
+      ly->Draw();
+    }    
+    double dx1=0.15;
+    drawText("p_{T}^{#gamma} > 40GeV ", 0.10+dx1+0.1,0.9,1,18);
+    
+    gPad->RedrawAxis();
+    
+    c5_iaa40->cd(2);
+    hTempPt->DrawCopy();
+
+    drawSys(ratioJet40GeV1[3], ratioJetSys40GeV[3] );
+    ratioJet40GeV1[3]->Draw("same");
+    jumSun(10,1,150,1);
+    jumSun(10,1,150,1);
+    if ( 1==1) {
+      TLegend *ly = new TLegend(0.2533658,0.7018245,0.5500974,0.9867236,NULL,"brNDC");
+      easyLeg(ly);
+      ly->AddEntry(ratioJet40GeV1[3],"0-30%","p");
+      ly->Draw();
+    }
+    gPad->RedrawAxis();
+
+
+    c5_iaa40->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio_40GeV.pdf");
+    c5_iaa40->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio_40GeV.png");
+
 
   // jet pt distributions
   // rebin last category
