@@ -343,7 +343,7 @@ void drawResultsDist2() {
     if ( 1==1) {
     TLegend *ly = new TLegend(0.3533658,0.7018245-0.1,0.6500974,0.9867236-0.1,NULL,"brNDC");
     easyLeg(ly);
-    ly->AddEntry(ratioJet40GeV1[4],"0-30%","p");
+    ly->AddEntry(ratioJet40GeV1[4],"30-100%","p");
     ly->Draw();
     }
     
@@ -360,7 +360,7 @@ void drawResultsDist2() {
     if ( 1==1) {
     TLegend *ly = new TLegend(0.3533658,0.7018245,0.6500974,0.9867236,NULL,"brNDC");
     easyLeg(ly);
-    ly->AddEntry(ratioJet40GeV1[3],"30-100%","p");
+    ly->AddEntry(ratioJet40GeV1[3],"0-30%","p");
     ly->Draw();
     }
 
