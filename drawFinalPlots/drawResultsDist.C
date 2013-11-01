@@ -17,7 +17,7 @@ TH1D* mergeSys( TH1D* h1, TH1D* h2) {
   return hres;
 }
 
-void drawResultsDist() {
+void drawResultsDist(bool separatepPb = false) {
   // const int kPPcentral = 1;
   // const int kPPperipheral =2 ;
   // const int kHIcentral =  3;
@@ -221,14 +221,19 @@ void drawResultsDist() {
 
     handsomeTH1(ratioJet1[3][ipt],2);
     drawSys(ratioJet1[3][ipt], ratioJetSys[3][ipt] );
-    ratioJet1[3][ipt]->Draw("same");
+    ratioJet1[3][ipt]->DrawCopy("same");
     jumSun(10,1,150,1);
     if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.2533658,0.7018245,0.5500974,0.9867236,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.333658,0.7018245,0.5500974,0.9867236,NULL,"brNDC");
       easyLeg(ly);
-      ly->AddEntry(ratioJet1[3][ipt],"PbPb 0-30%","p");
+      ratioJet1[3][ipt]->SetFillStyle(1001);
+      ratioJet1[3][ipt]->SetFillColor(90);
+      ratioJet1[3][ipt]->SetLineColor(0);
+      ly->AddEntry(ratioJet1[3][ipt],"PbPb 0-30%","fp");
       ly->Draw();
     }
+    if(ipt == 4)
+      drawCMSppPbPbDist(0.4,0.85);
     gPad->RedrawAxis();
 
     c5_ratio->cd(ipt);
@@ -248,13 +253,16 @@ void drawResultsDist() {
     handsomeTH1(ratioJet1[4][ipt],2);
     ratioJet1[4][ipt]->SetMarkerStyle(24);
     drawSys(ratioJet1[4][ipt], ratioJetSys[4][ipt] );
-    ratioJet1[4][ipt]->Draw("same");
+    ratioJet1[4][ipt]->DrawCopy("same");
     jumSun(10,1,150,1);
 
     if ( ipt==1 ){
-      TLegend *ly = new TLegend(0.2533658,0.7018245,0.5500974,0.9867236,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.333658,0.7018245,0.5500974,0.9867236,NULL,"brNDC");
       easyLeg(ly);
-      ly->AddEntry(ratioJet1[4][ipt],"PbPb 30-100%","p");
+      ratioJet1[4][ipt]->SetFillStyle(1001);
+      ratioJet1[4][ipt]->SetFillColor(90);
+      ratioJet1[4][ipt]->SetLineColor(0);
+      ly->AddEntry(ratioJet1[4][ipt],"PbPb 30-100%","fp");
       ly->Draw();
     }
 
@@ -266,9 +274,13 @@ void drawResultsDist() {
     else
       drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
 
+    if(ipt == 4)
+      drawCMSppPbPbDist(0.4,0.8);
+
+
   }
   c5_ratio->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio.pdf");
-  c5_ratio->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio.png");
+  //c5_ratio->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio.png");
 
 
   
@@ -377,7 +389,7 @@ void drawResultsDist() {
 
 
     c5_iaa40->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio_40GeV.pdf");
-    c5_iaa40->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio_40GeV.png");
+    //c5_iaa40->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio_40GeV.png");
 
 
   // jet pt distributions
@@ -422,85 +434,129 @@ void drawResultsDist() {
     dNdJetPt[i][nPtBin]->SetBinContent(1,dNdJetPt[i][nPtBin]->GetBinContent(1)*2);
     dNdJetPt[i][nPtBin]->SetBinError(1,dNdJetPt[i][nPtBin]->GetBinError(1)*TMath::Sqrt(2));
   }
-  
-  TCanvas* c5 = new TCanvas("c5","",1200,900);
-  makeMultiPanelCanvas(c5,nPtBin, 3, 0.0, 0.0, 0.25, 0.2, 0.02);
+
+  Int_t rows = 3;
+  if(separatepPb)
+    rows = 2;
+  TCanvas* c5 = new TCanvas("c5","",1200,rows*300);
+  makeMultiPanelCanvas(c5,nPtBin, rows, 0.0, 0.0, 0.25, 0.2, 0.02);
 
   for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
-    c5->cd(ipt+nPtBin*2);
+    if(!separatepPb)
+      c5->cd(ipt+nPtBin*2);
+    else
+      c5->cd(ipt+nPtBin);
 
     hTempPt->SetXTitle("p_{T}^{Jet} (GeV)");
-    hTempPt->SetYTitle("#frac{1}{N_{#gamma}} #frac{dN_{J#gamma}}{dp_{T}^{jet}}");
+    hTempPt->SetYTitle("#frac{1}{N_{#gamma}} #frac{dN_{J#gamma}}{dp_{T}^{Jet}}");
     hTempPt->SetAxisRange(10,150,"X");
     hTempPt->SetAxisRange(0,0.025,"Y");
     hTempPt->GetYaxis()->SetNdivisions(504);
     handsomeTH1(hTempPt,0);
-    hTempPt->GetYaxis()->SetTitleOffset(4);
-    hTempPt->GetXaxis()->SetTitleOffset(3);
+    if(!separatepPb)
+    {
+      hTempPt->GetYaxis()->SetTitleOffset(4);
+      hTempPt->GetXaxis()->SetTitleOffset(3);
+    } else {
+      hTempPt->GetYaxis()->SetTitleOffset(3);
+      hTempPt->GetXaxis()->SetTitleOffset(2);
+    }
     hTempPt->DrawCopy();
 
     drawSys(dNdJetPt[1][ipt], dNdJetPtSys[1][ipt], kGreen,3001,10);
     drawSys(dNdJetPt[3][ipt], dNdJetPtSys[3][ipt], newYellow,-1,10);
     handsomeTH1(dNdJetPt[3][ipt],2);
-    dNdJetPt[1][ipt]->Draw("same");
-    //    dNdJetPt[1][ipt]->SetMarkerStyle(21);
-    dNdJetPt[3][ipt]->Draw("same");
+    dNdJetPt[1][ipt]->DrawCopy("same");
+    dNdJetPt[1][ipt]->SetMarkerStyle(21);
+    dNdJetPt[3][ipt]->DrawCopy("same");
     if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.4484643,0.6988445,0.9140673,0.9102941,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.25,0.75,0.9,0.95,NULL,"brNDC");
       easyLeg(ly);
-      ly->AddEntry(dNdJetPt[3][ipt],"PbPb 0-30%","p");
-      ly->AddEntry(dNdJetPt[1][ipt],"pp (smeared)","p");
+      dNdJetPt[3][ipt]->SetFillStyle(1001);
+      dNdJetPt[3][ipt]->SetFillColor(90);
+      dNdJetPt[3][ipt]->SetLineColor(0);
+      dNdJetPt[1][ipt]->SetFillStyle(3001);
+      dNdJetPt[1][ipt]->SetFillColor(kGreen);
+      dNdJetPt[1][ipt]->SetLineColor(0);
+
+      ly->AddEntry(dNdJetPt[3][ipt],"PbPb 0-30%","fp");
+      ly->AddEntry(dNdJetPt[1][ipt],"Smeared pp reference","fp");
       ly->Draw();
     }
 
     if(ipt == 4)
       drawCMSppPbPbDist(0.1,0.9);
 
-    c5->cd(ipt+nPtBin);
+    if(!separatepPb)
+      c5->cd(ipt+nPtBin);
+    else
+      c5->cd(ipt);
     hTempPt->DrawCopy();
     //gPad->SetLogy();
 
     drawSys(dNdJetPt[2][ipt], dNdJetPtSys[2][ipt], kGreen,3001,10);
     drawSys(dNdJetPt[4][ipt], dNdJetPtSys[4][ipt], newYellow,-1,10);
     handsomeTH1(dNdJetPt[4][ipt],2);
-    //    dNdJetPt[4][ipt]->SetMarkerStyle(24);
-    //   dNdJetPt[2][ipt]->SetMarkerStyle(25);
-    dNdJetPt[2][ipt]->Draw("same");
-    dNdJetPt[4][ipt]->Draw("same");
+    dNdJetPt[4][ipt]->SetMarkerStyle(24);
+    dNdJetPt[2][ipt]->SetMarkerStyle(25);
+    dNdJetPt[2][ipt]->DrawCopy("same");
+    dNdJetPt[4][ipt]->DrawCopy("same");
 
     if ( ipt==1 ){
-      TLegend *ly = new TLegend(0.4484643,0.6088445,0.9140673,0.85102941,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.25,0.75,0.9,0.95,NULL,"brNDC");
       easyLeg(ly);
-      ly->AddEntry(dNdJetPt[4][ipt],"PbPb 30-100%","p");
-      ly->AddEntry(dNdJetPt[2][ipt],"pp (smeared)","p");
+      dNdJetPt[4][ipt]->SetFillStyle(1001);
+      dNdJetPt[4][ipt]->SetFillColor(90);
+      dNdJetPt[4][ipt]->SetLineColor(0);
+      dNdJetPt[2][ipt]->SetFillStyle(3001);
+      dNdJetPt[2][ipt]->SetFillColor(kGreen);
+      dNdJetPt[2][ipt]->SetLineColor(0);
+
+      ly->AddEntry(dNdJetPt[4][ipt],"PbPb 30-100%","fp");
+      ly->AddEntry(dNdJetPt[2][ipt],"Smeared pp reference","fp");
       ly->Draw();
     }
 
     if(ipt == 4)
-      drawCMSppPbPbDist(0.1,0.9);
-
-    c5->cd(ipt);
-    hTempPt->DrawCopy();
-
-    drawSys(dNdJetPt[5][ipt], dNdJetPtSys[5][ipt], newYellow);
-    drawSys(dNdJetPt[7][ipt], dNdJetPtSys[2][ipt], kGreen,3001);
-    handsomeTH1(dNdJetPt[5][ipt],9,1,34);
-    handsomeTH1(dNdJetPt[7][ipt],1,1);
-    dNdJetPt[6][ipt]->SetMarkerStyle(25);
-
-    dNdJetPt[6][ipt]->Draw("same");
-    dNdJetPt[5][ipt]->Draw("same");
-    dNdJetPt[7][ipt]->Draw("same");
-    if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.4313699,0.5060255,0.8982322,0.8677549,NULL,"brNDC");
-      easyLeg(ly);
-      ly->AddEntry(dNdJetPt[5][ipt],"pPb Data","p");
-      ly->AddEntry(dNdJetPt[6][ipt],"PYTHIA+HIJING","p");
-      ly->AddEntry(dNdJetPt[7][ipt],"pp Data (2.76TeV)","p");
-      ly->Draw();
+    {
+      if(!separatepPb)
+	drawCMSppPbPbDist(0.1,0.9);
+      else
+	drawCMSppPbPbDist(0.1,0.8);
     }
-    if(ipt == 4)
-      drawCMSpPbDist(0.1,0.7);
+
+    if(!separatepPb)
+    {
+      c5->cd(ipt);
+      hTempPt->DrawCopy();
+
+      drawSys(dNdJetPt[5][ipt], dNdJetPtSys[5][ipt], newYellow);
+      drawSys(dNdJetPt[7][ipt], dNdJetPtSys[2][ipt], kGreen,3001);
+      handsomeTH1(dNdJetPt[5][ipt],9,1,34);
+      handsomeTH1(dNdJetPt[7][ipt],1,1);
+      dNdJetPt[6][ipt]->SetMarkerStyle(25);
+
+      dNdJetPt[6][ipt]->DrawCopy("same");
+      dNdJetPt[7][ipt]->DrawCopy("same");
+      dNdJetPt[5][ipt]->DrawCopy("same");
+      if ( ipt == 1 ) {
+	TLegend *ly = new TLegend(0.4313699,0.5560255,0.8982322,0.9077549,NULL,"brNDC");
+	easyLeg(ly);
+	dNdJetPt[5][ipt]->SetFillStyle(1001);
+	dNdJetPt[5][ipt]->SetFillColor(90);
+	dNdJetPt[5][ipt]->SetLineColor(0);
+	dNdJetPt[7][ipt]->SetFillStyle(3001);
+	dNdJetPt[7][ipt]->SetFillColor(kGreen);
+	dNdJetPt[7][ipt]->SetLineColor(0);
+
+	ly->AddEntry(dNdJetPt[5][ipt],"pPb Data","fp");
+	ly->AddEntry(dNdJetPt[6][ipt],"PYTHIA+HIJING","p");
+	ly->AddEntry(dNdJetPt[7][ipt],"pp Data (2.76TeV)","fp");
+	ly->Draw();
+      }
+      if(ipt == 4)
+	drawCMSpPbDist(0.1,0.7);
+    }
 
     double dx1=0.18;
     if ( ipt == nPtBin )
@@ -512,16 +568,19 @@ void drawResultsDist() {
 
   }
   c5->SaveAs("pT_dependence_jetPt_pp_pbpb_distribution.pdf");
-  c5->SaveAs("pT_dependence_jetPt_pp_pbpb_distribution.png");
+  //c5->SaveAs("pT_dependence_jetPt_pp_pbpb_distribution.png");
 
   
 
   // XJG plots
   TH1D* hTempXjg = new TH1D("hTempXjg",";p_{T}^{#gamma} (GeV);",200,0,2);
-  TCanvas* c6 = new TCanvas("c6","",1200,900);
-  makeMultiPanelCanvas(c6,nPtBin,3,0.0,0.0,0.25,0.20,0.02);
+  TCanvas* c6 = new TCanvas("c6","",1200,rows*300);
+  makeMultiPanelCanvas(c6,nPtBin,rows,0.0,0.0,0.25,0.20,0.02);
   for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
-    c6->cd(ipt+2*nPtBin);
+    if(!separatepPb)
+      c6->cd(ipt+2*nPtBin);
+    else
+      c6->cd(ipt+nPtBin);
     // draw pp
     hTempXjg->SetXTitle("x_{J#gamma}");
     hTempXjg->SetYTitle("#frac{1}{N_{#gamma}} #frac{dN_{J#gamma}}{dx}");
@@ -543,14 +602,21 @@ void drawResultsDist() {
     drawSys(dNdXjg[3][ipt], dNdXjgSys[3][ipt], newYellow);
     drawSys(dNdXjg[1][ipt], dNdXjgSys[1][ipt], kGreen,3001);
     handsomeTH1(dNdXjg[3][ipt],2);
-    dNdXjg[1][ipt]->Draw("same");
-    //    dNdXjg[1][ipt]->SetMarkerStyle(21);
-    dNdXjg[3][ipt]->Draw("same");
+    dNdXjg[1][ipt]->SetMarkerStyle(21);
+    dNdXjg[1][ipt]->DrawCopy("same");
+    dNdXjg[3][ipt]->DrawCopy("same");
     if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.351273,0.6152521,0.9997611,0.9087395,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.251273,0.6152521,0.9997611,0.9087395,NULL,"brNDC");
       easyLeg(ly);
-      ly->AddEntry(dNdXjg[3][ipt],"PbPb 0-30%","p");
-      ly->AddEntry(dNdXjg[1][ipt],"pp (smeared)","p");
+      dNdXjg[3][ipt]->SetFillStyle(1001);
+      dNdXjg[3][ipt]->SetFillColor(90);
+      dNdXjg[3][ipt]->SetLineColor(0);
+      dNdXjg[1][ipt]->SetFillStyle(3001);
+      dNdXjg[1][ipt]->SetFillColor(kGreen);
+      dNdXjg[1][ipt]->SetLineColor(0);
+
+      ly->AddEntry(dNdXjg[3][ipt],"PbPb 0-30%","fp");
+      ly->AddEntry(dNdXjg[1][ipt],"Smeared pp reference","fp");
       ly->Draw();
     }
 
@@ -559,52 +625,72 @@ void drawResultsDist() {
 
     gPad->RedrawAxis();
 
-    c6->cd(ipt+nPtBin);
+    if(!separatepPb)
+      c6->cd(ipt+nPtBin);
+    else
+      c6->cd(ipt);
     hTempXjg->DrawCopy();
     //    dNdXjg[2][ipt]->Scale(dNdXjg[2][ipt]->GetBinContent(ipt));
     // dNdXjg[4][ipt]->Scale(dNdXjg[4][ipt]-->GetBinContent(ipt));
     drawSys(dNdXjg[4][ipt], dNdXjgSys[4][ipt], newYellow);
     drawSys(dNdXjg[2][ipt], dNdXjgSys[2][ipt], kGreen,3001);
     handsomeTH1(dNdXjg[4][ipt],2);
-    //    dNdXjg[4][ipt]->SetMarkerStyle(24);
-    //   dNdXjg[2][ipt]->SetMarkerStyle(25);
-    dNdXjg[2][ipt]->Draw("same");
-    dNdXjg[4][ipt]->Draw("same");
+    dNdXjg[4][ipt]->SetMarkerStyle(24);
+    dNdXjg[2][ipt]->SetMarkerStyle(25);
+    dNdXjg[2][ipt]->DrawCopy("same");
+    dNdXjg[4][ipt]->DrawCopy("same");
     if ( ipt==1 ){
-      TLegend *ly = new TLegend(0.351273,0.6552521,0.9997611,0.9487395,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.251273,0.6552521,0.9997611,0.9487395,NULL,"brNDC");
       easyLeg(ly);
-      ly->AddEntry(dNdXjg[4][ipt],"PbPb 30-100%","p");
-      ly->AddEntry(dNdXjg[2][ipt],"pp (smeared)","p");
+      dNdXjg[4][ipt]->SetFillStyle(1001);
+      dNdXjg[4][ipt]->SetFillColor(90);
+      dNdXjg[4][ipt]->SetLineColor(0);
+      dNdXjg[2][ipt]->SetFillStyle(3001);
+      dNdXjg[2][ipt]->SetFillColor(kGreen);
+      dNdXjg[2][ipt]->SetLineColor(0);
+      ly->AddEntry(dNdXjg[4][ipt],"PbPb 30-100%","fp");
+      ly->AddEntry(dNdXjg[2][ipt],"Smeared pp reference","fp");
       ly->Draw();
     }
     if(ipt + nPtBin == 8)
       drawCMSppPbPbDist(0.4,0.9);
 
     gPad->RedrawAxis();
-    c6->cd(ipt);
-    hTempXjg->DrawCopy();
-    //    dNdXjg[5][ipt]->Scale(meanRjg[5]->GetBinContent(ipt));
-    //  dNdXjg[6][ipt]->Scale(meanRjg[6]->GetBinContent(ipt));
-    drawSys(dNdXjg[5][ipt], dNdXjgSys[5][ipt], newYellow);
-    drawSys(dNdXjg[7][ipt], dNdXjgSys[2][ipt], kGreen, 3001);
-    handsomeTH1(dNdXjg[5][ipt],9,1,34);
-    handsomeTH1(dNdXjg[7][ipt],1,1);
- 
-    dNdXjg[6][ipt]->SetMarkerStyle(25);
-   dNdXjg[6][ipt]->Draw("same");
-    dNdXjg[5][ipt]->Draw("same");
-    dNdXjg[7][ipt]->Draw("same");
-    if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.351273,0.6052521,0.9997611,0.9087395,NULL,"brNDC");
-      easyLeg(ly);
-      ly->AddEntry(dNdXjg[5][ipt],"pPb Data","p");
-      ly->AddEntry(dNdXjg[6][ipt],"PYTHIA+HIJING","p");
-      ly->AddEntry(dNdXjg[7][ipt],"pp Data (2.76TeV)","p");
-      ly->Draw();
-    }
 
-    if(ipt == 4)
-      drawCMSpPbDist(0.4,0.8);
+    if(!separatepPb)
+    {
+      c6->cd(ipt);
+      hTempXjg->DrawCopy();
+      //    dNdXjg[5][ipt]->Scale(meanRjg[5]->GetBinContent(ipt));
+      //  dNdXjg[6][ipt]->Scale(meanRjg[6]->GetBinContent(ipt));
+      drawSys(dNdXjg[5][ipt], dNdXjgSys[5][ipt], newYellow);
+      drawSys(dNdXjg[7][ipt], dNdXjgSys[2][ipt], kGreen, 3001);
+      handsomeTH1(dNdXjg[5][ipt],9,1,34);
+      handsomeTH1(dNdXjg[7][ipt],1,1);
+ 
+      dNdXjg[6][ipt]->SetMarkerStyle(25);
+      dNdXjg[6][ipt]->DrawCopy("same");
+      dNdXjg[7][ipt]->DrawCopy("same");
+      dNdXjg[5][ipt]->DrawCopy("same");
+      if ( ipt == 1 ) {
+	TLegend *ly = new TLegend(0.351273,0.6052521,0.9997611,0.9087395,NULL,"brNDC");
+	easyLeg(ly);
+	dNdXjg[5][ipt]->SetFillStyle(1001);
+	dNdXjg[5][ipt]->SetFillColor(90);
+	dNdXjg[5][ipt]->SetLineColor(0);
+	dNdXjg[7][ipt]->SetFillStyle(3001);
+	dNdXjg[7][ipt]->SetFillColor(kGreen);
+	dNdXjg[7][ipt]->SetLineColor(0);
+
+	ly->AddEntry(dNdXjg[5][ipt],"pPb Data","fp");
+	ly->AddEntry(dNdXjg[6][ipt],"PYTHIA+HIJING","p");
+	ly->AddEntry(dNdXjg[7][ipt],"pp Data (2.76TeV)","fp");
+	ly->Draw();
+      }
+
+      if(ipt == 4)
+	drawCMSpPbDist(0.4,0.8);
+    }
 
     double dx1=0.15;
     if ( ipt == nPtBin )
@@ -618,7 +704,7 @@ void drawResultsDist() {
   }
 
   c6->SaveAs("pT_dependence_xjg_pp_pbpb_distribution.pdf");
-  c6->SaveAs("pT_dependence_xjg_pp_pbpb_distribution.png");
+  //c6->SaveAs("pT_dependence_xjg_pp_pbpb_distribution.png");
   
   // Dphi plots
   const Int_t nDPHIBINS = 8;
@@ -642,10 +728,13 @@ void drawResultsDist() {
   }
 
   TH1D* hTempphi = new TH1D("hTempphi",";p_{T}^{#gamma} (GeV);",200,0,3.141592);
-  TCanvas* cDphi = new TCanvas("cDphi","",1200,900);
-  makeMultiPanelCanvas(cDphi,nPtBin,3,0.0,0.0,0.25,0.20,0.02);
+  TCanvas* cDphi = new TCanvas("cDphi","",1200,rows*300);
+  makeMultiPanelCanvas(cDphi,nPtBin,rows,0.0,0.0,0.25,0.20,0.02);
   for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
-    cDphi->cd(ipt+nPtBin*2);
+    if(!separatepPb)
+      cDphi->cd(ipt+nPtBin*2);
+    else
+      cDphi->cd(ipt+nPtBin);
     // draw pp
     hTempphi->SetXTitle("#Delta#phi");
     hTempphi->SetYTitle("#frac{1}{N_{J#gamma}} #frac{dN_{J#gamma}}{d#Delta#phi}");
@@ -656,7 +745,11 @@ void drawResultsDist() {
     hTempphi->SetAxisRange(0.0011,2,"Y");
     handsomeTH1(hTempphi,0);
     hTempphi->GetYaxis()->SetTitleOffset(4.5);
+    if(separatepPb)
+      hTempphi->GetYaxis()->SetTitleOffset(3);
     hTempphi->GetXaxis()->SetTitleOffset(3);
+    if(separatepPb)
+      hTempphi->GetXaxis()->SetTitleOffset(2);
     hTempphi->DrawCopy();
     handsomeTH1(dNdphi[3][ipt],2);
 
@@ -664,75 +757,110 @@ void drawResultsDist() {
     dNdphi[3][ipt]->Scale(1./dNdphi[3][ipt]->Integral());
     drawSys(dNdphi[1][ipt],dNdphiSys[1][ipt],kGreen,3001, -1,0.3);
     drawSys(dNdphi[3][ipt],dNdphiSys[3][ipt],newYellow, -1, -1,0.3);
-    dNdphi[1][ipt]->Draw("same");
-    //    dNdphi[1][ipt]->SetMarkerStyle(21);
-    dNdphi[3][ipt]->Draw("same");
+    dNdphi[1][ipt]->SetMarkerStyle(21);
+    dNdphi[1][ipt]->DrawCopy("same");
+    dNdphi[3][ipt]->DrawCopy("same");
     gPad->SetLogy();
     if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.25,0.7556865,.9,0.99,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.25,0.7556865,.85,0.99,NULL,"brNDC");
       easyLeg(ly);
-      ly->AddEntry(dNdphi[3][ipt],"PbPb 0-30%","p");
-      ly->AddEntry(dNdphi[1][ipt],"pp (smeared)","p");
+      dNdphi[3][ipt]->SetFillStyle(1001);
+      dNdphi[3][ipt]->SetFillColor(90);
+      dNdphi[3][ipt]->SetLineColor(0);
+      dNdphi[1][ipt]->SetFillStyle(3001);
+      dNdphi[1][ipt]->SetFillColor(kGreen);
+      dNdphi[1][ipt]->SetLineColor(0);
+
+      ly->AddEntry(dNdphi[3][ipt],"PbPb 0-30%","fp");
+      ly->AddEntry(dNdphi[1][ipt],"Smeared pp reference","fp");
       ly->Draw();
     }
 
     if(ipt+nPtBin == 8)
       drawCMSppPbPbDist(0.1,0.9);
 
-    cDphi->cd(ipt+nPtBin);
+    if(!separatepPb)
+      cDphi->cd(ipt+nPtBin);
+    else
+      cDphi->cd(ipt);
     hTempphi->DrawCopy();
     // dNdphi[2][ipt]->Scale(dNdphi[2][ipt]->GetBinContent(ipt));
     // dNdphi[4][ipt]->Scale(dNdphi[4][ipt]-->GetBinContent(ipt));
     handsomeTH1(dNdphi[4][ipt],2);
-    //    dNdphi[4][ipt]->SetMarkerStyle(24);
-    //   dNdphi[2][ipt]->SetMarkerStyle(25);
-    //    dNdphi[2][ipt]->SetMarkerStyle(21);
+    dNdphi[4][ipt]->SetMarkerStyle(24);
+    dNdphi[2][ipt]->SetMarkerStyle(25);
+
     dNdphi[2][ipt]->Scale(1./dNdphi[2][ipt]->Integral());
     dNdphi[4][ipt]->Scale(1./dNdphi[4][ipt]->Integral());
 
     drawSys(dNdphi[2][ipt],dNdphiSys[2][ipt],kGreen,3001,-1,0.3);
     drawSys(dNdphi[4][ipt],dNdphiSys[4][ipt],newYellow,-1,-1,0.3);
 
-    dNdphi[2][ipt]->Draw("same");
-    dNdphi[4][ipt]->Draw("same");
+    dNdphi[2][ipt]->DrawCopy("same");
+    dNdphi[4][ipt]->DrawCopy("same");
     gPad->SetLogy();
     if ( ipt==1 ){
-      TLegend *ly = new TLegend(0.25,0.7,0.9,0.95,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.25,0.7,0.85,0.95,NULL,"brNDC");
       easyLeg(ly);
-      ly->AddEntry(dNdphi[4][ipt],"PbPb 30-100%","p");
-      ly->AddEntry(dNdphi[2][ipt],"pp (smeared)","p");
+      dNdphi[4][ipt]->SetFillStyle(1001);
+      dNdphi[4][ipt]->SetFillColor(90);
+      dNdphi[4][ipt]->SetLineColor(0);
+      dNdphi[2][ipt]->SetFillStyle(3001);
+      dNdphi[2][ipt]->SetFillColor(kGreen);
+      dNdphi[2][ipt]->SetLineColor(0);
+
+      ly->AddEntry(dNdphi[4][ipt],"PbPb 30-100%","fp");
+      ly->AddEntry(dNdphi[2][ipt],"Smeared pp reference","fp");
       ly->Draw();
     }
     if(ipt+nPtBin == 8)
-      drawCMSppPbPbDist(0.1,0.9);
-
-
-    cDphi->cd(ipt);
-    hTempphi->DrawCopy();
-
-    handsomeTH1(dNdphi[5][ipt],9,1,34);
-    handsomeTH1(dNdphi[7][ipt],1,1,20);
-    dNdphi[6][ipt]->Scale(1./dNdphi[6][ipt]->Integral());
-    dNdphi[5][ipt]->Scale(1./dNdphi[5][ipt]->Integral());
-    dNdphi[7][ipt]->Scale(1./dNdphi[7][ipt]->Integral());
-
-    drawSys(dNdphi[5][ipt],dNdphiSys[5][ipt],newYellow,-1, -1,0.3);
-    drawSys(dNdphi[7][ipt],dNdphiSys[2][ipt],kGreen,3001, -1,0.3);
-
-    dNdphi[6][ipt]->SetMarkerStyle(25);
-
-    dNdphi[6][ipt]->Draw("same");
-    dNdphi[5][ipt]->Draw("same");
-    dNdphi[7][ipt]->Draw("same");
-    gPad->SetLogy();
-    if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.251273,0.6552521,0.8997611,0.9487395,NULL,"brNDC");
-      easyLeg(ly);
-      ly->AddEntry(dNdphi[5][ipt],"pPb Data","p");
-      ly->AddEntry(dNdphi[6][ipt],"PYTHIA+HIJING","p");
-      ly->AddEntry(dNdphi[7][ipt],"pp Data (2.76TeV)","p");
-      ly->Draw();
+    {
+      if(!separatepPb)
+	drawCMSppPbPbDist(0.1,0.9);
+      else
+	drawCMSppPbPbDist(0.1,0.8);
     }
+
+
+    if(!separatepPb)
+    {
+      cDphi->cd(ipt);
+      hTempphi->DrawCopy();
+
+      handsomeTH1(dNdphi[5][ipt],9,1,34);
+      handsomeTH1(dNdphi[7][ipt],1,1,20);
+      dNdphi[6][ipt]->Scale(1./dNdphi[6][ipt]->Integral());
+      dNdphi[5][ipt]->Scale(1./dNdphi[5][ipt]->Integral());
+      dNdphi[7][ipt]->Scale(1./dNdphi[7][ipt]->Integral());
+
+      drawSys(dNdphi[5][ipt],dNdphiSys[5][ipt],newYellow,-1, -1,0.3);
+      drawSys(dNdphi[7][ipt],dNdphiSys[2][ipt],kGreen,3001, -1,0.3);
+
+      dNdphi[6][ipt]->SetMarkerStyle(25);
+
+      dNdphi[6][ipt]->DrawCopy("same");
+      dNdphi[7][ipt]->DrawCopy("same");
+      dNdphi[5][ipt]->DrawCopy("same");
+      gPad->SetLogy();
+      if ( ipt == 1 ) {
+	TLegend *ly = new TLegend(0.251273,0.6552521,0.8997611,0.9487395,NULL,"brNDC");
+	easyLeg(ly);
+	dNdphi[5][ipt]->SetFillStyle(1001);
+	dNdphi[5][ipt]->SetFillColor(90);
+	dNdphi[5][ipt]->SetLineColor(0);
+	dNdphi[7][ipt]->SetFillStyle(3001);
+	dNdphi[7][ipt]->SetFillColor(kGreen);
+	dNdphi[7][ipt]->SetLineColor(0);
+
+	ly->AddEntry(dNdphi[5][ipt],"pPb Data","fp");
+	ly->AddEntry(dNdphi[6][ipt],"PYTHIA+HIJING","p");
+	ly->AddEntry(dNdphi[7][ipt],"pp Data (2.76TeV)","fp");
+	ly->Draw();
+      }
+      if(ipt == 4)
+	drawCMSpPbDist(0.1, 0.8);
+    }
+    
     double dx1=0.16;
     if ( ipt == nPtBin )
       drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
@@ -741,10 +869,65 @@ void drawResultsDist() {
     else
       drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
 
-    if(ipt == 4)
-      drawCMSpPbDist(0.1, 0.8);
 
   }
   cDphi->SaveAs("pT_dependence_dphi_pp_pbpb_figure1.pdf");
-  cDphi->SaveAs("pT_dependence_dphi_pp_pbpb_figure1.png");
+  //cDphi->SaveAs("pT_dependence_dphi_pp_pbpb_figure1.png");
+
+  if(separatepPb)
+  {
+    TCanvas* cDphiPa = new TCanvas("cDphiPa","",1200,400);
+    makeMultiPanelCanvas(cDphiPa,nPtBin,1,0.0,0.0,0.25,0.20,0.02);
+    for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
+      hTempphi->GetYaxis()->SetTitleOffset(2);
+      hTempphi->GetXaxis()->SetTitleOffset(1.5);
+
+      cDphiPa->cd(ipt);
+      hTempphi->DrawCopy();
+
+      handsomeTH1(dNdphi[5][ipt],9,1,34);
+      handsomeTH1(dNdphi[7][ipt],1,1,20);
+      dNdphi[6][ipt]->Scale(1./dNdphi[6][ipt]->Integral());
+      dNdphi[5][ipt]->Scale(1./dNdphi[5][ipt]->Integral());
+      dNdphi[7][ipt]->Scale(1./dNdphi[7][ipt]->Integral());
+
+      drawSys(dNdphi[5][ipt],dNdphiSys[5][ipt],newYellow,-1, -1,0.3);
+      drawSys(dNdphi[7][ipt],dNdphiSys[2][ipt],kGreen,3001, -1,0.3);
+
+      dNdphi[6][ipt]->SetMarkerStyle(25);
+
+      dNdphi[6][ipt]->DrawCopy("same");
+      dNdphi[7][ipt]->DrawCopy("same");
+      dNdphi[5][ipt]->DrawCopy("same");
+      gPad->SetLogy();
+      if ( ipt == 1 ) {
+	TLegend *ly = new TLegend(0.251273,0.6552521,0.8997611,0.9487395,NULL,"brNDC");
+	easyLeg(ly);
+	dNdphi[5][ipt]->SetFillStyle(1001);
+	dNdphi[5][ipt]->SetFillColor(90);
+	dNdphi[5][ipt]->SetLineColor(0);
+	dNdphi[7][ipt]->SetFillStyle(3001);
+	dNdphi[7][ipt]->SetFillColor(kGreen);
+	dNdphi[7][ipt]->SetLineColor(0);
+
+	ly->AddEntry(dNdphi[5][ipt],"pPb Data","fp");
+	ly->AddEntry(dNdphi[6][ipt],"PYTHIA+HIJING","p");
+	ly->AddEntry(dNdphi[7][ipt],"pp Data (2.76TeV)","fp");
+	ly->Draw();
+      }
+      if(ipt == 4)
+	drawCMSpPbDist(0.1, 0.8);
+
+      double dx1=0.16;
+      if ( ipt == nPtBin )
+	drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
+      else if ( ipt == 1)
+	drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
+      else
+	drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
+
+    }
+
+    cDphiPa->SaveAs("pT_dependence_dphi_pPb_figure1.pdf");
+  }
 }

@@ -184,9 +184,9 @@ void drawResults(bool drawSinglePanels = false) {
   handsomeTH1(meanRjg[5],9,1,34);
   handsomeTH1(meanRjg[6],1,1,25);
   handsomeTH1(meanRjg[7],1,1);
-  meanRjg[5]->DrawCopy("same");
   meanRjg[6]->DrawCopy("same");
   meanRjg[7]->DrawCopy("same");
+  meanRjg[5]->DrawCopy("same");
   meanRjg[7]->SetFillStyle(3001);
   meanRjg[7]->SetFillColor(kGreen);
   meanRjg[5]->SetFillColor(90);
@@ -230,9 +230,9 @@ void drawResults(bool drawSinglePanels = false) {
   handsomeTH1(meanJetPt[5],9,1,34);
   handsomeTH1(meanJetPt[6],1,1,25);
   handsomeTH1(meanJetPt[7],1,1);
-  meanJetPt[5]->DrawCopy("same");
   meanJetPt[6]->DrawCopy("same");
   meanJetPt[7]->DrawCopy("same");
+  meanJetPt[5]->DrawCopy("same");
   if ( 1==1 ) {
     TLegend *ly = new TLegend(0.53,0.18,0.88,0.4,NULL,"brNDC");
     easyLeg(ly);
@@ -368,9 +368,9 @@ void drawResults(bool drawSinglePanels = false) {
   handsomeTH1(meanXjg[5],9,1,34);
   handsomeTH1(meanXjg[6],1,1,25);
   handsomeTH1(meanXjg[7],1,1);
-  meanXjg[5]->DrawCopy("same");
   meanXjg[6]->DrawCopy("same");
   meanXjg[7]->DrawCopy("same");
+  meanXjg[5]->DrawCopy("same");
   meanXjg[7]->SetFillStyle(3001);
   meanXjg[7]->SetFillColor(kGreen);
   meanXjg[5]->SetFillColor(90);
@@ -389,7 +389,7 @@ void drawResults(bool drawSinglePanels = false) {
   drawCMSpPbDist(0.65,0.90);
   
   c7->SaveAs("pT_dependence_meanXjg_pp_pbpb.pdf");
-  c7->SaveAs("pT_dependence_meanXjg_pp_pbpb.png");
+  //c7->SaveAs("pT_dependence_meanXjg_pp_pbpb.png");
 
   // TCanvas* c10 = new TCanvas("c10","",1200,350);
   // makeMultiPanelCanvas(c10,nPtBin,1,0.0,0.0,0.2,0.15,0.02);
