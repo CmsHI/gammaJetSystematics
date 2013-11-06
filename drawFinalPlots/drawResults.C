@@ -199,12 +199,13 @@ void drawResults(bool drawSinglePanels = false) {
     easyLeg(ly);
     ly->AddEntry(meanRjg[5],"pPb DATA","fp");
     ly->AddEntry(meanRjg[6],"PYTHIA+HIJING","p");
-    ly->AddEntry(meanRjg[7],"pp DATA (2.76TeV)","fp");
+    ly->AddEntry(meanRjg[7],"pp DATA (2.76 TeV)","fp");
     ly->Draw();
   }
   drawCMSpPbDist(0.2,0.9);
   
   c2->SaveAs("pT_dependence_rjg_pp_pbpb.pdf");
+  c2->SaveAs("pT_dependence_rjg_pp_pbpb.gif");
   //c2->SaveAs("pT_dependence_rjg_pp_pbpb.png");
 
   // ppPbPb meanJetPt
@@ -238,7 +239,7 @@ void drawResults(bool drawSinglePanels = false) {
     easyLeg(ly);
     ly->AddEntry(meanJetPt[5],"pPb DATA","p");
     ly->AddEntry(meanJetPt[6],"PYTHIA+HIJING","p");
-    ly->AddEntry(meanJetPt[7],"pp DATA (2.76TeV)","p");
+    ly->AddEntry(meanJetPt[7],"pp DATA (2.76 TeV)","p");
     ly->Draw();
   }
   drawCMSpPbDist(0.2,0.9);
@@ -280,6 +281,7 @@ void drawResults(bool drawSinglePanels = false) {
   }
   drawCMSppPbPbDist(0.1,0.9);
   c3->SaveAs("pT_dependence_jetPt_pp_pbpb.pdf");
+  c3->SaveAs("pT_dependence_jetPt_pp_pbpb.gif");
   //c3->SaveAs("pT_dependence_jetPt_pp_pbpb.png");
 
 
@@ -383,12 +385,13 @@ void drawResults(bool drawSinglePanels = false) {
     easyLeg(ly);
     ly->AddEntry(meanXjg[5],"pPb DATA","fp");
     ly->AddEntry(meanXjg[6],"PYTHIA+HIJING","p");
-    ly->AddEntry(meanXjg[7],"pp DATA (2.76TeV)","fp");    
+    ly->AddEntry(meanXjg[7],"pp DATA (2.76 TeV)","fp");    
     ly->Draw();
   }
   drawCMSpPbDist(0.65,0.90);
   
   c7->SaveAs("pT_dependence_meanXjg_pp_pbpb.pdf");
+  c7->SaveAs("pT_dependence_meanXjg_pp_pbpb.gif");
   //c7->SaveAs("pT_dependence_meanXjg_pp_pbpb.png");
 
   // TCanvas* c10 = new TCanvas("c10","",1200,350);

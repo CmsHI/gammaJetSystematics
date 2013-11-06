@@ -272,17 +272,18 @@ void drawResultsDist(bool separatepPb = false) {
 
     double dx1=0.15;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
+      drawText(Form("p_{T}^{#gamma} > %d GeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
     else if ( ipt == 1)
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
+      drawText(Form("%d GeV < p_{T}^{#gamma} < %d GeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
+      drawText(Form("%d GeV < p_{T}^{#gamma} < %d GeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
 
     if(ipt == 4)
       drawCMSppPbPbDist(0.4,0.8);
 
 
   }
+  c5_ratio->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio.gif");
   c5_ratio->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio.pdf");
   //c5_ratio->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio.png");
 
@@ -372,7 +373,7 @@ void drawResultsDist(bool separatepPb = false) {
       ly->Draw();
     }    
     double dx1=0.15;
-    drawText("p_{T}^{#gamma} > 40GeV ", 0.10+dx1+0.1,0.9,1,18);
+    drawText("p_{T}^{#gamma} > 40 GeV ", 0.10+dx1+0.1,0.9,1,18);
     
     gPad->RedrawAxis();
     
@@ -393,6 +394,7 @@ void drawResultsDist(bool separatepPb = false) {
 
 
     c5_iaa40->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio_40GeV.pdf");
+    c5_iaa40->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio_40GeV.gif");
     //c5_iaa40->SaveAs("pT_dependence_jetPt_pp_pbpb_Ratio_40GeV.png");
 
 
@@ -555,7 +557,7 @@ void drawResultsDist(bool separatepPb = false) {
 
 	ly->AddEntry(dNdJetPt[5][ipt],"pPb Data","fp");
 	ly->AddEntry(dNdJetPt[6][ipt],"PYTHIA+HIJING","p");
-	ly->AddEntry(dNdJetPt[7][ipt],"pp Data (2.76TeV)","fp");
+	ly->AddEntry(dNdJetPt[7][ipt],"pp Data (2.76 TeV)","fp");
 	ly->Draw();
       }
       if(ipt == 4)
@@ -564,14 +566,15 @@ void drawResultsDist(bool separatepPb = false) {
 
     double dx1=0.18;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
+      drawText(Form("p_{T}^{#gamma} > %d GeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
     else if ( ipt == 1)
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
+      drawText(Form("%d GeV < p_{T}^{#gamma} < %d GeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
+      drawText(Form("%d GeV < p_{T}^{#gamma} < %d GeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
 
   }
   c5->SaveAs("pT_dependence_jetPt_pp_pbpb_distribution.pdf");
+  c5->SaveAs("pT_dependence_jetPt_pp_pbpb_distribution.gif");
   //c5->SaveAs("pT_dependence_jetPt_pp_pbpb_distribution.png");
 
   
@@ -698,7 +701,7 @@ void drawResultsDist(bool separatepPb = false) {
 
 	ly->AddEntry(dNdXjg[5][ipt],"pPb Data","fp");
 	ly->AddEntry(dNdXjg[6][ipt],"PYTHIA+HIJING","p");
-	ly->AddEntry(dNdXjg[7][ipt],"pp Data (2.76TeV)","fp");
+	ly->AddEntry(dNdXjg[7][ipt],"pp Data (2.76 TeV)","fp");
 	ly->Draw();
       }
 
@@ -708,16 +711,17 @@ void drawResultsDist(bool separatepPb = false) {
 
     double dx1=0.15;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
+      drawText(Form("p_{T}^{#gamma} > %d GeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
     else if ( ipt == 1)
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
+      drawText(Form("%d GeV < p_{T}^{#gamma} < %d GeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
+      drawText(Form("%d GeV < p_{T}^{#gamma} < %d GeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
 
     gPad->RedrawAxis();
   }
 
   c6->SaveAs("pT_dependence_xjg_pp_pbpb_distribution.pdf");
+  c6->SaveAs("pT_dependence_xjg_pp_pbpb_distribution.gif");
   //c6->SaveAs("pT_dependence_xjg_pp_pbpb_distribution.png");
   
   // Dphi plots
@@ -868,7 +872,7 @@ void drawResultsDist(bool separatepPb = false) {
 
 	ly->AddEntry(dNdphi[5][ipt],"pPb Data","fp");
 	ly->AddEntry(dNdphi[6][ipt],"PYTHIA+HIJING","p");
-	ly->AddEntry(dNdphi[7][ipt],"pp Data (2.76TeV)","fp");
+	ly->AddEntry(dNdphi[7][ipt],"pp Data (2.76 TeV)","fp");
 	ly->Draw();
       }
       if(ipt == 4)
@@ -877,15 +881,16 @@ void drawResultsDist(bool separatepPb = false) {
     
     double dx1=0.16;
     if ( ipt == nPtBin )
-      drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
+      drawText(Form("p_{T}^{#gamma} > %d GeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
     else if ( ipt == 1)
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
+      drawText(Form("%d GeV < p_{T}^{#gamma} < %d GeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
     else
-      drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
+      drawText(Form("%d GeV < p_{T}^{#gamma} < %d GeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
 
 
   }
   cDphi->SaveAs("pT_dependence_dphi_pp_pbpb_figure1.pdf");
+  cDphi->SaveAs("pT_dependence_dphi_pp_pbpb_figure1.gif");
   //cDphi->SaveAs("pT_dependence_dphi_pp_pbpb_figure1.png");
 
   if(separatepPb)
@@ -926,7 +931,7 @@ void drawResultsDist(bool separatepPb = false) {
 
 	ly->AddEntry(dNdphi[5][ipt],"pPb Data","fp");
 	ly->AddEntry(dNdphi[6][ipt],"PYTHIA+HIJING","p");
-	ly->AddEntry(dNdphi[7][ipt],"pp Data (2.76TeV)","fp");
+	ly->AddEntry(dNdphi[7][ipt],"pp Data (2.76 TeV)","fp");
 	ly->Draw();
       }
       if(ipt == 4)
@@ -934,14 +939,15 @@ void drawResultsDist(bool separatepPb = false) {
 
       double dx1=0.16;
       if ( ipt == nPtBin )
-	drawText(Form("p_{T}^{#gamma} > %dGeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
+	drawText(Form("p_{T}^{#gamma} > %d GeV ", (int)ptBin[ipt-1]), 0.10+dx1+0.1,0.9,1,18);
       else if ( ipt == 1)
-	drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
+	drawText(Form("%d GeV < p_{T}^{#gamma} < %d GeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.25+dx1,0.9,1,18);
       else
-	drawText(Form("%dGeV < p_{T}^{#gamma} < %dGeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
+	drawText(Form("%d GeV < p_{T}^{#gamma} < %d GeV ", (int)ptBin[ipt-1], (int)ptBin[ipt]), 0.10+dx1,0.9,1,18);
 
     }
 
     cDphiPa->SaveAs("pT_dependence_dphi_pPb_figure1.pdf");
+    cDphiPa->SaveAs("pT_dependence_dphi_pPb_figure1.gif");
   }
 }
