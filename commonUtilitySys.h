@@ -35,16 +35,16 @@ void claverCanvasSaving(TCanvas* c, TString s,TString format="gif") {
 
 Double_t getDPHI( Double_t phi1, Double_t phi2) {
   Double_t dphi = phi1 - phi2;
- 
+
   if ( dphi > 3.141592653589 )
     dphi = dphi - 2. * 3.141592653589;
-  if ( dphi <= -3.141592653589 ) 
+  if ( dphi <= -3.141592653589 )
     dphi = dphi + 2. * 3.141592653589;
-  
+
   if ( TMath::Abs(dphi) > 3.141592653589 ) {
     cout << " commonUtility::getDPHI error!!! dphi is bigger than 3.141592653589 " << endl;
   }
-  
+
   return dphi;
 }
 
@@ -53,13 +53,13 @@ Double_t getAbsDphi( Double_t phi1, Double_t phi2) {
 }
 
 
-Double_t getDR( Double_t eta1, Double_t phi1, Double_t eta2, Double_t phi2){ 
+Double_t getDR( Double_t eta1, Double_t phi1, Double_t eta2, Double_t phi2){
   Double_t theDphi = getDPHI( phi1, phi2);
   Double_t theDeta = eta1 - eta2;
   return TMath::Sqrt ( theDphi*theDphi + theDeta*theDeta);
 }
 
-void divideWOerr( TH1* h1, TH1* h2) {  //by Yongsun Jan 26 2012                                                                              
+void divideWOerr( TH1* h1, TH1* h2) {  //by Yongsun Jan 26 2012
   if ( h1->GetNbinsX() != h2->GetNbinsX() ) {
     cout << " different bin numbers!!" << endl;
     return;
@@ -94,12 +94,12 @@ void drawSys(TH1 *h,Double_t *sys, Int_t theColor= newYellow, Int_t fillStyle = 
 	 Double_t val = h->GetBinContent(i);
 	 Double_t err = val * sys[i-1];
 	 TBox *b = new TBox(h->GetBinLowEdge(i),val-err,h->GetBinLowEdge(i+1),val+err);
-	 //      b->SetFillStyle(3001);                                                                                                                                                                              
+	 //      b->SetFillStyle(3001);
 	 b->SetLineColor(theColor);
 	 b->SetFillColor(theColor);
 	 if ( fillStyle > -1 ) b->SetFillStyle(fillStyle);
 	 if ( lineStyle > -1 ) b->SetLineStyle(lineStyle);
-	 
+
 	 b->Draw();
       }
 }
@@ -113,12 +113,12 @@ void drawSys(TGraph *h, Double_t *sys, Double_t width=5, Int_t theColor= newYell
       h->GetPoint(i,theX,val);
       Double_t err = val * sys[i];
       TBox *b = new TBox(theX-width,val-err,theX+width,val+err);
-      
+
       b->SetLineColor(theColor);
       b->SetFillColor(theColor);
       if ( fillStyle > -1 ) b->SetFillStyle(fillStyle);
       if ( lineStyle > -1 ) b->SetLineStyle(lineStyle);
-      
+
       b->Draw();
     }
 }
@@ -132,17 +132,21 @@ void drawSys(TH1 *h,TH1 *sys, Int_t theColor= newYellow, Int_t fillStyle = -1, I
 	Double_t val = h->GetBinContent(i);
 	float xx =  h->GetBinCenter(i);
 	int iErr = sys->FindBin(xx);
-	
+
 	Double_t err =  TMath::Abs( val * sys->GetBinContent(iErr));
 	if (err == 0  ) continue;
 
 	if (binWidth <0) {
 	  binWidth = h->GetBinLowEdge(1) - h->GetBinLowEdge(2);
 	}
-	
+
 	//Double_t point = (h->GetBinLowEdge(i) + h->GetBinLowEdge(i+1))/2.;
-	TBox *b = new TBox(xx-binWidth/3,val-err,xx+binWidth/3,val+err);         
-	
+	TBox *b;
+	if(val-err >0)
+	  b = new TBox(xx-binWidth/3,val-err,xx+binWidth/3,val+err);
+	else
+	  b = new TBox(xx-binWidth/3,0,xx+binWidth/3,val+err);
+
 	b->SetLineColor(theColor);
 	b->SetFillColor(theColor);
 	if ( fillStyle > -1 ) b->SetFillStyle(fillStyle);
@@ -178,17 +182,17 @@ void integerizeTH1(TH1* h1) {
 }
 
 void multiplyBonA(TH1* h1, TH1* h2) {
-   if ( h1->GetNbinsX() != h2->GetNbinsX() ) { 
+   if ( h1->GetNbinsX() != h2->GetNbinsX() ) {
       cout << " different bin numbers.." << endl ;
       return ;
    }
-   
+
    for ( Int_t j=1 ; j<= h1->GetNbinsX(); j++) {
       Float_t v1 = h1->GetBinContent(j);
       Float_t e1 = h1->GetBinError(j);
       Float_t v2 = h2->GetBinContent(j);
       //      Float_t e2 = h2->GetBinError(j);
-      
+
       Float_t v3 = v1 * v2;
       Float_t e3 = e1 * v2;
       h1->SetBinContent(j, v3);
@@ -305,7 +309,7 @@ void makeMultiPanelCanvas(TCanvas*& canv, const Int_t columns,
    canv->Clear();
 
    TPad* pad[columns][rows];
-   
+
    Float_t Xlow[columns];
    Float_t Xup[columns];
    Float_t Ylow[rows];
@@ -320,12 +324,12 @@ void makeMultiPanelCanvas(TCanvas*& canv, const Int_t columns,
    Xup[0] = leftOffset + PadWidth/(1.0-leftMargin);
    Xup[columns-1] = 1;
    Xlow[columns-1] = 1.0-PadWidth/(1.0-edge);
-   
+
    Yup[0] = 1;
    Ylow[0] = 1.0-PadHeight/(1.0-edge);
    Ylow[rows-1] = bottomOffset;
    Yup[rows-1] = bottomOffset + PadHeight/(1.0-bottomMargin);
-   
+
    for(Int_t i=1;i<columns-1;i++) {
       Xlow[i] = Xup[0] + (i-1)*PadWidth;
       Xup[i] = Xup[0] + (i)*PadWidth;
@@ -352,10 +356,10 @@ void makeMultiPanelCanvas(TCanvas*& canv, const Int_t columns,
 
          if(j==0) pad[i][j]->SetTopMargin(edge);
          else pad[i][j]->SetTopMargin(0);
-	 
+
          if(j==(rows-1)) pad[i][j]->SetBottomMargin(bottomMargin);
          else pad[i][j]->SetBottomMargin(0);
-	 
+
          pad[i][j]->Draw();
          pad[i][j]->cd();
          pad[i][j]->SetNumber(columns*j+i+1);
@@ -370,17 +374,17 @@ void makeEfficiencyCanvas(TCanvas*& canv, const Int_t columns,
                           const Float_t bottomMargin=0.25,
                           const Float_t edge=0.01) {
 
-  
+
   const Int_t rows = 2;
-  
+
   if (canv==0) {
     //Error("makeMultiPanelCanvas","Got null canvas.");
     return;
   }
   canv->Clear();
-  
+
    TPad* pad[columns][rows];
-   
+
    Float_t Xlow[columns];
    Float_t Xup[columns];
    Float_t Ylow[rows];
@@ -395,19 +399,19 @@ void makeEfficiencyCanvas(TCanvas*& canv, const Int_t columns,
    Xup[0] = leftOffset + PadWidth/(1.0-leftMargin);
    Xup[columns-1] = 1;
    Xlow[columns-1] = 1.0-PadWidth/(1.0-edge);
-   
+
    Yup[0] = 1;
    Ylow[rows-1] = bottomOffset;
-  
+
    Ylow[0] = 1.0-PadHeight/(1.0-edge) - 0.2;
    Yup[rows-1] = bottomOffset + PadHeight/(1.0-bottomMargin) - 0.2;
-   
+
    for(Int_t i=1;i<columns-1;i++) {
       Xlow[i] = Xup[0] + (i-1)*PadWidth;
       Xup[i] = Xup[0] + (i)*PadWidth;
    }
    //Int_t ct = 0;
- 
+
 
    TString padName;
    for(Int_t i=0;i<columns;i++) {
@@ -424,10 +428,10 @@ void makeEfficiencyCanvas(TCanvas*& canv, const Int_t columns,
 
          if(j==0) pad[i][j]->SetTopMargin(edge);
          else pad[i][j]->SetTopMargin(0);
-	 
+
          if(j==(rows-1)) pad[i][j]->SetBottomMargin(bottomMargin);
          else pad[i][j]->SetBottomMargin(0);
-	 
+
          pad[i][j]->Draw();
          pad[i][j]->cd();
          pad[i][j]->SetNumber(columns*j+i+1);
@@ -440,7 +444,7 @@ void twikiSave(TCanvas* c=0, char* name="",Int_t w=0,Int_t h=0)
 {
    if ( w==0) w = c->GetWindowWidth();
    if ( h==0) h = c->GetWindowHeight();
-   
+
    c->SaveAs(name);
    cout << Form(" <br/>   <img src=\"%%ATTACHURLPATH%%/%s\" alt=\"%s\" width='%d' height='%d'/>",name,name,w,h)<< endl;
 }
@@ -518,14 +522,14 @@ void handsomeTGraph(TGraphAsymmErrors* a, Int_t col=1)
    a->SetMarkerStyle(24);
 }
 
-void TH1ScaleByWidth(TH1* h=0) 
+void TH1ScaleByWidth(TH1* h=0)
 {
    Int_t nBins = h->GetNbinsX();
    // cout << "Start scaling by width" << endl;
    for ( Int_t j=1; j<=nBins ;j++)
       {
          Double_t theWidth = h->GetBinWidth(j);
-         //      cout << "width = " << theWidth << ",   " ;                                                                                  
+         //      cout << "width = " << theWidth << ",   " ;
 	 Double_t cont = h->GetBinContent(j);
          Double_t err =  h->GetBinError(j);
          h->SetBinContent(j, cont/theWidth);
@@ -537,7 +541,7 @@ void TH1ScaleByWidth(TH1* h=0)
 void scaleInt( TH1 *a=0, Double_t normFac=1., Double_t minX=-999.21231, Double_t maxX=-999.21231)
 {
   Float_t fac=0;
-  Int_t lowBin=1; 
+  Int_t lowBin=1;
   Int_t highBin=a->GetNbinsX();
   if ( minX != -999.21231)
     lowBin = a->FindBin(minX);
@@ -553,7 +557,7 @@ void scaleInt( TH1 *a=0, Double_t normFac=1., Double_t minX=-999.21231, Double_t
 Double_t goodIntegral( TH1 *a=0, Int_t lower=-123, Int_t upper=-123)
 {
    Int_t nBins = a->GetNbinsX();
-   
+
    if ( (lower==-123) || (upper==-123)) {
       lower = 1;
       upper = nBins;
@@ -572,7 +576,7 @@ Double_t goodIntegralError( TH1 *a=0, Int_t lower=-123, Int_t upper=-123)
       lower = 1;
       upper = nBins;
    }
-   
+
    Double_t tempInt=0;
    for ( Int_t j=lower; j<=upper; j++) {
       tempInt = tempInt + a->GetBinError(j) * a->GetBinError(j) * a->GetBinWidth(j) *  a->GetBinWidth(j);
@@ -625,7 +629,7 @@ void easyLeg( TLegend *a=0 , TString head="")
 Double_t cleverRange(TH1* h,Float_t fac=1.2, Float_t minY=1.e-3)
 {
    Float_t maxY =  fac * h->GetBinContent(h->GetMaximumBin());
-   //   cout <<" range will be set as " << minY << " ~ " << maxY << endl; 
+   //   cout <<" range will be set as " << minY << " ~ " << maxY << endl;
    h->SetAxisRange(minY,maxY,"Y");
    return maxY;
 }
@@ -635,7 +639,7 @@ Double_t getCleverRange(TH1* h)
 {
   Double_t maxY = -1000000;
   for ( Int_t ibin = 1 ; ibin <= h->GetNbinsX() ; ibin++) {
-    if (maxY < h->GetBinContent(ibin) ) 
+    if (maxY < h->GetBinContent(ibin) )
       maxY = h->GetBinContent(ibin);
   }
   return maxY;
@@ -645,8 +649,8 @@ Double_t cleverRange(TH1* h,TH1* h2, Float_t fac=1.2, Float_t minY=1.e-3)
 {
   Float_t maxY1 =  fac * h->GetBinContent(h->GetMaximumBin());
   Float_t maxY2 =  fac * h2->GetBinContent(h2->GetMaximumBin());
-  
-  //   cout <<" range will be set as " << minY << " ~ " << maxY << endl;                                                                    
+
+  //   cout <<" range will be set as " << minY << " ~ " << maxY << endl;
   h->SetAxisRange(minY,max(maxY1,maxY2),"Y");
   h2->SetAxisRange(minY,max(maxY1,maxY2),"Y");
   return max(maxY1,maxY2);
@@ -655,7 +659,7 @@ Double_t cleverRange(TH1* h,TH1* h2, Float_t fac=1.2, Float_t minY=1.e-3)
 void cleverRangeLog(TH1* h,Float_t fac=1.2, Float_t theOrder=1.e-4)
 {
   Float_t maxY =  fac * h->GetBinContent(h->GetMaximumBin());
-  //   cout <<" range will be set as " << minY << " ~ " << maxY << endl;                                               
+  //   cout <<" range will be set as " << minY << " ~ " << maxY << endl;
   h->SetAxisRange(maxY * theOrder,maxY,"Y");
 }
 
@@ -669,11 +673,11 @@ TF1* cleverGaus(TH1* h, char* title="h", Float_t c = 2.5, bool quietMode=true)
 	 fit0->SetParameters(0,0,0);
 	 return fit0;
       }
-   
+
    Int_t peakBin  = h->GetMaximumBin();
    Double_t peak =  h->GetBinCenter(peakBin);
    Double_t sigma = h->GetRMS();
-  
+
    TF1 *fit1 = new TF1(title,"gaus",peak-c*sigma,peak+c*sigma);
    if (quietMode) h->Fit(fit1,"LL M O Q R");
    else    h->Fit(fit1,"LL M O Q R");
@@ -754,20 +758,20 @@ void drawCMS4(Float_t px, Float_t py, Float_t nLumi, Int_t textSize=15) {
    cms->SetTextSize(textSize);
    cms->SetNDC();
    cms->Draw();
-   
+
    TLatex *pbpb = new TLatex(px,py-0.08,"PbPb  #sqrt{s_{NN}}=2.76 TeV");
    pbpb->SetTextFont(63);
    pbpb->SetTextSize(textSize-2);
    pbpb->SetNDC();
    pbpb->Draw();
-   
+
    TLatex *lumi = new TLatex(px,py-0.16,Form("#intL dt = %.1f #mub^{-1}",nLumi));
    lumi->SetTextFont(63);
    lumi->SetTextSize(textSize-2);
    lumi->SetNDC();
    lumi->Draw();
-   
-   
+
+
 }
 
 void drawCMSppPbPb(Float_t px, Float_t py)
@@ -872,7 +876,7 @@ void getNiceBins( TH1* h=0, Int_t nDiv=4) {
    TH1F* hacc = (TH1F*)h->Clone(Form("%s_accu",h->GetName()));
    hacc->Reset();
    Double_t acc =0;
-   
+
 
    Int_t j=0;
    for ( Int_t i=1 ; i<= nBins ; i++ ) {
@@ -882,7 +886,7 @@ void getNiceBins( TH1* h=0, Int_t nDiv=4) {
 	 j++;
 	 cout << j << "th bin = " << i <<  "    value  = " << h->GetBinCenter(i) << endl;
        }
-   }     
+   }
    cout << " acc = " << acc << endl;
    TCanvas* c1 = new TCanvas(Form("%s_c1Acc",h->GetName()),"",400,400);
    c1->Draw();
@@ -890,8 +894,8 @@ void getNiceBins( TH1* h=0, Int_t nDiv=4) {
    handsomeTH1(h,2);
    hacc->DrawCopy();
    h->DrawCopy("same");
-  
-   
+
+
 }
 
 void stripErr(TH1* theHist=0) {
@@ -900,13 +904,13 @@ void stripErr(TH1* theHist=0) {
 }
 
 
-Double_t getPolyArea(TH1* h1, TH1* h2, Double_t minX, Double_t maxX) { 
-  if ( (h1->GetNbinsX() != h2->GetNbinsX()) || ( h1->FindBin(minX) != h2->FindBin(minX)) || (h1->FindBin(maxX) != h2->FindBin(maxX)) ) 
+Double_t getPolyArea(TH1* h1, TH1* h2, Double_t minX, Double_t maxX) {
+  if ( (h1->GetNbinsX() != h2->GetNbinsX()) || ( h1->FindBin(minX) != h2->FindBin(minX)) || (h1->FindBin(maxX) != h2->FindBin(maxX)) )
     {
       cout <<" binnings are not matched!!! " << endl;
       return -1;
     }
-  
+
   Int_t minBin = h1->FindBin(minX);
   Int_t maxBin = h1->FindBin(maxX);
   cout << " getPolyArea : from " << h1->GetBinLowEdge(minBin) << " to " << h1->GetBinLowEdge(maxBin+1) << endl;
@@ -914,7 +918,7 @@ Double_t getPolyArea(TH1* h1, TH1* h2, Double_t minX, Double_t maxX) {
   for ( Int_t ibin = minBin ; ibin <= maxBin ; ibin++) {
     area = area + ( h2->GetBinContent(ibin) - h1->GetBinContent(ibin) ) * h1->GetBinWidth(ibin) ;
   }
-  
+
   return area;
 }
 
@@ -949,7 +953,7 @@ TH1D* getShiftedTH1D(TH1D* h1, Double_t shift) {
 }
 
 
-Int_t getNcollFrom40Bin(Int_t cBin) { 
+Int_t getNcollFrom40Bin(Int_t cBin) {
   if (cBin == 0) return  1747.86 ;
   if (cBin == 1) return  1567.53 ;
   if (cBin == 2) return  1388.39 ;
@@ -1042,4 +1046,4 @@ Float_t  getNpart(Int_t ibin) {
 
 
 
-#endif 
+#endif

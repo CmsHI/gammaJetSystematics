@@ -445,7 +445,7 @@ void drawResultsDist(bool separatepPb = false) {
   if(separatepPb)
     rows = 2;
   TCanvas* c5 = new TCanvas("c5","",1200,rows*300);
-  makeMultiPanelCanvas(c5,nPtBin, rows, 0.0, 0.0, 0.25, 0.2, 0.02);
+  makeMultiPanelCanvas(c5,nPtBin, rows, 0.0, 0.0, 0.3, 0.2, 0.02);
 
   for ( int ipt = 1 ; ipt<=nPtBin  ; ipt++) {
     if(!separatepPb)
@@ -454,29 +454,29 @@ void drawResultsDist(bool separatepPb = false) {
       c5->cd(ipt+nPtBin);
 
     hTempPt->SetXTitle("p_{T}^{Jet} (GeV)");
-    hTempPt->SetYTitle("#frac{1}{N_{#gamma}} #frac{dN_{J#gamma}}{dp_{T}^{Jet}}");
+    hTempPt->SetYTitle("#frac{1}{N_{#gamma}} #frac{dN_{J#gamma}}{dp_{T}^{Jet}} (GeV^{-1})");
     hTempPt->SetAxisRange(10,150,"X");
     hTempPt->SetAxisRange(0,0.025,"Y");
     hTempPt->GetYaxis()->SetNdivisions(504);
     handsomeTH1(hTempPt,0);
     if(!separatepPb)
     {
-      hTempPt->GetYaxis()->SetTitleOffset(4);
+      hTempPt->GetYaxis()->SetTitleOffset(5);
       hTempPt->GetXaxis()->SetTitleOffset(3);
     } else {
-      hTempPt->GetYaxis()->SetTitleOffset(3);
+      hTempPt->GetYaxis()->SetTitleOffset(4);
       hTempPt->GetXaxis()->SetTitleOffset(2);
     }
     hTempPt->DrawCopy();
 
-    drawSys(dNdJetPt[1][ipt], dNdJetPtSys[1][ipt], kGreen,3001,10);
     drawSys(dNdJetPt[3][ipt], dNdJetPtSys[3][ipt], newYellow,-1,10);
+    drawSys(dNdJetPt[1][ipt], dNdJetPtSys[1][ipt], kGreen,3001,10);
     handsomeTH1(dNdJetPt[3][ipt],2);
-    dNdJetPt[1][ipt]->DrawCopy("same");
     dNdJetPt[1][ipt]->SetMarkerStyle(21);
+    dNdJetPt[1][ipt]->DrawCopy("same");
     dNdJetPt[3][ipt]->DrawCopy("same");
     if ( ipt == 1 ) {
-      TLegend *ly = new TLegend(0.25,0.75,0.9,0.95,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.35,0.75,0.9,0.95,NULL,"brNDC");
       easyLeg(ly);
       dNdJetPt[3][ipt]->SetFillStyle(1001);
       dNdJetPt[3][ipt]->SetFillColor(90);
@@ -500,8 +500,8 @@ void drawResultsDist(bool separatepPb = false) {
     hTempPt->DrawCopy();
     //gPad->SetLogy();
 
-    drawSys(dNdJetPt[2][ipt], dNdJetPtSys[2][ipt], kGreen,3001,10);
     drawSys(dNdJetPt[4][ipt], dNdJetPtSys[4][ipt], newYellow,-1,10);
+    drawSys(dNdJetPt[2][ipt], dNdJetPtSys[2][ipt], kGreen,3001,10);
     handsomeTH1(dNdJetPt[4][ipt],2);
     dNdJetPt[4][ipt]->SetMarkerStyle(24);
     dNdJetPt[2][ipt]->SetMarkerStyle(25);
@@ -509,7 +509,7 @@ void drawResultsDist(bool separatepPb = false) {
     dNdJetPt[4][ipt]->DrawCopy("same");
 
     if ( ipt==1 ){
-      TLegend *ly = new TLegend(0.25,0.75,0.9,0.95,NULL,"brNDC");
+      TLegend *ly = new TLegend(0.35,0.75,0.9,0.98,NULL,"brNDC");
       easyLeg(ly);
       dNdJetPt[4][ipt]->SetFillStyle(1001);
       dNdJetPt[4][ipt]->SetFillColor(90);
@@ -536,8 +536,8 @@ void drawResultsDist(bool separatepPb = false) {
       c5->cd(ipt);
       hTempPt->DrawCopy();
 
-      drawSys(dNdJetPt[5][ipt], dNdJetPtSys[5][ipt], newYellow);
       drawSys(dNdJetPt[7][ipt], dNdJetPtSys[2][ipt], kGreen,3001);
+      drawSys(dNdJetPt[5][ipt], dNdJetPtSys[5][ipt], newYellow);
       //      handsomeTH1(dNdJetPt[5][ipt],9,1,34);
       handsomeTH1(dNdJetPt[5][ipt],2,1,34);
       handsomeTH1(dNdJetPt[7][ipt],1,1);
@@ -547,7 +547,7 @@ void drawResultsDist(bool separatepPb = false) {
       dNdJetPt[7][ipt]->DrawCopy("same");
       dNdJetPt[5][ipt]->DrawCopy("same");
       if ( ipt == 1 ) {
-	TLegend *ly = new TLegend(0.4313699,0.5560255,0.8982322,0.9077549,NULL,"brNDC");
+	TLegend *ly = new TLegend(0.4813699,0.5560255,0.8982322,0.9077549,NULL,"brNDC");
 	easyLeg(ly);
 	dNdJetPt[5][ipt]->SetFillStyle(1001);
 	dNdJetPt[5][ipt]->SetFillColor(90);
@@ -557,12 +557,12 @@ void drawResultsDist(bool separatepPb = false) {
 	dNdJetPt[7][ipt]->SetLineColor(0);
 
 	ly->AddEntry(dNdJetPt[5][ipt],"pPb Data","fp");
-	ly->AddEntry(dNdJetPt[6][ipt],"PYTHIA+HIJING","p");
 	ly->AddEntry(dNdJetPt[7][ipt],"pp Data (2.76 TeV)","fp");
+	ly->AddEntry(dNdJetPt[6][ipt],"PYTHIA+HIJING","p");
 	ly->Draw();
       }
       if(ipt == 4)
-	drawCMSpPbDist(0.1,0.7);
+	drawCMSpPbDist(0.1,0.8);
     }
 
     double dx1=0.18;
@@ -598,9 +598,9 @@ void drawResultsDist(bool separatepPb = false) {
     if (ipt == 1)
       hTempXjg->SetAxisRange(0,2.099,"X");
     else if ( ipt == 4 ) 
-      hTempXjg->SetAxisRange(0.05,2.1,"X");
-    else 
       hTempXjg->SetAxisRange(0.05,2.99,"X");
+    else 
+      hTempXjg->SetAxisRange(0.05,2.1,"X");
 
     hTempXjg->GetYaxis()->SetNdivisions(405);
     hTempXjg->GetXaxis()->SetNdivisions(405);
@@ -635,6 +635,8 @@ void drawResultsDist(bool separatepPb = false) {
       ly->AddEntry(dNdXjg[1][ipt],"Smeared pp reference","fp");
       ly->AddEntry(htemp1,"pp Data","l");
       ly->Draw();
+
+      hTempXjg->DrawCopy("sameaxis");
     }
 
     if(ipt + nPtBin == 8)
@@ -705,8 +707,8 @@ void drawResultsDist(bool separatepPb = false) {
 	dNdXjg[7][ipt]->SetLineColor(1);
 
 	ly->AddEntry(dNdXjg[5][ipt],"pPb Data","fp");
-	ly->AddEntry(dNdXjg[6][ipt],"PYTHIA+HIJING","p");
 	ly->AddEntry(dNdXjg[7][ipt],"pp Data (2.76 TeV)","PFL");
+	ly->AddEntry(dNdXjg[6][ipt],"PYTHIA+HIJING","p");
 	ly->Draw();
       }
 
@@ -938,8 +940,8 @@ void drawResultsDist(bool separatepPb = false) {
 	dNdphi[7][ipt]->SetLineColor(0);
 
 	ly->AddEntry(dNdphi[5][ipt],"pPb Data","fp");
-	ly->AddEntry(dNdphi[6][ipt],"PYTHIA+HIJING","p");
 	ly->AddEntry(dNdphi[7][ipt],"pp Data (2.76 TeV)","fp");
+	ly->AddEntry(dNdphi[6][ipt],"PYTHIA+HIJING","p");
 	ly->Draw();
       }
       if(ipt == 4)

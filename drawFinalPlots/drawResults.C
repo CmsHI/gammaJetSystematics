@@ -196,7 +196,7 @@ void drawResults(bool drawSinglePanels = false) {
   meanRjg[5]->SetLineColor(0);
 
   if ( 1==1 ) {
-    TLegend *ly = new TLegend(0.5,0.25,0.85,0.47,NULL,"brNDC");
+    TLegend *ly = new TLegend(0.5,0.2,0.85,0.42,NULL,"brNDC");//0.4,0.2,0.75,0.4
     easyLeg(ly);
     ly->AddEntry(meanRjg[5],"pPb DATA","fp");
     ly->AddEntry(meanRjg[7],"pp DATA (2.76 TeV)","fp");
