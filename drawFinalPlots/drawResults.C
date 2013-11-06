@@ -181,7 +181,8 @@ void drawResults(bool drawSinglePanels = false) {
   tempR->SetAxisRange(40.01,109.99,"X");
   drawSys(meanRjg[5], meanRjgSys[5], newYellow);
   drawSys(meanRjg[7], meanRjgSys[2], kGreen, 3001);
-  handsomeTH1(meanRjg[5],9,1,34);
+  //  handsomeTH1(meanRjg[5],9,1,34);
+  handsomeTH1(meanRjg[5],2,1,34);
   handsomeTH1(meanRjg[6],1,1,25);
   handsomeTH1(meanRjg[7],1,1);
   meanRjg[6]->DrawCopy("same");
@@ -198,8 +199,8 @@ void drawResults(bool drawSinglePanels = false) {
     TLegend *ly = new TLegend(0.5,0.25,0.85,0.47,NULL,"brNDC");
     easyLeg(ly);
     ly->AddEntry(meanRjg[5],"pPb DATA","fp");
-    ly->AddEntry(meanRjg[6],"PYTHIA+HIJING","p");
     ly->AddEntry(meanRjg[7],"pp DATA (2.76 TeV)","fp");
+    ly->AddEntry(meanRjg[6],"PYTHIA+HIJING","p");
     ly->Draw();
   }
   drawCMSpPbDist(0.2,0.9);
@@ -228,7 +229,8 @@ void drawResults(bool drawSinglePanels = false) {
   tempJ->SetAxisRange(40.01,109.99,"X");
   drawSys(meanJetPt[5], meanJetPtSys[5], newYellow);
   drawSys(meanJetPt[7], meanJetPtSys[1], kGreen,3001);
-  handsomeTH1(meanJetPt[5],9,1,34);
+  //  handsomeTH1(meanJetPt[5],9,1,34);
+  handsomeTH1(meanJetPt[5],2,1,34);
   handsomeTH1(meanJetPt[6],1,1,25);
   handsomeTH1(meanJetPt[7],1,1);
   meanJetPt[6]->DrawCopy("same");
@@ -238,8 +240,8 @@ void drawResults(bool drawSinglePanels = false) {
     TLegend *ly = new TLegend(0.53,0.18,0.88,0.4,NULL,"brNDC");
     easyLeg(ly);
     ly->AddEntry(meanJetPt[5],"pPb DATA","p");
-    ly->AddEntry(meanJetPt[6],"PYTHIA+HIJING","p");
     ly->AddEntry(meanJetPt[7],"pp DATA (2.76 TeV)","p");
+    ly->AddEntry(meanJetPt[6],"PYTHIA+HIJING","p");
     ly->Draw();
   }
   drawCMSpPbDist(0.2,0.9);
@@ -367,7 +369,8 @@ void drawResults(bool drawSinglePanels = false) {
   tempX->SetAxisRange(40.01,109.99,"X");
   drawSys(meanXjg[5], meanXjgSys[5], newYellow);
   drawSys(meanXjg[7], meanXjgSys[2], kGreen, 3001);
-  handsomeTH1(meanXjg[5],9,1,34);
+  //  handsomeTH1(meanXjg[5],9,1,34);
+  handsomeTH1(meanXjg[5],2,1,34);
   handsomeTH1(meanXjg[6],1,1,25);
   handsomeTH1(meanXjg[7],1,1);
   meanXjg[6]->DrawCopy("same");
@@ -384,8 +387,8 @@ void drawResults(bool drawSinglePanels = false) {
     TLegend *ly = new TLegend(0.1722123,0.1861,0.4788343,0.3788,NULL,"brNDC");
     easyLeg(ly);
     ly->AddEntry(meanXjg[5],"pPb DATA","fp");
-    ly->AddEntry(meanXjg[6],"PYTHIA+HIJING","p");
     ly->AddEntry(meanXjg[7],"pp DATA (2.76 TeV)","fp");    
+    ly->AddEntry(meanXjg[6],"PYTHIA+HIJING","p");
     ly->Draw();
   }
   drawCMSpPbDist(0.65,0.90);
