@@ -73,7 +73,7 @@ void drawResults(bool drawSinglePanels = false) {
   meanRjg[6]  =(TH1D*)f->Get(Form("meanRjg_ppb"));
 
 
-  TFile* fSys = new TFile("../relativeSys_merged.root");
+  TFile* fSys = new TFile("../relativeSys/relativeSys_merged.root");
 
   meanJetPtSys[1]  =(TH1D*)fSys->Get("meanJetPt_pp_uncertainty_merged");
   meanRjgSys[1]  =(TH1D*)fSys->Get(Form("meanRjg_pp_uncertainty_merged"));
