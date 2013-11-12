@@ -1,4 +1,4 @@
-#include "../commonUtilitySys.h"
+#include "commonUtilitySys.h"
 #include <TRandom3.h>
 #include <TFile.h>
 
@@ -36,20 +36,23 @@ void mergeSys() {
   const int nPtBin = 4;  
   
   TH1D* dNdJetPt[5][5][10];
+  TH1D* dNdIaa[5][5][10]; 
   TH1D* dNdXjg[5][5][10]; 
-
+  TH1D* meanJetPt[5][10]; 
+  TH1D* meanRjg[5][10];
+  TH1D* meanXjg[5][10];
   TFile* f; 
  
   int nFile  = 7;
     for ( int ifile = 1 ; ifile <= nFile ; ifile++ ) { 
 
-      if ( ifile == 1 )       f = new TFile("relativeSys_dueTo_noJetResCorr.root");
-      else if ( ifile == 2 )  f = new TFile("relativeSys_dueTo_photonEnergyScale.root");
-      else if ( ifile == 3 )  f = new TFile("relativeSys_dueTo_MCrecoIso.root");
-      else if ( ifile == 4 )  f = new TFile("relativeSys_dueTo_photonPurityVaried.root");
-      else if ( ifile == 5 )  f = new TFile("relativeSys_dueTo_noElectronRejection.root");
-      else if ( ifile == 6 )  f = new TFile("relativeSys_dueTo_jetEnergyScale.root");
-      else if ( ifile == 7 )  f = new TFile("relativeSys_dueTo_jetEnergySmearing.root");
+    if ( ifile == 1 )       f = new TFile("relativeSys_dueTo_photonEnergyScale.root");
+    else if ( ifile == 2 )  f = new TFile("relativeSys_dueTo_isolation.root");
+    else if ( ifile == 3 )  f = new TFile("relativeSys_dueTo_jetResCorrection.root");
+    else if ( ifile == 4 )  f = new TFile("relativeSys_dueTo_jetEnergyScale.root");
+    else if ( ifile == 5 )  f = new TFile("relativeSys_dueTo_electronContamination.root");
+    else if ( ifile == 6 )  f = new TFile("relativeSys_dueTo_photonPurity.root");
+    else if ( ifile == 7 )  f = new TFile("relativeSys_dueTo_jetResolution.root");
     
     for ( int coll = 1 ; coll<=4 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon
       TString collName;
@@ -58,9 +61,13 @@ void mergeSys() {
       else if ( coll == kHIcentral )  collName = "pbpb_centralityBin1";
       else if ( coll == kHIperipheral )  collName = "pbpb_centralityBin2";
       
+      meanJetPt[coll][ifile]  =(TH1D*)f->Get(Form("meanJetPt_%s_uncertainty", collName.Data()));
+      meanRjg[coll][ifile]  =(TH1D*)f->Get(Form("meanRjg_%s_uncertainty", collName.Data()) );
+      meanXjg[coll][ifile]  =(TH1D*)f->Get(Form("meanXjg_%s_uncertainty", collName.Data()) );
       
       for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) { 
-	dNdJetPt[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdJetPt_%s_ptBin%d_uncertainty", collName.Data(), ipt ) );
+	dNdJetPt[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdJetPt_IaaBin_%s_ptBin%d_uncertainty", collName.Data(), ipt ) );
+	if ( coll != kPA ) dNdIaa[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdJetPt_forIaa_%s_ptBin%dAndHigher_uncertainty", collName.Data(), ipt ) );
 	dNdXjg[coll][ipt][ifile] = (TH1D*)f->Get(Form("dNdXjg_%s_ptBin%d_uncertainty", collName.Data(), ipt ) );
 
       }
@@ -78,6 +85,18 @@ void mergeSys() {
       }
       squareRootHist(dNdJetPt[coll][ipt][0]);
 
+      if ( coll != kPA )  {
+	dNdIaa[coll][ipt][0] = (TH1D*)dNdIaa[coll][ipt][1]->Clone(Form("%s_merged",dNdIaa[coll][ipt][1]->GetName() ) );
+	dNdIaa[coll][ipt][0]->Reset();
+	for ( int ifile = 1 ; ifile <= nFile ; ifile++ ) {
+	  squareHist( dNdIaa[coll][ipt][ifile] );
+	  dNdIaa[coll][ipt][0]->Add(dNdIaa[coll][ipt][ifile]);
+	}
+	squareRootHist(dNdIaa[coll][ipt][0]);
+      }
+      
+      
+      
       dNdXjg[coll][ipt][0] = (TH1D*)dNdXjg[coll][ipt][1]->Clone(Form("%s_merged",dNdXjg[coll][ipt][1]->GetName() ) );
       dNdXjg[coll][ipt][0]->Reset();
       for ( int ifile = 1 ; ifile <= nFile ; ifile++ ) {
@@ -88,6 +107,32 @@ void mergeSys() {
 
 
     }
+    
+    meanJetPt[coll][0] = (TH1D*)meanJetPt[coll][1]->Clone(Form("%s_merged",meanJetPt[coll][1]->GetName() ) );
+    meanJetPt[coll][0]->Reset();
+    for ( int ifile = 1 ; ifile <= nFile ; ifile++ ) {
+      squareHist( meanJetPt[coll][ifile]);
+      meanJetPt[coll][0]->Add(meanJetPt[coll][ifile]);
+    }
+    squareRootHist(meanJetPt[coll][0]);
+    
+    meanRjg[coll][0] = (TH1D*)meanRjg[coll][1]->Clone(Form("%s_merged",meanRjg[coll][1]->GetName() ) );
+    meanRjg[coll][0]->Reset();
+    for ( int ifile = 1 ; ifile <= nFile ; ifile++ ) {
+      squareHist( meanRjg[coll][ifile]);
+      meanRjg[coll][0]->Add(meanRjg[coll][ifile]);
+    }
+    squareRootHist(meanRjg[coll][0]);
+
+    meanXjg[coll][0] = (TH1D*)meanXjg[coll][1]->Clone(Form("%s_merged",meanXjg[coll][1]->GetName() ) );
+    meanXjg[coll][0]->Reset();
+    for ( int ifile = 1 ; ifile <= nFile ; ifile++ ) {
+      squareHist( meanXjg[coll][ifile]);
+      meanXjg[coll][0]->Add(meanXjg[coll][ifile]);
+    }
+    squareRootHist(meanXjg[coll][0]);
+    
+    
   }
   TFile * fSysResults = new TFile("relativeSys_merged.root","recreate");
   
@@ -95,7 +140,13 @@ void mergeSys() {
     for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
       dNdJetPt[coll][ipt][0]->Write();
       dNdXjg[coll][ipt][0]->Write();
+      if ( coll != kPA ) 
+	dNdIaa[coll][ipt][0]->Write();
+
     }
+    meanJetPt[coll][0]->Write();
+    meanRjg[coll][0]->Write();
+    meanXjg[coll][0]->Write();
   }
   
   fSysResults->Close();
