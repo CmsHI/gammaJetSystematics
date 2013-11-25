@@ -43,7 +43,7 @@ void smoothSys(TString dirName="nominal") {
   TH1D* dNdXjg[5][10]; 
   TH1D* dNdphi[5][10]; 
  
-  TFile*  f = new TFile(Form("resultHistograms/resultHistograms_%s.root",dirName.Data()));
+  TFile*  f = new TFile(Form("../resultHistograms/resultHistograms_%s.root",dirName.Data()));
   
   for ( int coll = 1 ; coll<=4 ; coll++) {   // On Sep 30, only pp and pbpb is studied.  pA will be added very soon
       TString collName;
@@ -221,7 +221,7 @@ void smoothSys(TString dirName="nominal") {
   c3->SaveAs("c3.gif");
 
 
-  TFile*  fout = new TFile(Form("resultHistograms/resultHistograms_%s_functionAdded.root",dirName.Data()), "recreate");
+  TFile*  fout = new TFile(Form("../resultHistograms/resultHistograms_%s_functionAdded.root",dirName.Data()), "recreate");
   for ( int coll = 1 ; coll<=4 ; coll++) { 
     for ( int ipt = 1 ; ipt <=nPtBin ; ipt++) {
       dNdphi[coll][ipt]->Write(); 
